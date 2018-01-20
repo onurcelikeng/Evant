@@ -17,4 +17,9 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Evant.Contracts\Evant.Contracts.csproj" />
+    <ProjectReference Include="..\Evant.DAL\Evant.DAL.csproj" />
+  </ItemGroup>
+
 </Project>

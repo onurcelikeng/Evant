@@ -4809,6 +4809,30 @@
         "runtime": {
           "lib/netstandard1.3/Microsoft.WindowsAzure.Storage.dll": {}
         }
+      },
+      "Evant.Contracts/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "compile": {
+          "bin/placeholder/Evant.Contracts.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Evant.Contracts.dll": {}
+        }
+      },
+      "Evant.DAL/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.SqlServer": "2.0.0",
+          "Microsoft.EntityFrameworkCore.Tools": "2.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Evant.DAL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Evant.DAL.dll": {}
+        }
       }
     }
   },
@@ -12639,10 +12663,22 @@
         "windowsazure.storage.8.1.4.nupkg.sha512",
         "windowsazure.storage.nuspec"
       ]
+    },
+    "Evant.Contracts/1.0.0": {
+      "type": "project",
+      "path": "../Evant.Contracts/Evant.Contracts.csproj",
+      "msbuildProject": "../Evant.Contracts/Evant.Contracts.csproj"
+    },
+    "Evant.DAL/1.0.0": {
+      "type": "project",
+      "path": "../Evant.DAL/Evant.DAL.csproj",
+      "msbuildProject": "../Evant.DAL/Evant.DAL.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
+      "Evant.Contracts >= 1.0.0",
+      "Evant.DAL >= 1.0.0",
       "Microsoft.AspNetCore.All >= 2.0.5",
       "Microsoft.NETCore.App >= 2.0.0",
       "Swashbuckle.AspNetCore >= 1.1.0"
@@ -12658,11 +12694,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant.csproj",
+      "projectUniqueName": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant\\Evant.csproj",
       "projectName": "Evant",
-      "projectPath": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant.csproj",
+      "projectPath": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant\\Evant.csproj",
       "packagesPath": "C:\\Users\\onurcelikeng\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\obj\\",
+      "outputPath": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -12680,7 +12716,14 @@
       },
       "frameworks": {
         "netcoreapp2.0": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant.DAL\\Evant.DAL.csproj": {
+              "projectPath": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant.DAL\\Evant.DAL.csproj"
+            },
+            "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant.Contracts\\Evant.Contracts.csproj": {
+              "projectPath": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant.Contracts\\Evant.Contracts.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
