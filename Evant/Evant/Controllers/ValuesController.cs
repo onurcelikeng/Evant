@@ -9,7 +9,7 @@ namespace Evant.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
-        // GET api/values
+        // GET api/valuess
         [HttpGet]
         public IEnumerable<string> Get()
         {
