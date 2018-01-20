@@ -1,6 +1,6 @@
 ﻿namespace Evant.Contracts.DataTransferObjects.Account
 {
-    public class TokenResultDTO
+    public class ResultDTO
     {
         public bool IsSuccess { get; set; }
 
