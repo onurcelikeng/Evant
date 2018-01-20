@@ -1,7 +1,11 @@
-﻿namespace Evant.Contracts.DataTransferObjects.ReportType
+﻿using System;
+
+namespace Evant.Contracts.DataTransferObjects.ReportType
 {
-    public class ReportTypeDTO : BaseDTO
+    public sealed class ReportTypeDTO
     {   
+        public Guid ReportTypeId { get; set; }
+
         public string Name { get; set; }
 
         public int Level { get; set; }

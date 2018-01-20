@@ -26,7 +26,7 @@ namespace Evant.Controllers
         {
             var reportTypes = _reportTypeRepo.GetAll().Select(c => new ReportTypeDTO()
             {
-                Id = c.Id,
+                ReportTypeId = c.Id,
                 Name = c.Name,
                 Level = c.Level
             });
@@ -54,7 +54,7 @@ namespace Evant.Controllers
                 return BaseController.Instance.Result(null, 400);
             }
 
-            var selectedReportType = _reportTypeRepo.First(c => c.Id == reportType.Id);
+            var selectedReportType = _reportTypeRepo.First(c => c.Id == reportType.ReportTypeId);
             if (selectedReportType == null)
             {
                 return BaseController.Instance.Result(null, 404, "Şikayet türü bulunamadı.");
@@ -121,6 +121,5 @@ namespace Evant.Controllers
                 return BaseController.Instance.Result(null, 500, "Şikayet türü silinemedi.");
             }
         }
-
     }
 }

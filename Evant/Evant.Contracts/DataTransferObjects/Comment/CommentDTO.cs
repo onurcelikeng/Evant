@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Evant.Contracts.DataTransferObjects.User;
+using System;
 
 namespace Evant.Contracts.DataTransferObjects.Comment
 {
-    public class CommentDTO : BaseDTO
+    public sealed class CommentDTO
     {
-        public int UserId { get; set; }
-        public int EventId { get; set; }
+        public Guid CommentId { get; set; }
+
         public string Content { get; set; }
-        public DateTime CreatedDate { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+
+        public UserInfoDTO User { get; set; }
     }
 }

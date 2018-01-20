@@ -2,12 +2,10 @@
 
 namespace Evant.Contracts.DataTransferObjects.Category
 {
-    public sealed class CategoryDTO
+    public sealed class CategoryInfoDTO
     {
         public Guid CategoryId { get; set; }
 
         public string Name { get; set; }
-
-        public string PhotoUrl { get; set; }
     }
 }

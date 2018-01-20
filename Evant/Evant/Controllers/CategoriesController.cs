@@ -26,9 +26,9 @@ namespace Evant.Controllers
         {
             var categories = _categoryRepo.GetAll().Select(c => new CategoryDTO()
             {
-                Id = c.Id,
+                CategoryId = c.Id,
                 Name = c.Name,
-                Icon = c.Icon
+                PhotoUrl = c.Icon
             });
 
             return BaseController.Instance.Result(categories, 200);
@@ -54,7 +54,7 @@ namespace Evant.Controllers
                 return BaseController.Instance.Result(null, 400);
             }
 
-            var selectedCategory = _categoryRepo.First(c => c.Id == category.Id);
+            var selectedCategory = _categoryRepo.First(c => c.Id == category.CategoryId);
             if (selectedCategory == null)
             {
                 return BaseController.Instance.Result(null, 404, "Kategori bulunamadı.");
@@ -62,7 +62,7 @@ namespace Evant.Controllers
             else
             {
                 selectedCategory.Name = category.Name;
-                selectedCategory.Icon = category.Icon;
+                selectedCategory.Icon = category.PhotoUrl;
                 selectedCategory.UpdateAt = DateTime.Now;
 
                 var response = _categoryRepo.Update(selectedCategory);
@@ -89,7 +89,7 @@ namespace Evant.Controllers
             {
                 Id = new Guid(),
                 Name = category.Name,
-                Icon = category.Icon,
+                Icon = category.PhotoUrl,
                 CreatedAt = DateTime.Now
             });
             if (response)
