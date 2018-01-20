@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2024
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evant", "Evant\Evant.csproj", "{123464B9-65EF-436A-916C-35B431D2943D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{123464B9-65EF-436A-916C-35B431D2943D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{123464B9-65EF-436A-916C-35B431D2943D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{123464B9-65EF-436A-916C-35B431D2943D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{123464B9-65EF-436A-916C-35B431D2943D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A1714A60-8FC7-4DDB-B26B-E463716D3817}
+	EndGlobalSection
+EndGlobal
