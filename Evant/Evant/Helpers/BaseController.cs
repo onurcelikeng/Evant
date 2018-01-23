@@ -5,33 +5,40 @@ namespace Evant.Helpers
 {
     public class BaseController : Controller
     {
-        private BaseController() { }
-
-        public static BaseController Instance => new BaseController();
-
-
-        public IActionResult Result(object data, int statusCode = 200, string message = null)
+        public override OkObjectResult Ok(object value)
         {
             var response = new ResultDTO<object>()
             {
-                StatusCode = statusCode,
-                IsSuccess = statusCode == 200,
-                Message = message,
-                Data = data
+                StatusCode = 200,
+                IsSuccess = true,
+                Message = "",
+                Data = value
             };
-
-            switch (statusCode)
-            {
-                case 200:
-                    return Ok(response);
-                case 400:
-                    return BadRequest(response);
-                case 404:
-                    return NotFound(response);
-                default:
-                    return BadRequest();
-            }
+            return base.Ok(response);
         }
 
+        public override NotFoundObjectResult NotFound(object value)
+        {
+            var response = new ResultDTO<object>()
+            {
+                StatusCode = 404,
+                IsSuccess = false,
+                Message = value.ToString(),
+                Data = null
+            };
+            return base.NotFound(response);
+        }
+
+        public override BadRequestObjectResult BadRequest(object error)
+        {
+            var response = new ResultDTO<object>()
+            {
+                StatusCode = 400,
+                IsSuccess = false,
+                Message = error.ToString(),
+                Data = null
+            };
+            return base.BadRequest(response);
+        }
     }
 }

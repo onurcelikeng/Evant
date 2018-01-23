@@ -13273,43 +13273,38 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\onurcelikeng\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "/Users/peacecwz/.nuget/packages/": {},
+    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
-    "restoreSettings": {
-      "hideWarningsAndErrors": true
-    },
     "restore": {
-      "projectUniqueName": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant\\Evant.csproj",
+      "projectUniqueName": "/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/Evant.csproj",
       "projectName": "Evant",
-      "projectPath": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant\\Evant.csproj",
-      "packagesPath": "C:\\Users\\onurcelikeng\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant\\obj\\",
+      "projectPath": "/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/Evant.csproj",
+      "packagesPath": "/Users/peacecwz/.nuget/packages/",
+      "outputPath": "/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\onurcelikeng\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/peacecwz/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant.DAL\\Evant.DAL.csproj": {
-              "projectPath": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant.DAL\\Evant.DAL.csproj"
+            "/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant.Contracts/Evant.Contracts.csproj": {
+              "projectPath": "/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant.Contracts/Evant.Contracts.csproj"
             },
-            "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant.Contracts\\Evant.Contracts.csproj": {
-              "projectPath": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant.Contracts\\Evant.Contracts.csproj"
+            "/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant.DAL/Evant.DAL.csproj": {
+              "projectPath": "/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant.DAL/Evant.DAL.csproj"
             }
           }
         }

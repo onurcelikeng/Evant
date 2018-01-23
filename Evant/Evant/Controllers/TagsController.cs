@@ -10,7 +10,7 @@ namespace Evant.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    public class TagsController : Controller
+    public class TagsController : BaseController
     {
         private readonly IRepository<Tag> _tagRepo;
 
@@ -30,7 +30,7 @@ namespace Evant.Controllers
                 Name = t.Name
             });
 
-            return BaseController.Instance.Result(tags, 200);
+            return Ok(tags);
         }
 
         [HttpGet("{id}")]
@@ -39,10 +39,10 @@ namespace Evant.Controllers
             var tag = _tagRepo.First(t => t.Id == id);
             if (tag == null)
             {
-                return BaseController.Instance.Result(null, 404, "Böyle bir tag yok.");
+                return NotFound("Böyle bir tag yok.");
             }
 
-            return BaseController.Instance.Result(tag, 200);
+            return Ok(tag);
         }
 
         [HttpPut]
@@ -50,13 +50,13 @@ namespace Evant.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BaseController.Instance.Result(null, 400);
+                return BadRequest(null);
             }
 
             var selectedTag = _tagRepo.First(t => t.Id == tag.Id);
             if (selectedTag == null)
             {
-                return BaseController.Instance.Result(null, 404, "Tag bulunamadı.");
+                return NotFound("Tag bulunamadı.");
             }
             else
             {
@@ -66,11 +66,11 @@ namespace Evant.Controllers
                 var response = _tagRepo.Update(selectedTag);
                 if (response)
                 {
-                    return BaseController.Instance.Result(null, 200, "Tag güncellendi.");
+                    return Ok("Tag güncellendi.");
                 }
                 else
                 {
-                    return BaseController.Instance.Result(null, 500, "Tag güncellenemedi.");
+                    return BadRequest("Tag güncellenemedi.");
                 }
             }
         }
@@ -80,7 +80,7 @@ namespace Evant.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BaseController.Instance.Result(null, 400);
+                return BadRequest(null);
             }
 
             var response = _tagRepo.Insert(new Tag()
@@ -91,11 +91,11 @@ namespace Evant.Controllers
             });
             if (response)
             {
-                return BaseController.Instance.Result(null, 200, "Tag eklendi.");
+                return Ok("Tag eklendi.");
             }
             else
             {
-                return BaseController.Instance.Result(null, 500, "Tag eklenemedi.");
+                return BadRequest("Tag eklenemedi.");
             }
         }
 
@@ -105,17 +105,17 @@ namespace Evant.Controllers
             var tag = _tagRepo.First(t => t.Id == id);
             if (tag == null)
             {
-                return BaseController.Instance.Result(null, 404, "Böyle bir kategori yok.");
+                return NotFound("Böyle bir kategori yok.");
             }
 
             var response = _tagRepo.Delete(tag);
             if (response)
             {
-                return BaseController.Instance.Result(null, 200, "Tag silindi.");
+                return Ok("Tag silindi.");
             }
             else
             {
-                return BaseController.Instance.Result(null, 500, "Tag silinemedi.");
+                return BadRequest("Tag silinemedi.");
             }
         }
 

@@ -10,7 +10,7 @@ namespace Evant.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    public class CategoriesController : Controller
+    public class CategoriesController : BaseController
     {
         private readonly IRepository<Category> _categoryRepo;
 
@@ -31,7 +31,7 @@ namespace Evant.Controllers
                 PhotoUrl = c.Icon
             });
 
-            return BaseController.Instance.Result(categories, 200);
+            return Ok(categories);
         }
 
         [HttpGet("{id}")]
@@ -40,10 +40,10 @@ namespace Evant.Controllers
             var category = _categoryRepo.First(c => c.Id == id);
             if (category == null)
             {
-                return BaseController.Instance.Result(null, 404, "Böyle bir kategori yok.");
+                return NotFound("Böyle bir kategori yok.");
             }
 
-            return BaseController.Instance.Result(category, 200);
+            return Ok(category);
         }
 
         [HttpPut]
@@ -51,13 +51,13 @@ namespace Evant.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BaseController.Instance.Result(null, 400);
+                return BadRequest(null);
             }
 
             var selectedCategory = _categoryRepo.First(c => c.Id == category.CategoryId);
             if (selectedCategory == null)
             {
-                return BaseController.Instance.Result(null, 404, "Kategori bulunamadı.");
+                return NotFound("Kategori bulunamadı.");
             }
             else
             {
@@ -68,11 +68,11 @@ namespace Evant.Controllers
                 var response = _categoryRepo.Update(selectedCategory);
                 if (response)
                 {
-                    return BaseController.Instance.Result(null, 200, "Kategori güncellendi.");
+                    return Ok("Kategori güncellendi.");
                 }
                 else
                 {
-                    return BaseController.Instance.Result(null, 500, "Kategori güncellenemedi.");
+                    return BadRequest("Kategori güncellenemedi.");
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace Evant.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BaseController.Instance.Result(null, 400);
+                return BadRequest(null);
             }
 
             var response = _categoryRepo.Insert(new Category()
@@ -94,11 +94,11 @@ namespace Evant.Controllers
             });
             if (response)
             {
-                return BaseController.Instance.Result(null, 200, "Kategori eklendi.");
+                return Ok("Kategori eklendi.");
             }
             else
             {
-                return BaseController.Instance.Result(null, 500, "Kategori eklenemedi.");
+                return BadRequest("Kategori eklenemedi.");
             }
         }
 
@@ -108,17 +108,17 @@ namespace Evant.Controllers
             var category = _categoryRepo.First(c => c.Id == id);
             if (category == null)
             {
-                return BaseController.Instance.Result(null, 404, "Böyle bir kategori yok.");
+                return NotFound("Böyle bir kategori yok.");
             }
 
             var response = _categoryRepo.Delete(category);
             if (response)
             {
-                return BaseController.Instance.Result(null, 200, "Kategori silindi.");
+                return Ok("Kategori silindi.");
             }
             else
             {
-                return BaseController.Instance.Result(null, 500, "Kategori silinemedi.");
+                return BadRequest("Kategori silinemedi.");
             }
         }
 

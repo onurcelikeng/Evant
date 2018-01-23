@@ -10,7 +10,7 @@ namespace Evant.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    public class ReportTypesController : Controller
+    public class ReportTypesController : BaseController
     {
         private readonly IRepository<ReportType> _reportTypeRepo;
 
@@ -31,7 +31,7 @@ namespace Evant.Controllers
                 Level = c.Level
             });
 
-            return BaseController.Instance.Result(reportTypes, 200);
+            return Ok(reportTypes);
         }
 
         [HttpGet("{id}")]
@@ -40,10 +40,10 @@ namespace Evant.Controllers
             var reportType = _reportTypeRepo.First(c => c.Id == id);
             if (reportType == null)
             {
-                return BaseController.Instance.Result(null, 404, "Böyle bir şikayet türü yok.");
+                return NotFound("Böyle bir şikayet türü yok.");
             }
 
-            return BaseController.Instance.Result(reportType, 200);
+            return Ok(reportType);
         }
 
         [HttpPut]
@@ -51,13 +51,13 @@ namespace Evant.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BaseController.Instance.Result(null, 400);
+                return BadRequest(null);
             }
 
             var selectedReportType = _reportTypeRepo.First(c => c.Id == reportType.ReportTypeId);
             if (selectedReportType == null)
             {
-                return BaseController.Instance.Result(null, 404, "Şikayet türü bulunamadı.");
+                return NotFound("Şikayet türü bulunamadı.");
             }
             else
             {
@@ -68,11 +68,11 @@ namespace Evant.Controllers
                 var response = _reportTypeRepo.Update(selectedReportType);
                 if (response)
                 {
-                    return BaseController.Instance.Result(null, 200, "Şikayet türü güncellendi.");
+                    return Ok("Şikayet türü güncellendi.");
                 }
                 else
                 {
-                    return BaseController.Instance.Result(null, 500, "Şikayet türü güncellenemedi.");
+                    return BadRequest("Şikayet türü güncellenemedi.");
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace Evant.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BaseController.Instance.Result(null, 400);
+                return BadRequest(null);
             }
 
             var response = _reportTypeRepo.Insert(new ReportType()
@@ -94,11 +94,11 @@ namespace Evant.Controllers
             });
             if (response)
             {
-                return BaseController.Instance.Result(null, 200, "Şikayet türü eklendi.");
+                return Ok("Şikayet türü eklendi.");
             }
             else
             {
-                return BaseController.Instance.Result(null, 500, "Şikayet türü eklenemedi.");
+                return BadRequest("Şikayet türü eklenemedi.");
             }
         }
 
@@ -108,17 +108,17 @@ namespace Evant.Controllers
             var reportType = _reportTypeRepo.First(c => c.Id == id);
             if (reportType == null)
             {
-                return BaseController.Instance.Result(null, 404, "Böyle bir Şikayet türü yok.");
+                return NotFound("Böyle bir Şikayet türü yok.");
             }
 
             var response = _reportTypeRepo.Delete(reportType);
             if (response)
             {
-                return BaseController.Instance.Result(null, 200, "Şikayet türü silindi.");
+                return Ok("Şikayet türü silindi.");
             }
             else
             {
-                return BaseController.Instance.Result(null, 500, "Şikayet türü silinemedi.");
+                return BadRequest("Şikayet türü silinemedi.");
             }
         }
     }

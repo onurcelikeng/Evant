@@ -12,7 +12,7 @@ namespace Evant.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    public class LogsController : Controller
+    public class LogsController : BaseController
     {
         private readonly IRepository<Log> _logRepo;
 
@@ -28,7 +28,7 @@ namespace Evant.Controllers
         {
             var logs = _logRepo.GetAll();
 
-            return BaseController.Instance.Result(logs, 200);
+            return Ok(logs);
         }
 
         [HttpDelete("{id}")]
@@ -37,17 +37,17 @@ namespace Evant.Controllers
             var log = _logRepo.First(l => l.Id == id);
             if (log == null)
             {
-                return BaseController.Instance.Result(null, 404, "Böyle bir log yok.");
+                return NotFound("Böyle bir log yok.");
             }
 
             var response = _logRepo.Delete(log);
             if (response)
             {
-                return BaseController.Instance.Result(null, 200, "Log silindi.");
+                return Ok("Log silindi.");
             }
             else
             {
-                return BaseController.Instance.Result(null, 500, "Log silinemedi.");
+                return BadRequest("Log silinemedi.");
             }
         }
     }

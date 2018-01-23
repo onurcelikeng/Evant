@@ -1,26 +1,41 @@
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.deps.json
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.runtimeconfig.json
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.runtimeconfig.dev.json
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.dll
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.csprojResolveAssemblyReference.cache
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.csproj.CoreCompileInputs.cache
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.AssemblyInfoInputs.cache
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.AssemblyInfo.cs
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.pdb
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.dll
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.pdb
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.deps.json
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.runtimeconfig.json
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.runtimeconfig.dev.json
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.dll
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.pdb
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.csprojResolveAssemblyReference.cache
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.csproj.CoreCompileInputs.cache
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.AssemblyInfoInputs.cache
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.AssemblyInfo.cs
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.dll
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.pdb
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.Contracts.dll
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.DAL.dll
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.Contracts.pdb
-C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.DAL.pdb
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.deps.json
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.runtimeconfig.json
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.runtimeconfig.dev.json
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.dll
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.csprojResolveAssemblyReference.cache
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.csproj.CoreCompileInputs.cache
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.AssemblyInfoInputs.cache
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.AssemblyInfo.cs
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.pdb
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.dll
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.pdb
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.deps.json
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.runtimeconfig.json
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.runtimeconfig.dev.json
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.dll
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.pdb
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.csprojResolveAssemblyReference.cache
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.csproj.CoreCompileInputs.cache
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.AssemblyInfoInputs.cache
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.AssemblyInfo.cs
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.dll
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.pdb
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.Contracts.dll
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.DAL.dll
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.Contracts.pdb
+C:/Users/onurcelikeng/Documents/Visual Studio 2017/Projects/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.DAL.pdb
+/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.deps.json
+/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.runtimeconfig.json
+/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.runtimeconfig.dev.json
+/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.dll
+/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.pdb
+/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.Contracts.dll
+/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.DAL.dll
+/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.Contracts.pdb
+/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/bin/Debug/netcoreapp2.0/Evant.DAL.pdb
+/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.csprojResolveAssemblyReference.cache
+/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.csproj.CoreCompileInputs.cache
+/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.AssemblyInfoInputs.cache
+/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.AssemblyInfo.cs
+/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.dll
+/Users/peacecwz/Documents/Github/NETCore/Evant/Evant/Evant/obj/Debug/netcoreapp2.0/Evant.pdb
