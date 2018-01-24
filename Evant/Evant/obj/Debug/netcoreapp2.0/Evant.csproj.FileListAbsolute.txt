@@ -39,3 +39,18 @@ C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\ob
 C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.AssemblyInfo.cs
 C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.dll
 C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.pdb
+C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.deps.json
+C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.runtimeconfig.json
+C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.runtimeconfig.dev.json
+C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.dll
+C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.pdb
+C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.Contracts.dll
+C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.DAL.dll
+C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.Contracts.pdb
+C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.DAL.pdb
+C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.csprojResolveAssemblyReference.cache
+C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.csproj.CoreCompileInputs.cache
+C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.AssemblyInfoInputs.cache
+C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.AssemblyInfo.cs
+C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.dll
+C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.pdb

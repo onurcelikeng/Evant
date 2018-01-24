@@ -124,10 +124,42 @@ namespace Evant.Controllers
         [HttpPut]
         [Authorize]
         [Route("password")]
-        public IActionResult DeActiveAccount(ChangePasswordDTO password)
+        public IActionResult ChangePassword([FromBody] ChangePasswordDTO password)
         {
-            //...
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Eksik bilgi girdiniz.");
+            }
+
+            if(password.NewPassword != password.ReNewPassword)
+            {
+                return BadRequest("Şifreler aynı değil.");
+            }
+
+            Guid userId = User.GetUserId();
+            var user = _userRepo.First(u => u.Id == userId);
+            
+            if(user != null)
+            {
+                if (user.Password == password.OldPassword)
+                {
+                    user.Password = password.NewPassword;
+                    user.UpdateAt = DateTime.Now;
+
+                    var response = _userRepo.Update(user);
+
+                    if(response)
+                    {
+                        return Ok("Şifreniz başarıyla güncellendi.");
+                    }
+
+                    return Ok("Şifreniz güncellenemedi.");
+                }
+
+                return BadRequest("Şifrenizi hatalı girdiniz.");
+            }
+
+            return BadRequest("Böyle bir kullanıcı bulunamadı.");
         }
 
         [HttpGet]
@@ -135,8 +167,30 @@ namespace Evant.Controllers
         [Route("deactive")]
         public IActionResult DeActiveAccount()
         {
-            //...
-            return Ok();
+            Guid userId = User.GetUserId();
+            var user = _userRepo.First(u => u.Id == userId);
+
+            if(user != null)
+            {
+                if(user.IsActive)
+                {
+                    user.IsActive = false;
+                    user.UpdateAt = DateTime.Now;
+
+                    var response = _userRepo.Update(user);
+
+                    if(response)
+                    {
+                        return Ok("Hesabınız başarıyla deaktif edilmiştir.");
+                    }
+
+                    return BadRequest("Hesabınız deaktif edilemedi.");
+                }
+
+                return BadRequest("Hesap zaten deaktif edilmiş.");
+            }
+
+            return BadRequest("Böyle bir kullanıcı bulunamadı.");
         }
 
 
