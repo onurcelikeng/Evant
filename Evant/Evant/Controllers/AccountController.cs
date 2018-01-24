@@ -1,17 +1,14 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using Evant.Contracts.DataTransferObjects.Account;
+using Evant.Contracts.DataTransferObjects.User;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
 using Evant.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -26,7 +23,7 @@ namespace Evant.Controllers
         private readonly IConfiguration _configuration;
 
 
-        public AccountController(IRepository<User> userRepo, IConfiguration configuration)
+        public AccountController(IConfiguration configuration, IRepository<User> userRepo)
         {
             _userRepo = userRepo;
             _configuration = configuration;
@@ -97,18 +94,49 @@ namespace Evant.Controllers
             return BadRequest("Böyle bir kullanıcı yok.");
         }
 
+        [HttpGet]
         [Authorize]
-        [HttpGet("protec")]
-        public IActionResult Protected()
+        [Route("me")]
+        public IActionResult GetMe()
         {
-            Guid UserId = User.GetUserId();
-            return Ok("PROTECTED AREA.");
+            Guid userId = User.GetUserId();
+
+            var user = _userRepo.First(u => u.Id == userId);
+            if(user == null)
+            {
+                return BadRequest("Kullanıcı bulunamadı.");
+            }
+            else
+            {
+                var model = new UserDetailDTO()
+                {
+                    UserId = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    PhotoUrl = user.Photo
+                };
+
+                return Ok(model);
+            }
         }
 
-        [HttpGet("notprotec")]
-        public IActionResult NotProtected()
+        [HttpPut]
+        [Authorize]
+        [Route("password")]
+        public IActionResult DeActiveAccount(ChangePasswordDTO password)
         {
-            return Ok("NOT PROTECTED AREA.");
+            //...
+            return Ok();
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("deactive")]
+        public IActionResult DeActiveAccount()
+        {
+            //...
+            return Ok();
         }
 
 
