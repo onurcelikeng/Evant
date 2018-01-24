@@ -11,14 +11,14 @@ using System;
 namespace Evant.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20180111191145_InitialCreate")]
+    [Migration("20180124173236_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
+                .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Evant.DAL.EF.Tables.Address", b =>
@@ -380,7 +380,6 @@ namespace Evant.DAL.Migrations
                         .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("FacebookId")
-                        .IsRequired()
                         .HasColumnName("FacebookId")
                         .HasColumnType("nvarchar(20)");
 
@@ -393,6 +392,10 @@ namespace Evant.DAL.Migrations
                         .HasColumnName("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsFacebook")
+                        .HasColumnName("IsFacebook")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnName("LastName")
@@ -401,12 +404,11 @@ namespace Evant.DAL.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnName("Password")
-                        .HasColumnType("nvarchar(80)");
+                        .HasColumnType("nvarchar(160)");
 
                     b.Property<string>("Photo")
-                        .IsRequired()
                         .HasColumnName("Photo")
-                        .HasColumnType("nvarchar(80)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Role")
                         .IsRequired()
@@ -414,11 +416,6 @@ namespace Evant.DAL.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("UpdateAt");
-
-                    b.Property<string>("UserType")
-                        .IsRequired()
-                        .HasColumnName("UserType")
-                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 

@@ -12,7 +12,7 @@ namespace Evant.DAL.Migrations
                 name: "Addresses",
                 columns: table => new
                 {
-                    AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AddressId = table.Column<Guid>(nullable: false),
                     City = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     Latitude = table.Column<double>(type: "float", nullable: false),
                     Longitude = table.Column<double>(type: "float", nullable: false),
@@ -27,11 +27,11 @@ namespace Evant.DAL.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     Icon = table.Column<string>(type: "nvarchar(80)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(40)", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdateAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,14 +42,14 @@ namespace Evant.DAL.Migrations
                 name: "Logs",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     Exception = table.Column<string>(type: "nvarchar(80)", nullable: true),
                     Ip = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(40)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     Table = table.Column<string>(type: "nvarchar(20)", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdateAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,11 +60,11 @@ namespace Evant.DAL.Migrations
                 name: "ReportTypes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     Level = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(40)", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdateAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -75,10 +75,10 @@ namespace Evant.DAL.Migrations
                 name: "Tags",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(type: "nvarchar(40)", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdateAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -89,18 +89,18 @@ namespace Evant.DAL.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     Email = table.Column<string>(type: "nvarchar(40)", nullable: false),
-                    FacebookId = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    FacebookId = table.Column<string>(type: "nvarchar(20)", nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsFacebook = table.Column<bool>(type: "bit", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(20)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(80)", nullable: false),
-                    Photo = table.Column<string>(type: "nvarchar(80)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(160)", nullable: false),
+                    Photo = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     Role = table.Column<string>(type: "nvarchar(20)", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserType = table.Column<string>(type: "nvarchar(20)", nullable: false)
+                    UpdateAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -111,18 +111,18 @@ namespace Evant.DAL.Migrations
                 name: "Events",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
+                    AddressId = table.Column<Guid>(nullable: false),
+                    CategoryId = table.Column<Guid>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(type: "nvarchar(80)", nullable: false),
                     FinishDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     IsPrivate = table.Column<bool>(type: "bit", nullable: false),
                     Photo = table.Column<string>(type: "nvarchar(80)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(40)", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UpdateAt = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -151,11 +151,11 @@ namespace Evant.DAL.Migrations
                 name: "FriendOperations",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FollowerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FollowingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    FollowerId = table.Column<Guid>(nullable: false),
+                    FollowingId = table.Column<Guid>(nullable: false),
+                    UpdateAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -178,14 +178,14 @@ namespace Evant.DAL.Migrations
                 name: "Notifications",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Content = table.Column<string>(type: "nvarchar(80)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     IsRead = table.Column<bool>(type: "bit", nullable: false),
                     NotificationType = table.Column<string>(type: "nvarchar(20)", nullable: false),
-                    SpecialId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    SpecialId = table.Column<Guid>(nullable: false),
+                    UpdateAt = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -202,11 +202,11 @@ namespace Evant.DAL.Migrations
                 name: "SearchHistories",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     Keyword = table.Column<string>(type: "nvarchar(80)", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UpdateAt = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -223,15 +223,15 @@ namespace Evant.DAL.Migrations
                 name: "UserDevices",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Brand = table.Column<string>(type: "nvarchar(20)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     DeviceId = table.Column<string>(type: "nvarchar(80)", nullable: false),
                     IsLoggedin = table.Column<bool>(type: "bit", nullable: false),
                     Model = table.Column<string>(type: "nvarchar(40)", nullable: false),
                     OS = table.Column<string>(type: "nvarchar(40)", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UpdateAt = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -248,12 +248,12 @@ namespace Evant.DAL.Migrations
                 name: "UserReports",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ReportTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReportedUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReporterUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    ReportTypeId = table.Column<Guid>(nullable: false),
+                    ReportedUserId = table.Column<Guid>(nullable: false),
+                    ReporterUserId = table.Column<Guid>(nullable: false),
+                    UpdateAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -282,12 +282,12 @@ namespace Evant.DAL.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Content = table.Column<string>(type: "nvarchar(140)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EventId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    EventId = table.Column<Guid>(nullable: false),
+                    UpdateAt = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -310,11 +310,11 @@ namespace Evant.DAL.Migrations
                 name: "EventOperations",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EventId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    EventId = table.Column<Guid>(nullable: false),
+                    UpdateAt = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -337,11 +337,11 @@ namespace Evant.DAL.Migrations
                 name: "EventTags",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EventId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TagId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    EventId = table.Column<Guid>(nullable: false),
+                    TagId = table.Column<Guid>(nullable: false),
+                    UpdateAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

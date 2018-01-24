@@ -32,11 +32,11 @@ namespace Evant.DAL.EF.Tables
 
         public string Photo { get; set; }
 
-        public string UserType { get; set; }
-
         public string Role { get; set; }
 
         public bool IsActive { get; set; }
+
+        public bool IsFacebook { get; set; }
 
 
         // Reverse navigation
