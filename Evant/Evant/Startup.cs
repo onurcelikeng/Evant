@@ -1,6 +1,8 @@
 ﻿using Evant.DAL.EF;
 using Evant.DAL.Interfaces.Repositories;
 using Evant.DAL.Repositories;
+using Evant.Storage;
+using Evant.Storage.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,12 +41,22 @@ namespace Evant
             //Add Generic Repository
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-            //Add Identity
+            // Azure Storage
+            services.AddScoped<IAzureBlobStorage>(factory =>
+            {
+                return new AzureBlobStorage(new AzureBlobSetings(
+                    storageAccount: Configuration["AzureStorage:StorageAccount"],
+                    storageKey: Configuration["AzureStorage:StorageKey"],
+                    eventContainer: Configuration["AzureStorage:Events_Container"],
+                    userContainer: Configuration["AzureStorage:Users_Container"]));
+            });
+
+            // Identity
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<DataContext>()
                 .AddDefaultTokenProviders();
 
-            // ===== Add Jwt Authentication ========
+            // Jwt Authentication
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
             services.AddAuthentication(options =>
                 {

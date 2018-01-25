@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Evant.Storage.Interfaces;
+using Evant.Storage.Models;
+using System.Threading.Tasks;
 
 namespace Evant.Controllers
 {
@@ -21,12 +24,14 @@ namespace Evant.Controllers
     {
         private readonly IRepository<User> _userRepo;
         private readonly IConfiguration _configuration;
+        private readonly IAzureBlobStorage _blobStorage;
 
 
-        public AccountController(IConfiguration configuration, IRepository<User> userRepo)
+        public AccountController(IRepository<User> userRepo, IConfiguration configuration, IAzureBlobStorage blobStorage)
         {
             _userRepo = userRepo;
             _configuration = configuration;
+            _blobStorage = blobStorage;
         }
 
 
@@ -95,10 +100,19 @@ namespace Evant.Controllers
         }
 
         [HttpGet]
+        [Route("fblogin")]
+        public IActionResult FacebookLogin()
+        {
+            //...
+            return Ok();
+        }
+
+        [HttpGet]
         [Authorize]
         [Route("logout")]
         public IActionResult Logout()
         {
+            //...
             return Ok();
         }
 
@@ -110,7 +124,7 @@ namespace Evant.Controllers
             Guid userId = User.GetUserId();
 
             var user = _userRepo.First(u => u.Id == userId);
-            if(user == null)
+            if (user == null)
             {
                 return BadRequest("Kullanıcı bulunamadı.");
             }
@@ -129,6 +143,47 @@ namespace Evant.Controllers
             }
         }
 
+        [HttpPost]
+        [Authorize]
+        [Route("photo")]
+        public async Task<IActionResult> UploadPhoto(FileInputModel inputModel)
+        {
+            try
+            {
+                if (inputModel == null)
+                    return BadRequest("Argument null");
+
+                if (inputModel.File == null || inputModel.File.Length == 0)
+                    return BadRequest("file not selected");
+
+                Guid userId = User.GetUserId();
+                var blobName = userId + "_" + inputModel.File.GetFilename();
+                var fileStream = await inputModel.File.GetFileStream();
+
+                var isUploaded = await _blobStorage.UploadAsync(blobName, fileStream);
+                if (isUploaded)
+                {
+                    var selectedUser = _userRepo.First(u => u.Id == userId);
+                    selectedUser.UpdateAt = DateTime.Now;
+                    selectedUser.Photo = "https://evantstorage.blob.core.windows.net/users/" + blobName;
+
+                    var resposne = _userRepo.Update(selectedUser);
+                    if (resposne)
+                        return Ok("photo uploaded.");
+                    else
+                        return BadRequest("photo not uploaded.");
+                }
+                else
+                {
+                    return Ok("photo uploaded.");
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest("photo not uploaded.");
+            }
+        }
+
         [HttpPut]
         [Authorize]
         [Route("password")]
@@ -139,15 +194,15 @@ namespace Evant.Controllers
                 return BadRequest("Eksik bilgi girdiniz.");
             }
 
-            if(password.NewPassword != password.ReNewPassword)
+            if (password.NewPassword != password.ReNewPassword)
             {
                 return BadRequest("Şifreler aynı değil.");
             }
 
             Guid userId = User.GetUserId();
             var user = _userRepo.First(u => u.Id == userId);
-            
-            if(user != null)
+
+            if (user != null)
             {
                 if (user.Password == password.OldPassword)
                 {
@@ -156,7 +211,7 @@ namespace Evant.Controllers
 
                     var response = _userRepo.Update(user);
 
-                    if(response)
+                    if (response)
                     {
                         return Ok("Şifreniz başarıyla güncellendi.");
                     }
@@ -178,16 +233,16 @@ namespace Evant.Controllers
             Guid userId = User.GetUserId();
             var user = _userRepo.First(u => u.Id == userId);
 
-            if(user != null)
+            if (user != null)
             {
-                if(user.IsActive)
+                if (user.IsActive)
                 {
                     user.IsActive = false;
                     user.UpdateAt = DateTime.Now;
 
                     var response = _userRepo.Update(user);
 
-                    if(response)
+                    if (response)
                     {
                         return Ok("Hesabınız başarıyla deaktif edilmiştir.");
                     }

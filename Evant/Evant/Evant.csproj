@@ -5,7 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Middlewares\" />
+    <Compile Remove="Middlewares\**" />
+    <Content Remove="Middlewares\**" />
+    <EmbeddedResource Remove="Middlewares\**" />
+    <None Remove="Middlewares\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -24,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Evant.Contracts\Evant.Contracts.csproj" />
     <ProjectReference Include="..\Evant.DAL\Evant.DAL.csproj" />
+    <ProjectReference Include="..\Evant.Storage\Evant.Storage.csproj" />
   </ItemGroup>
 
 </Project>

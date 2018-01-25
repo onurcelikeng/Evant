@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "762081b815e547b37c1b8f4ba45489c1822b017d"
+    "signature": "3cb999436314b10cb9523f63113994bffd479b4d"
   },
   "compilationOptions": {
     "defines": [
@@ -25,6 +25,7 @@
         "dependencies": {
           "Evant.Contracts": "1.0.0",
           "Evant.DAL": "1.0.0",
+          "Evant.Storage": "1.0.0",
           "Microsoft.AspNetCore.All": "2.0.5",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "2.0.1",
           "Microsoft.NETCore.App": "2.0.0",
@@ -580,7 +581,7 @@
       "Microsoft.AspNetCore.DataProtection.AzureStorage/2.0.1": {
         "dependencies": {
           "Microsoft.AspNetCore.DataProtection": "2.0.1",
-          "WindowsAzure.Storage": "8.1.4"
+          "WindowsAzure.Storage": "8.7.0"
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.AspNetCore.DataProtection.AzureStorage.dll": {}
@@ -4103,7 +4104,7 @@
           "System.Xml.XPath": "4.3.0"
         }
       },
-      "WindowsAzure.Storage/8.1.4": {
+      "WindowsAzure.Storage/8.7.0": {
         "dependencies": {
           "Microsoft.Data.OData": "5.8.2",
           "NETStandard.Library": "2.0.0",
@@ -4135,6 +4136,17 @@
         },
         "compile": {
           "Evant.DAL.dll": {}
+        }
+      },
+      "Evant.Storage/1.0.0": {
+        "dependencies": {
+          "WindowsAzure.Storage": "8.7.0"
+        },
+        "runtime": {
+          "Evant.Storage.dll": {}
+        },
+        "compile": {
+          "Evant.Storage.dll": {}
         }
       },
       "Microsoft.NETCore.App/2.0.0": {
@@ -6470,12 +6482,12 @@
       "path": "system.xml.xpath.xdocument/4.3.0",
       "hashPath": "system.xml.xpath.xdocument.4.3.0.nupkg.sha512"
     },
-    "WindowsAzure.Storage/8.1.4": {
+    "WindowsAzure.Storage/8.7.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-W6ZZ0/o7+3Qb77mRAQyLjPudHG3OMeeQ4p9yY13PUdJArmRCx2cLMm5F4tpIjJXxzHC0ew0oK7DMDGILMdfCnw==",
-      "path": "windowsazure.storage/8.1.4",
-      "hashPath": "windowsazure.storage.8.1.4.nupkg.sha512"
+      "sha512": "sha512-U38th5ihXxkISF4/joNPBoM3Pdc2ou74E4BJ8tE3S3yjViTmbQiZ8fx29ZOepnjPBWCuQJb0uVEYQJs9gxnusA==",
+      "path": "windowsazure.storage/8.7.0",
+      "hashPath": "windowsazure.storage.8.7.0.nupkg.sha512"
     },
     "Evant.Contracts/1.0.0": {
       "type": "project",
@@ -6483,6 +6495,11 @@
       "sha512": ""
     },
     "Evant.DAL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Evant.Storage/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

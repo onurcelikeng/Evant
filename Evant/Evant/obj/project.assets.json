@@ -5077,7 +5077,7 @@
           "lib/netstandard1.3/System.Xml.XPath.XDocument.dll": {}
         }
       },
-      "WindowsAzure.Storage/8.1.4": {
+      "WindowsAzure.Storage/8.7.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.Data.OData": "5.8.2",
@@ -5114,6 +5114,19 @@
         },
         "runtime": {
           "bin/placeholder/Evant.DAL.dll": {}
+        }
+      },
+      "Evant.Storage/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "dependencies": {
+          "WindowsAzure.Storage": "8.7.0"
+        },
+        "compile": {
+          "bin/placeholder/Evant.Storage.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Evant.Storage.dll": {}
         }
       }
     }
@@ -13229,10 +13242,10 @@
         "system.xml.xpath.xdocument.nuspec"
       ]
     },
-    "WindowsAzure.Storage/8.1.4": {
-      "sha512": "W6ZZ0/o7+3Qb77mRAQyLjPudHG3OMeeQ4p9yY13PUdJArmRCx2cLMm5F4tpIjJXxzHC0ew0oK7DMDGILMdfCnw==",
+    "WindowsAzure.Storage/8.7.0": {
+      "sha512": "U38th5ihXxkISF4/joNPBoM3Pdc2ou74E4BJ8tE3S3yjViTmbQiZ8fx29ZOepnjPBWCuQJb0uVEYQJs9gxnusA==",
       "type": "package",
-      "path": "windowsazure.storage/8.1.4",
+      "path": "windowsazure.storage/8.7.0",
       "files": [
         "lib/net45/Microsoft.WindowsAzure.Storage.dll",
         "lib/net45/Microsoft.WindowsAzure.Storage.pdb",
@@ -13247,7 +13260,7 @@
         "lib/wp8/Microsoft.WindowsAzure.Storage.pdb",
         "lib/wpa/Microsoft.WindowsAzure.Storage.dll",
         "lib/wpa/Microsoft.WindowsAzure.Storage.pdb",
-        "windowsazure.storage.8.1.4.nupkg.sha512",
+        "windowsazure.storage.8.7.0.nupkg.sha512",
         "windowsazure.storage.nuspec"
       ]
     },
@@ -13260,12 +13273,18 @@
       "type": "project",
       "path": "../Evant.DAL/Evant.DAL.csproj",
       "msbuildProject": "../Evant.DAL/Evant.DAL.csproj"
+    },
+    "Evant.Storage/1.0.0": {
+      "type": "project",
+      "path": "../Evant.Storage/Evant.Storage.csproj",
+      "msbuildProject": "../Evant.Storage/Evant.Storage.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
       "Evant.Contracts >= 1.0.0",
       "Evant.DAL >= 1.0.0",
+      "Evant.Storage >= 1.0.0",
       "Microsoft.AspNetCore.All >= 2.0.5",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 2.0.1",
       "Microsoft.NETCore.App >= 2.0.0",
@@ -13312,6 +13331,9 @@
             },
             "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant.Contracts\\Evant.Contracts.csproj": {
               "projectPath": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant.Contracts\\Evant.Contracts.csproj"
+            },
+            "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant.Storage\\Evant.Storage.csproj": {
+              "projectPath": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant.Storage\\Evant.Storage.csproj"
             }
           }
         }

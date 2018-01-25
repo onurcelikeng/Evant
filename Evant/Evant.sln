@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evant.DAL", "Evant.DAL\Evan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evant.Contracts", "Evant.Contracts\Evant.Contracts.csproj", "{FED4F055-3E88-433F-822F-0C1ED0591EDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evant.Storage", "Evant.Storage\Evant.Storage.csproj", "{480D3170-6148-44DD-B725-4D43AF14A1AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FED4F055-3E88-433F-822F-0C1ED0591EDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FED4F055-3E88-433F-822F-0C1ED0591EDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FED4F055-3E88-433F-822F-0C1ED0591EDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{480D3170-6148-44DD-B725-4D43AF14A1AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{480D3170-6148-44DD-B725-4D43AF14A1AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{480D3170-6148-44DD-B725-4D43AF14A1AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{480D3170-6148-44DD-B725-4D43AF14A1AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
