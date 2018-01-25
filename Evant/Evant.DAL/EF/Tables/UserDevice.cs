@@ -8,6 +8,8 @@ namespace Evant.DAL.EF.Tables
 
         public string DeviceId { get; set; }
 
+        public string PlayerId { get; set; }
+
         public string Brand { get; set; }
 
         public string Model { get; set; }

@@ -12,6 +12,7 @@ namespace Evant.DAL.EF.Maps
 
             entityBuilder.Property(x => x.UserId).HasColumnName(@"UserId").IsRequired();
             entityBuilder.Property(x => x.DeviceId).HasColumnName(@"DeviceId").IsRequired().HasColumnType("nvarchar(80)");
+            entityBuilder.Property(x => x.PlayerId).HasColumnName(@"PlayerId").IsRequired().HasColumnType("nvarchar(80)");
             entityBuilder.Property(x => x.Brand).HasColumnName(@"Brand").IsRequired().HasColumnType("nvarchar(20)");
             entityBuilder.Property(x => x.Model).HasColumnName(@"Model").IsRequired().HasColumnType("nvarchar(40)");
             entityBuilder.Property(x => x.OS).HasColumnName(@"OS").IsRequired().HasColumnType("nvarchar(40)");

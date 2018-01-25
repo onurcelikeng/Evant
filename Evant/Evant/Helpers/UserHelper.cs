@@ -11,5 +11,12 @@ namespace Evant.Helpers
             var claim = userClaims.Claims.FirstOrDefault(p => p.Type == "userId");
             return Guid.Parse(claim.Value);
         }
+
+        public static void Logout(this ClaimsPrincipal userClaims)
+        {
+            var claim = userClaims;
+            
+        }
+
     }
 }

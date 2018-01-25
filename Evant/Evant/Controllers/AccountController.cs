@@ -96,6 +96,14 @@ namespace Evant.Controllers
 
         [HttpGet]
         [Authorize]
+        [Route("logout")]
+        public IActionResult Logout()
+        {
+            return Ok();
+        }
+
+        [HttpGet]
+        [Authorize]
         [Route("me")]
         public IActionResult GetMe()
         {
