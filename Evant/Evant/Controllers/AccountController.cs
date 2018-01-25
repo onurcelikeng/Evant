@@ -16,7 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace Evant.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/account")]
     public class AccountController : BaseController
     {
         private readonly IRepository<User> _userRepo;

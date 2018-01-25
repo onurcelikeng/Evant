@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
 using Evant.Helpers;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/logs")]
     public class LogsController : BaseController
     {
         private readonly IRepository<Log> _logRepo;

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Evant.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/events")]
     public class EventsController : BaseController
     {
         

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Evant.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/tags")]
     public class TagsController : BaseController
     {
         private readonly IRepository<Tag> _tagRepo;

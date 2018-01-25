@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Evant.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/reporttypes")]
     public class ReportTypesController : BaseController
     {
         private readonly IRepository<ReportType> _reportTypeRepo;
