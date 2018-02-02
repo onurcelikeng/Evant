@@ -1,5 +1,5 @@
-﻿using Evant.Contracts.DataTransferObjects.User;
-using System;
+﻿using System;
+using Evant.Contracts.DataTransferObjects.User;
 
 namespace Evant.Contracts.DataTransferObjects.Comment
 {

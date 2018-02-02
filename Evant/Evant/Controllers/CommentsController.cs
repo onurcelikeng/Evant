@@ -24,10 +24,10 @@ namespace Evant.Controllers
 
 
         [Authorize]
-        [HttpGet("{id}")]
-        public IActionResult GetComments([FromRoute] Guid id)
+        [HttpGet("{eventId}")]
+        public IActionResult GetComments([FromRoute] Guid eventId)
         {
-            var commnets = _commentRepo.GetAll().Select(c => new CommentDetailDTO()
+            var commnets = _commentRepo.Where(c => c.EventId == eventId).Select(c => new CommentDetailDTO()
             {
                 CommentId = c.Id,
                 Content = c.Content,
@@ -72,10 +72,10 @@ namespace Evant.Controllers
         }
 
         [Authorize]
-        [HttpDelete("{id}")]
-        public IActionResult DeleteComment([FromRoute] Guid id)
+        [HttpDelete("{commentId}")]
+        public IActionResult DeleteComment([FromRoute] Guid commentId)
         {
-            var comment = _commentRepo.First(c => c.Id == id);
+            var comment = _commentRepo.First(c => c.Id == commentId);
             if (comment == null)
                 return NotFound("Yorum bulunamadı.");
 
