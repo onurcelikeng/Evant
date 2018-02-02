@@ -3,6 +3,7 @@ using Evant.DAL.Interfaces.Repositories;
 using Evant.DAL.Repositories;
 using Evant.Storage;
 using Evant.Storage.Interfaces;
+using Evant.Storage.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -108,6 +109,5 @@ namespace Evant
 
             app.UseMvc();
         }
-
     }
 }

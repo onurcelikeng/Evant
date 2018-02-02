@@ -3,7 +3,7 @@ using System.IO;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace Evant.Storage.Models
+namespace Evant.Storage.Extensions
 {
     public static class IFormFileExtensions
     {

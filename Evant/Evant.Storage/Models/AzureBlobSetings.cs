@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Evant.Storage
+namespace Evant.Storage.Models
 {
     public class AzureBlobSetings
     {

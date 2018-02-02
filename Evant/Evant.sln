@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evant.Contracts", "Evant.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evant.Storage", "Evant.Storage\Evant.Storage.csproj", "{480D3170-6148-44DD-B725-4D43AF14A1AF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evant.Notification", "Evant.Notification\Evant.Notification.csproj", "{BD3E103A-BEA0-4C3B-B0F6-68AF3DFCB968}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{480D3170-6148-44DD-B725-4D43AF14A1AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{480D3170-6148-44DD-B725-4D43AF14A1AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{480D3170-6148-44DD-B725-4D43AF14A1AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD3E103A-BEA0-4C3B-B0F6-68AF3DFCB968}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD3E103A-BEA0-4C3B-B0F6-68AF3DFCB968}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD3E103A-BEA0-4C3B-B0F6-68AF3DFCB968}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD3E103A-BEA0-4C3B-B0F6-68AF3DFCB968}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
