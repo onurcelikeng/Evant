@@ -108,8 +108,8 @@ namespace Evant.Controllers
             return Ok();
         }
 
-        [HttpGet]
         [Authorize]
+        [HttpGet]
         [Route("logout")]
         public IActionResult Logout()
         {
@@ -117,8 +117,8 @@ namespace Evant.Controllers
             return Ok();
         }
 
-        [HttpGet]
         [Authorize]
+        [HttpGet]
         [Route("me")]
         public IActionResult GetMe()
         {
@@ -144,8 +144,8 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpPost]
         [Authorize]
+        [HttpPost]
         [Route("photo")]
         public async Task<IActionResult> UploadPhoto(FileInputModel inputModel)
         {
@@ -185,8 +185,8 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpPut]
         [Authorize]
+        [HttpPut]
         [Route("password")]
         public IActionResult ChangePassword([FromBody] ChangePasswordDTO password)
         {
@@ -226,8 +226,8 @@ namespace Evant.Controllers
             return BadRequest("Böyle bir kullanıcı bulunamadı.");
         }
 
-        [HttpGet]
         [Authorize]
+        [HttpGet]
         [Route("deactive")]
         public IActionResult DeActiveAccount()
         {

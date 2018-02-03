@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Evant.Contracts.DataTransferObjects.Notification
 {
-    public class NotificationDTO : BaseDTO
+    public sealed class NotificationDTO
     {
-        public int Id { get; set; }
+        public Guid NotificationId { get; set; }
 
         public int UserId { get; set; }
 

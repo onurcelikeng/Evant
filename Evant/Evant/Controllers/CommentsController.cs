@@ -88,7 +88,6 @@ namespace Evant.Controllers
             {
                 return BadRequest("Yorum silinemedi.");
             }
-
         }
 
     }
