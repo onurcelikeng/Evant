@@ -31,6 +31,10 @@ namespace Evant.DAL.EF.Tables
 
         public string Photo { get; set; }
 
+        public int TotalParticipants { get; set; } = 0;
+
+        public int TotalComments { get; set; } = 0;
+
 
         // Foreign keys
         public virtual User User { get; set; }

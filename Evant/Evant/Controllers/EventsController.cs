@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Evant.Contracts.DataTransferObjects.Account;
 using Evant.Contracts.DataTransferObjects.Event;
+using Evant.Contracts.DataTransferObjects.User;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
 using Evant.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
@@ -27,6 +24,29 @@ namespace Evant.Controllers
             _addressRepo = addressRepo;
         }
 
+        [Authorize]
+        [HttpGet]
+        public IActionResult GetMyEvents()
+        {
+            Guid userId = User.GetUserId();
+
+            var events = _eventRepo.Where(e => e.UserId == userId).Select(e => new EventInfoDTO()
+            {
+                EventId = e.Id,
+                Title = e.Title,
+                Start = e.StartDate,
+                PhotoUrl = e.Photo,
+                User = new UserInfoDTO()
+                {
+                    UserId = e.User.Id,
+                    FirstName = e.User.FirstName,
+                    LastName = e.User.LastName,
+                    PhotoUrl = e.User.Photo
+                }
+            });
+
+            return Ok(events);
+        }
 
         [Authorize]
         [HttpPost]

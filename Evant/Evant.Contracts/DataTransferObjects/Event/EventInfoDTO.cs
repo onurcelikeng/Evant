@@ -1,4 +1,5 @@
 ﻿using System;
+using Evant.Contracts.DataTransferObjects.User;
 
 namespace Evant.Contracts.DataTransferObjects.Event
 {
@@ -11,5 +12,7 @@ namespace Evant.Contracts.DataTransferObjects.Event
         public string PhotoUrl { get; set; }
 
         public DateTime Start { get; set; }
+
+        public UserInfoDTO User { get; set; }
     }
 }

@@ -19,6 +19,8 @@ namespace Evant.DAL.EF.Maps
             entityBuilder.Property(x => x.FinishDate).HasColumnName(@"FinishDate").IsRequired().HasColumnType("datetime");
             entityBuilder.Property(x => x.IsPrivate).HasColumnName(@"IsPrivate").IsRequired().HasColumnType("bit");
             entityBuilder.Property(x => x.Photo).HasColumnName(@"Photo").IsRequired().HasColumnType("nvarchar(80)");
+            entityBuilder.Property(x => x.TotalParticipants).HasColumnName(@"TotalParticipants").IsRequired().HasColumnType("int");
+            entityBuilder.Property(x => x.TotalComments).HasColumnName(@"TotalComments").IsRequired().HasColumnType("int");
 
             entityBuilder.HasOne(a => a.User).WithMany(b => b.Events).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.Cascade);
             entityBuilder.HasOne(a => a.Category).WithMany(b => b.Events).HasForeignKey(c => c.CategoryId);
