@@ -16,20 +16,32 @@ namespace Evant.Controllers
     {
         private readonly IRepository<Event> _eventRepo;
         private readonly IRepository<Address> _addressRepo;
+        private readonly IRepository<FriendOperation> _friendOperationRepo;
 
 
-        public EventsController(IRepository<Event> eventRepo, IRepository<Address> addressRepo)
+        public EventsController(IRepository<Event> eventRepo, IRepository<Address> addressRepo, IRepository<FriendOperation> friendOperationRepo)
         {
             _eventRepo = eventRepo;
             _addressRepo = addressRepo;
+            _friendOperationRepo = friendOperationRepo;
         }
+
 
         [Authorize]
         [HttpGet]
-        public IActionResult GetMyEvents()
+        public IActionResult GetMyFollowingsEvents()
         {
             Guid userId = User.GetUserId();
 
+            var events = _friendOperationRepo.Where(fo => fo.FollowerId == userId);
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("{userId}")]
+        public IActionResult GetUserEvents([FromRoute] Guid userId)
+        {
             var events = _eventRepo.Where(e => e.UserId == userId).Select(e => new EventInfoDTO()
             {
                 EventId = e.Id,
