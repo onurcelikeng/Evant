@@ -11,12 +11,12 @@ namespace Evant.Controllers
 {
     [Produces("application/json")]
     [Route("api/eventpperaitons")]
-    public class EventOperaitonsController : BaseController
+    public class EventOperationsController : BaseController
     {
         private readonly IRepository<EventOperation> _eventOperationRepo;
 
 
-        public EventOperaitonsController(IRepository<EventOperation> eventOperationRepo)
+        public EventOperationsController(IRepository<EventOperation> eventOperationRepo)
         {
             _eventOperationRepo = eventOperationRepo;
         }
