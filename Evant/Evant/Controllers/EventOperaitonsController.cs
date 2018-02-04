@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Evant.DAL.EF.Tables;
+using Evant.DAL.Interfaces.Repositories;
 using Evant.Helpers;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
@@ -12,6 +11,56 @@ namespace Evant.Controllers
     [Route("api/eventpperaitons")]
     public class EventOperaitonsController : BaseController
     {
+        private readonly IRepository<EventOperation> _eventOperationRepo;
 
+
+        public EventOperaitonsController(IRepository<EventOperation> eventOperationRepo)
+        {
+            _eventOperationRepo = eventOperationRepo;
+        }
+
+
+        [Authorize]
+        [HttpGet("{eventId}")]
+        public IActionResult JoinEvent([FromRoute] Guid eventId)
+        {
+            Guid userId = User.GetUserId();
+
+            var eventOperation = new EventOperation()
+            {
+                Id = new Guid(),
+                UserId = userId,
+                EventId = eventId
+            };
+
+            var response = _eventOperationRepo.Insert(eventOperation);
+            if (response)
+            {
+                return Ok("Etkinliğe katıldınız.");
+            }
+            else
+            {
+                return BadRequest("Etkinliğe katılamadınız.");
+            }
+        }
+
+        [Authorize]
+        [HttpDelete("{eventOperationId}")]
+        public IActionResult LeaveEvent([FromRoute] Guid eventOperationId)
+        {
+            var selectedEventOperation = _eventOperationRepo.First(eo => eo.Id == eventOperationId);
+            if(selectedEventOperation == null)
+                return NotFound("Etkinliğe daha önce katılmadınız.");
+
+            var response = _eventOperationRepo.Delete(selectedEventOperation);
+            if (response)
+            {
+                return Ok("Etkinlikten ayrıldınız.");
+            }
+            else
+            {
+                return BadRequest("Etkinlikten ayrılamadınız.");
+            }
+        }
     }
 }
