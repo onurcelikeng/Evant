@@ -64,7 +64,6 @@ namespace Evant.Controllers
             }
         }
 
-
         [Authorize]
         [HttpGet("{deviceId}")]
         public IActionResult CloseDevice([FromRoute] string deviceId)
@@ -84,5 +83,6 @@ namespace Evant.Controllers
                     return BadRequest("cihaz kapatılamadı.");
             }
         }
+
     }
 }

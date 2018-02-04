@@ -24,6 +24,7 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpGet]
+        [Route("followers")]
         public IActionResult GetFollowers()
         {
             Guid userId = User.GetUserId();
@@ -40,6 +41,7 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpGet]
+        [Route("followings")]
         public IActionResult GetFollowings()
         {
             Guid userId = User.GetUserId();
