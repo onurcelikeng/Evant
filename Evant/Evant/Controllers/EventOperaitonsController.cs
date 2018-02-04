@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using Evant.Contracts.DataTransferObjects.User;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
 using Evant.Helpers;
@@ -22,6 +24,21 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpGet("{eventId}")]
+        public IActionResult GetEventUsers([FromRoute] Guid eventId)
+        {
+            var users = _eventOperationRepo.Where(eo => eo.EventId == eventId).Select(u => new UserInfoDTO()
+            {
+                UserId = u.User.Id,
+                FirstName = u.User.FirstName,
+                LastName = u.User.LastName,
+                PhotoUrl = u.User.Photo
+            });
+
+            return Ok(users);
+        }
+
+        [Authorize]
+        [HttpPost("{eventId}")]
         public IActionResult JoinEvent([FromRoute] Guid eventId)
         {
             Guid userId = User.GetUserId();
