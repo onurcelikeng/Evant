@@ -79,5 +79,6 @@ namespace Evant.Controllers
                 return BadRequest("Etkinlikten ayrılamadınız.");
             }
         }
+
     }
 }

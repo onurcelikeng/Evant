@@ -19,6 +19,7 @@ namespace Evant.DAL.EF.Tables
             ReporterUsers = new List<UserReport>();
         }
 
+        public Guid UserSettingId { get; set; }
 
         public string FacebookId { get; set; }
 
@@ -37,6 +38,10 @@ namespace Evant.DAL.EF.Tables
         public bool IsActive { get; set; }
 
         public bool IsFacebook { get; set; }
+
+
+        // Foreign keys
+        public virtual UserSetting UserSetting { get; set; }
 
 
         // Reverse navigation

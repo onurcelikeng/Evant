@@ -2,6 +2,7 @@
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
 using Evant.Helpers;
+using Evant.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +27,7 @@ namespace Evant.Controllers
         {
             Guid userId = User.GetUserId();
 
-            var notifications = _notificationRepo.Where(n => n.UserId == userId);
+            //var notifications = _notificationRepo.Where(n => n.UserId == userId);
 
             return Ok();
         }

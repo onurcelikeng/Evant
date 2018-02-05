@@ -16,6 +16,7 @@ using Evant.Storage.Interfaces;
 using Evant.Storage.Models;
 using System.Threading.Tasks;
 using Evant.Storage.Extensions;
+using Evant.Contracts.DataTransferObjects.UserSettingDTO.cs;
 
 namespace Evant.Controllers
 {
@@ -24,13 +25,18 @@ namespace Evant.Controllers
     public class AccountController : BaseController
     {
         private readonly IRepository<User> _userRepo;
+        private readonly IRepository<UserSetting> _userSettingRepo;
         private readonly IConfiguration _configuration;
         private readonly IAzureBlobStorage _blobStorage;
 
 
-        public AccountController(IRepository<User> userRepo, IConfiguration configuration, IAzureBlobStorage blobStorage)
+        public AccountController(IRepository<User> userRepo, 
+            IRepository<UserSetting> userSettingRepo, 
+            IConfiguration configuration, 
+            IAzureBlobStorage blobStorage)
         {
             _userRepo = userRepo;
+            _userSettingRepo = userSettingRepo;
             _configuration = configuration;
             _blobStorage = blobStorage;
         }
@@ -53,9 +59,17 @@ namespace Evant.Controllers
 
             else
             {
+                var userSettingId = new Guid();
+                var newSetting = new UserSetting()
+                {
+                    UserSettingId = userSettingId,
+                };
+                var result = _userSettingRepo.Insert(newSetting);
+
                 var newUser = new User
                 {
                     Id = new Guid(),
+                    UserSettingId = userSettingId,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,
@@ -182,6 +196,40 @@ namespace Evant.Controllers
             catch (Exception)
             {
                 return BadRequest("photo not uploaded.");
+            }
+        }
+
+        [Authorize]
+        [HttpPut]
+        [Route("settings")]
+        public IActionResult ChangeUserSetting([FromBody] UserSettingDTO model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("Eksik bilgi girdiniz.");
+
+            var selectedUserSetting = _userSettingRepo.First(us => us.UserSettingId == model.UserSettingId);
+            if(selectedUserSetting == null)
+            {
+                return NotFound("Kullanıcı ayarları buunamadı.");
+            }
+            else
+            {
+                selectedUserSetting.Theme = model.Theme;
+                selectedUserSetting.Language = model.Language;
+                selectedUserSetting.IsCommentNotif = model.IsCommentNotif;
+                selectedUserSetting.IsEventNewComerNotif = model.IsEventNewComerNotif;
+                selectedUserSetting.IsEventUpdateNotif = model.IsEventUpdateNotif;
+                selectedUserSetting.IsFriendshipNotif = model.IsFriendshipNotif;
+
+                var response = _userSettingRepo.Update(selectedUserSetting);
+                if(response)
+                {
+                    return Ok("Kullanıcı ayarları güncellendi.");
+                }
+                else
+                {
+                    return BadRequest("Kullanıcı ayarları güncellenemedi.");
+                }
             }
         }
 

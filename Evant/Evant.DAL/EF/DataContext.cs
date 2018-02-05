@@ -20,12 +20,14 @@ namespace Evant.DAL.EF
         public DbSet<EventTag> EventTags { get; set; }
         public DbSet<ReportType> ReportTypes { get; set; }
         public DbSet<UserReport> UserReports { get; set; }
+        public DbSet<UserSetting> UserSettings { get; set; }
         public DbSet<Notification> Notifications { get; set; }
 
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -46,6 +48,7 @@ namespace Evant.DAL.EF
             new NotificationMap(modelBuilder.Entity<Notification>());
             new ReportTypeMap(modelBuilder.Entity<ReportType>());
             new UserReportMap(modelBuilder.Entity<UserReport>());
+            new UserSettingMap(modelBuilder.Entity<UserSetting>());
         }
     }
 }

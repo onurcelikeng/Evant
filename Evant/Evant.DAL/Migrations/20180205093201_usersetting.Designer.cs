@@ -11,9 +11,10 @@ using System;
 namespace Evant.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20180205093201_usersetting")]
+    partial class usersetting
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -422,9 +423,6 @@ namespace Evant.DAL.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("UpdateAt");
-
-                    b.Property<Guid>("UserSettingId")
-                        .HasColumnName("UserSettingId");
 
                     b.HasKey("Id");
 

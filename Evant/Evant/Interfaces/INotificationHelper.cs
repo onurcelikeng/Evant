@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Evant.Helpers
+namespace Evant.Interfaces
 {
-    public class LogHelper
+    public interface INotificationHelper
     {
+        void SendNotification();
     }
 }
