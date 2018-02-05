@@ -45,8 +45,8 @@ namespace Evant.Auth
             return encodedJwt;
         }
 
-        //private static long ToUnixEpochDate(DateTime date) => (long)Math.Round((date.ToUniversalTime() -
-        //               new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
+        private static long ToUnixEpochDate(DateTime date) => (long)Math.Round((date.ToUniversalTime() -
+                       new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
 
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Evant.Storage.Interfaces;
-using Evant.Storage.Models;
+using Evant.Storage.Settings;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -69,5 +69,6 @@ namespace Evant.Storage
 
             return blobContainer;
         }
+
     }
 }

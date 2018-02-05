@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Evant.Storage.Models
+﻿namespace Evant.Storage.Settings
 {
-    public class AzureBlobSetings
+    public sealed class AzureBlobSetings
     {
         public string StorageAccount { get; }
         public string StorageKey { get; }
@@ -10,9 +8,9 @@ namespace Evant.Storage.Models
         public string UserContainer { get; }
 
 
-        public AzureBlobSetings(string storageAccount, 
-            string storageKey, 
-            string eventContainer, 
+        public AzureBlobSetings(string storageAccount,
+            string storageKey,
+            string eventContainer,
             string userContainer)
         {
             this.StorageAccount = storageAccount;

@@ -25,6 +25,7 @@
         "dependencies": {
           "Evant.Contracts": "1.0.0",
           "Evant.DAL": "1.0.0",
+          "Evant.NotificationCenter": "1.0.0",
           "Evant.Storage": "1.0.0",
           "Microsoft.AspNetCore.All": "2.0.5",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "2.0.1",
@@ -4138,6 +4139,14 @@
           "Evant.DAL.dll": {}
         }
       },
+      "Evant.NotificationCenter/1.0.0": {
+        "runtime": {
+          "Evant.NotificationCenter.dll": {}
+        },
+        "compile": {
+          "Evant.NotificationCenter.dll": {}
+        }
+      },
       "Evant.Storage/1.0.0": {
         "dependencies": {
           "WindowsAzure.Storage": "8.7.0"
@@ -6495,6 +6504,11 @@
       "sha512": ""
     },
     "Evant.DAL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Evant.NotificationCenter/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

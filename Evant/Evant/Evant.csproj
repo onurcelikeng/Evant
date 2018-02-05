@@ -30,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Evant.Contracts\Evant.Contracts.csproj" />
     <ProjectReference Include="..\Evant.DAL\Evant.DAL.csproj" />
+    <ProjectReference Include="..\Evant.Notification\Evant.NotificationCenter.csproj" />
     <ProjectReference Include="..\Evant.Storage\Evant.Storage.csproj" />
   </ItemGroup>
 

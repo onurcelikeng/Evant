@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2024
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evant", "Evant\Evant.csproj", "{123464B9-65EF-436A-916C-35B431D2943D}"
 EndProject
@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evant.DAL", "Evant.DAL\Evan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evant.Contracts", "Evant.Contracts\Evant.Contracts.csproj", "{FED4F055-3E88-433F-822F-0C1ED0591EDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evant.Storage", "Evant.Storage\Evant.Storage.csproj", "{480D3170-6148-44DD-B725-4D43AF14A1AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evant.Storage", "Evant.Storage\Evant.Storage.csproj", "{480D3170-6148-44DD-B725-4D43AF14A1AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evant.Notification", "Evant.Notification\Evant.Notification.csproj", "{BD3E103A-BEA0-4C3B-B0F6-68AF3DFCB968}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evant.NotificationCenter", "Evant.Notification\Evant.NotificationCenter.csproj", "{BD3E103A-BEA0-4C3B-B0F6-68AF3DFCB968}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

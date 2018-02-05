@@ -58,3 +58,5 @@ C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\ob
 C:\Users\onurcelikeng\Documents\Visual Studio 2017\Projects\Evant\Evant\Evant\obj\Debug\netcoreapp2.0\Evant.pdb
 C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.Storage.dll
 C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.Storage.pdb
+C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.NotificationCenter.dll
+C:\Users\elifs\Documents\GitHub\Evant\Evant\Evant\bin\Debug\netcoreapp2.0\Evant.NotificationCenter.pdb

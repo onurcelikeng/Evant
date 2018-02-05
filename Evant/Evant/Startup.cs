@@ -4,9 +4,12 @@ using Evant.DAL.Interfaces.Repositories;
 using Evant.DAL.Repositories;
 using Evant.Helpers;
 using Evant.Interfaces;
+using Evant.NotificationCenter;
+using Evant.NotificationCenter.Interfaces;
+using Evant.NotificationCenter.Settings;
 using Evant.Storage;
 using Evant.Storage.Interfaces;
-using Evant.Storage.Models;
+using Evant.Storage.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -50,6 +53,14 @@ namespace Evant
             services.AddScoped<ILogHelper, LogHelper>();
             services.AddScoped<INotificationHelper, NotificationHelper>();
 
+            //One Signal
+            services.AddScoped<IOneSignal>(factory =>
+            {
+                return new OneSignal(new OneSignalSetting(
+                    appId: Configuration["OneSignal:AppId"],
+                    restApiKey: Configuration["OneSignal:RestApiKey"]));
+            });
+
             // Azure Storage
             services.AddScoped<IAzureBlobStorage>(factory =>
             {
@@ -66,7 +77,7 @@ namespace Evant
                 .AddDefaultTokenProviders();
 
             // Jwt Authentication
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -117,5 +128,6 @@ namespace Evant
 
             app.UseMvc();
         }
+
     }
 }
