@@ -11,10 +11,10 @@ namespace Evant.Storage
 {
     public class AzureBlobStorage : IAzureBlobStorage
     {
-        private readonly AzureBlobSetings _settings;
+        private readonly AzureBlobSeting _settings;
 
 
-        public AzureBlobStorage(AzureBlobSetings settings)
+        public AzureBlobStorage(AzureBlobSeting settings)
         {
             _settings = settings;
         }

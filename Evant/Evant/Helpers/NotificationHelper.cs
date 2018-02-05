@@ -17,7 +17,6 @@ namespace Evant.Helpers
 
         public void SendNotification()
         {
-            
 
         }
     }

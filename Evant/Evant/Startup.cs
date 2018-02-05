@@ -64,7 +64,7 @@ namespace Evant
             // Azure Storage
             services.AddScoped<IAzureBlobStorage>(factory =>
             {
-                return new AzureBlobStorage(new AzureBlobSetings(
+                return new AzureBlobStorage(new AzureBlobSeting(
                     storageAccount: Configuration["AzureStorage:StorageAccount"],
                     storageKey: Configuration["AzureStorage:StorageKey"],
                     eventContainer: Configuration["AzureStorage:Events_Container"],
@@ -85,11 +85,11 @@ namespace Evant
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
                 })
-                .AddJwtBearer(cfg =>
+                .AddJwtBearer(configure =>
                 {
-                    cfg.RequireHttpsMetadata = false;
-                    cfg.SaveToken = true;
-                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    configure.RequireHttpsMetadata = false;
+                    configure.SaveToken = true;
+                    configure.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidIssuer = Configuration["JWT:Issuer"],
                         ValidAudience = Configuration["JWT:Issuer"],
