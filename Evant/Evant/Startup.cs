@@ -39,21 +39,21 @@ namespace Evant
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //Add MVC
+            // Add MVC
             services.AddMvc();
 
-            //Add DBContext
+            // Add DBContext
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
 
-            //Add Generic Repository
+            // Add Generic Repository
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-            //Scoped
+            // Scoped
             services.AddScoped<IJwtFactory, JwtFactory>();
             services.AddScoped<ILogHelper, LogHelper>();
             services.AddScoped<INotificationHelper, NotificationHelper>();
 
-            //One Signal
+            // OneSignal
             services.AddScoped<IOneSignal>(factory =>
             {
                 return new OneSignal(new OneSignalSetting(
@@ -83,7 +83,6 @@ namespace Evant
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
                 })
                 .AddJwtBearer(configure =>
                 {
@@ -98,7 +97,7 @@ namespace Evant
                     };
                 });
 
-            //Add Swagger
+            // Swagger
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Evant API", Version = "v1" });
