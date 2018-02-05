@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evant.Contracts", "Evant.Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evant.Storage", "Evant.Storage\Evant.Storage.csproj", "{480D3170-6148-44DD-B725-4D43AF14A1AF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evant.NotificationCenter", "Evant.Notification\Evant.NotificationCenter.csproj", "{BD3E103A-BEA0-4C3B-B0F6-68AF3DFCB968}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evant.NotificationCenter", "Evant.NotificationCenter\Evant.NotificationCenter.csproj", "{62870690-7FB4-4450-826A-16A1DB27937C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{480D3170-6148-44DD-B725-4D43AF14A1AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{480D3170-6148-44DD-B725-4D43AF14A1AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{480D3170-6148-44DD-B725-4D43AF14A1AF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BD3E103A-BEA0-4C3B-B0F6-68AF3DFCB968}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BD3E103A-BEA0-4C3B-B0F6-68AF3DFCB968}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BD3E103A-BEA0-4C3B-B0F6-68AF3DFCB968}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BD3E103A-BEA0-4C3B-B0F6-68AF3DFCB968}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62870690-7FB4-4450-826A-16A1DB27937C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62870690-7FB4-4450-826A-16A1DB27937C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62870690-7FB4-4450-826A-16A1DB27937C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62870690-7FB4-4450-826A-16A1DB27937C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

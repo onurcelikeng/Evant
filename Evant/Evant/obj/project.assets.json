@@ -13286,8 +13286,8 @@
     },
     "Evant.NotificationCenter/1.0.0": {
       "type": "project",
-      "path": "../Evant.Notification/Evant.NotificationCenter.csproj",
-      "msbuildProject": "../Evant.Notification/Evant.NotificationCenter.csproj"
+      "path": "../Evant.NotificationCenter/Evant.NotificationCenter.csproj",
+      "msbuildProject": "../Evant.NotificationCenter/Evant.NotificationCenter.csproj"
     },
     "Evant.Storage/1.0.0": {
       "type": "project",
@@ -13342,6 +13342,9 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
+            "C:\\Users\\elifs\\Documents\\GitHub\\Evant\\Evant\\Evant.NotificationCenter\\Evant.NotificationCenter.csproj": {
+              "projectPath": "C:\\Users\\elifs\\Documents\\GitHub\\Evant\\Evant\\Evant.NotificationCenter\\Evant.NotificationCenter.csproj"
+            },
             "C:\\Users\\elifs\\Documents\\GitHub\\Evant\\Evant\\Evant.DAL\\Evant.DAL.csproj": {
               "projectPath": "C:\\Users\\elifs\\Documents\\GitHub\\Evant\\Evant\\Evant.DAL\\Evant.DAL.csproj"
             },
@@ -13350,9 +13353,6 @@
             },
             "C:\\Users\\elifs\\Documents\\GitHub\\Evant\\Evant\\Evant.Storage\\Evant.Storage.csproj": {
               "projectPath": "C:\\Users\\elifs\\Documents\\GitHub\\Evant\\Evant\\Evant.Storage\\Evant.Storage.csproj"
-            },
-            "C:\\Users\\elifs\\Documents\\GitHub\\Evant\\Evant\\Evant.Notification\\Evant.NotificationCenter.csproj": {
-              "projectPath": "C:\\Users\\elifs\\Documents\\GitHub\\Evant\\Evant\\Evant.Notification\\Evant.NotificationCenter.csproj"
             }
           }
         }
