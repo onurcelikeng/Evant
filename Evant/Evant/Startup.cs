@@ -1,4 +1,5 @@
-﻿using Evant.DAL.EF;
+﻿using Evant.Auth;
+using Evant.DAL.EF;
 using Evant.DAL.Interfaces.Repositories;
 using Evant.DAL.Repositories;
 using Evant.Helpers;
@@ -43,6 +44,11 @@ namespace Evant
 
             //Add Generic Repository
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+            //Scoped
+            services.AddScoped<IJwtFactory, JwtFactory>();
+            services.AddScoped<ILogHelper, LogHelper>();
+            services.AddScoped<INotificationHelper, NotificationHelper>();
 
             // Azure Storage
             services.AddScoped<IAzureBlobStorage>(factory =>

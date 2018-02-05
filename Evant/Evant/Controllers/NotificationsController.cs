@@ -13,20 +13,23 @@ namespace Evant.Controllers
     public class NotificationsController : BaseController
     {
         private readonly IRepository<Notification> _notificationRepo;
+        private readonly INotificationHelper _notificationHelper;
 
 
-        public NotificationsController(IRepository<Notification> notificationRepo)
+        public NotificationsController(IRepository<Notification> notificationRepo,
+            INotificationHelper notificationHelper)
         {
             _notificationRepo = notificationRepo;
+            _notificationHelper = notificationHelper;
         }
 
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public IActionResult GetNotifications()
         {
-            Guid userId = User.GetUserId();
-
+            //Guid userId = User.GetUserId();
+            _notificationHelper.SendNotification();
             //var notifications = _notificationRepo.Where(n => n.UserId == userId);
 
             return Ok();

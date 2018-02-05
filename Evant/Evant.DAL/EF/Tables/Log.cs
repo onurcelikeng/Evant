@@ -6,10 +6,10 @@
 
         public string Table { get; set; }
 
-        public string Message { get; set; } //operation
+        public string Message { get; set; } //nullable
 
         public string Status { get; set; }
 
-        public string Exception { get; set; }
+        public string Exception { get; set; } //nullable
     }
 }

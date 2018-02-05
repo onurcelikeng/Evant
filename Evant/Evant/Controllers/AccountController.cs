@@ -17,6 +17,7 @@ using Evant.Storage.Models;
 using System.Threading.Tasks;
 using Evant.Storage.Extensions;
 using Evant.Contracts.DataTransferObjects.UserSettingDTO.cs;
+using Evant.Auth;
 
 namespace Evant.Controllers
 {
@@ -26,17 +27,20 @@ namespace Evant.Controllers
     {
         private readonly IRepository<User> _userRepo;
         private readonly IRepository<UserSetting> _userSettingRepo;
+        private readonly IJwtFactory _jwtFactory;
         private readonly IConfiguration _configuration;
         private readonly IAzureBlobStorage _blobStorage;
 
 
         public AccountController(IRepository<User> userRepo, 
             IRepository<UserSetting> userSettingRepo, 
+            IJwtFactory jwtFactory,
             IConfiguration configuration, 
             IAzureBlobStorage blobStorage)
         {
             _userRepo = userRepo;
             _userSettingRepo = userSettingRepo;
+            _jwtFactory = jwtFactory;
             _configuration = configuration;
             _blobStorage = blobStorage;
         }
@@ -107,7 +111,7 @@ namespace Evant.Controllers
             var selectedUser = _userRepo.First(u => u.Email == user.Email && u.Password == user.Password);
             if (selectedUser != null)
             {
-                var token = GenerateJwtToken(selectedUser);
+                var token = _jwtFactory.GenerateJwtToken(selectedUser);
                 return Ok(token);
             }
 
@@ -305,29 +309,5 @@ namespace Evant.Controllers
             return BadRequest("Böyle bir kullanıcı bulunamadı.");
         }
 
-
-        private object GenerateJwtToken(User user)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim("userId", user.Id.ToString()),
-                new Claim("email", user.Email),
-                new Claim("role", user.Role)
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JWT:ExpireDays"]));
-
-            var token = new JwtSecurityToken(
-                _configuration["JWT:Issuer"],
-                _configuration["JWT:Issuer"],
-                claims,
-                expires: expires,
-                signingCredentials: creds
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
     }
 }
