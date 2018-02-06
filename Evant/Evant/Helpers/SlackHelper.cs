@@ -23,14 +23,14 @@ namespace Evant.Helpers
 
         public void PostMessage(string text)
         {
-            SlackModel payload = new SlackModel()
+            SlackModel model = new SlackModel()
             {
                 Channel = SlackConstant.Channel,
                 Username = SlackConstant.Username,
                 Text = text
             };
 
-            string payloadJson = JsonConvert.SerializeObject(payload);
+            string payloadJson = JsonConvert.SerializeObject(model);
 
             using (WebClient client = new WebClient())
             {

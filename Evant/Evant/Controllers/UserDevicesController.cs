@@ -70,7 +70,7 @@ namespace Evant.Controllers
         {
             var selectedDevice = _userDevicesRepo.First(d => d.DeviceId == deviceId);
             if (selectedDevice == null)
-                return BadRequest("cihaz bulunamadı.");
+                return BadRequest("Kayıt bulunamadı.");
             else
             {
                 selectedDevice.IsLoggedin = false;
@@ -78,9 +78,9 @@ namespace Evant.Controllers
 
                 var response = _userDevicesRepo.Update(selectedDevice);
                 if (response)
-                    return Ok("cihaz kapatıldı.");
+                    return Ok("Cihaz kapatıldı.");
                 else
-                    return BadRequest("cihaz kapatılamadı.");
+                    return BadRequest("Cihaz kapatılamadı.");
             }
         }
 

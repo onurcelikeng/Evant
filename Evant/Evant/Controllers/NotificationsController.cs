@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
 using Evant.Helpers;
@@ -36,51 +37,21 @@ namespace Evant.Controllers
         }
 
         [Authorize]
-        [HttpPut("{notificationId}")]
-        public IActionResult ReadNotification([FromRoute] Guid notificationId)
+        [HttpPut]
+        public IActionResult ReadAllNotifications()
         {
-            var selectedNotification = _notificationRepo.First(n => n.Id == notificationId);
-            if (selectedNotification == null)
+            Guid userId = User.GetUserId();
+
+            var notifications = _notificationRepo.Where(n => n.UserId == userId && n.IsRead == false).ToList();
+            foreach (var notification in notifications)
             {
-                return NotFound("Bildirim bulunamadı.");
-            }
-            else
-            {
-                selectedNotification.IsRead = true;
-                selectedNotification.UpdateAt = DateTime.Now;
-                
-                var response = _notificationRepo.Update(selectedNotification);
-                if (response)
-                {
-                    return Ok("Bildirim güncellendi.");
-                }
-                else
-                {
-                    return BadRequest("Bildirim güncellenemedi.");
-                }
+                notification.IsRead = true;
+                notification.UpdateAt = DateTime.Now;
+
+                var response = _notificationRepo.Update(notification);
             }
 
-        }
-
-        [Authorize]
-        [HttpDelete("{notificationId}")]
-        public IActionResult DeleteNotification([FromRoute] Guid notificationId)
-        {
-            var notification = _notificationRepo.First(c => c.Id == notificationId);
-            if (notification == null)
-            {
-                return NotFound("Bildirim bulunamadı.");
-            }
-
-            var response = _notificationRepo.Delete(notification);
-            if (response)
-            {
-                return Ok("Bildirim silindi.");
-            }
-            else
-            {
-                return BadRequest("Bildirim silinemedi.");
-            }
+            return Ok();
         }
 
     }
