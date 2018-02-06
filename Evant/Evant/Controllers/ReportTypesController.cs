@@ -128,5 +128,6 @@ namespace Evant.Controllers
                 return BadRequest("Şikayet türü silinemedi.");
             }
         }
+
     }
 }

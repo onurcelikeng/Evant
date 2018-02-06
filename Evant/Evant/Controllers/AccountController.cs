@@ -91,7 +91,6 @@ namespace Evant.Controllers
                     return BadRequest("Kullanıcı eklenemedi.");
                 }
             }
-
         }
 
         [HttpPost]
@@ -140,7 +139,7 @@ namespace Evant.Controllers
             var user = _userRepo.First(u => u.Id == userId);
             if (user == null)
             {
-                return BadRequest("Kullanıcı bulunamadı.");
+                return BadRequest("Kayıt bulunamadı.");
             }
             else
             {
@@ -209,7 +208,7 @@ namespace Evant.Controllers
             var selectedUserSetting = _userSettingRepo.First(us => us.UserSettingId == model.UserSettingId);
             if(selectedUserSetting == null)
             {
-                return NotFound("Kullanıcı ayarları buunamadı.");
+                return NotFound("Kayıt bulunamadı.");
             }
             else
             {
@@ -301,7 +300,7 @@ namespace Evant.Controllers
                 return BadRequest("Hesap zaten deaktif edilmiş.");
             }
 
-            return BadRequest("Böyle bir kullanıcı bulunamadı.");
+            return BadRequest("Kayıt bulunamadı.");
         }
 
     }

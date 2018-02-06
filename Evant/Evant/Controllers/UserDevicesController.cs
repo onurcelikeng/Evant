@@ -37,9 +37,13 @@ namespace Evant.Controllers
 
                 var response = _userDevicesRepo.Update(selectedDevice);
                 if (response)
-                    return Ok("güncellendi.");
+                {
+                    return Ok("Cihaz güncellendi.");
+                }
                 else
-                    return BadRequest("güncellenemedi.");
+                {
+                    return BadRequest("Cihaz güncellenemedi.");
+                }
             }
             else
             {
@@ -58,9 +62,13 @@ namespace Evant.Controllers
 
                 var response = _userDevicesRepo.Insert(newDevice);
                 if (response)
-                    return Ok("eklendi.");
+                {
+                    return Ok("Cihaz güncellendi.");
+                }
                 else
-                    return BadRequest("eklenemedi.");
+                {
+                    return BadRequest("Cihaz güncellenemedi.");
+                }
             }
         }
 
@@ -71,6 +79,7 @@ namespace Evant.Controllers
             var selectedDevice = _userDevicesRepo.First(d => d.DeviceId == deviceId);
             if (selectedDevice == null)
                 return BadRequest("Kayıt bulunamadı.");
+
             else
             {
                 selectedDevice.IsLoggedin = false;
@@ -78,9 +87,13 @@ namespace Evant.Controllers
 
                 var response = _userDevicesRepo.Update(selectedDevice);
                 if (response)
-                    return Ok("Cihaz kapatıldı.");
+                {
+                    return Ok("Cihazda oturum kapatıldı.");
+                }
                 else
-                    return BadRequest("Cihaz kapatılamadı.");
+                {
+                    return BadRequest("Cihazda oturum kapatılamadı.");
+                }
             }
         }
 
