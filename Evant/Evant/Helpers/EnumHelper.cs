@@ -9,8 +9,8 @@
     public enum NotificationTypes
     {
         Follow,
-        EventComment,
-        EventJoin
+        Comment,
+        Like
     }
 
 }

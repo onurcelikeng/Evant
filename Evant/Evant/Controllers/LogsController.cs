@@ -46,5 +46,6 @@ namespace Evant.Controllers
                 return BadRequest("Log silinemedi.");
             }
         }
+
     }
 }

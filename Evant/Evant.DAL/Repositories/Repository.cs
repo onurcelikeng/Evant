@@ -1,22 +1,26 @@
-﻿using Evant.DAL.EF;
-using Evant.DAL.Interfaces.Repositories;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Evant.DAL.EF;
+using Evant.DAL.Interfaces.Repositories;
+using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace Evant.DAL.Repositories
 {
     public class Repository<T> : IDisposable, IRepository<T> where T : class
     {
         private DataContext context;
-        private DbSet<T> Table;
+        private DbSet<T> table;
+        public DbContext Context { get => context; }
+        public DbSet<T> Table { get => table; }
 
 
         public Repository(DataContext context)
         {
             this.context = context;
-            Table = context.Set<T>();
+            this.table = context.Set<T>();
         }
 
         ~Repository()
@@ -27,22 +31,22 @@ namespace Evant.DAL.Repositories
 
         public IEnumerable<T> GetAll()
         {
-            return Table.ToList();
+            return table.ToList();
         }
 
         public T Get(object id)
         {
-            return Table.Find(id);
+            return table.Find(id);
         }
 
         public List<T> Where(Func<T, bool> where)
         {
-            return Table.Where(where).ToList();
+            return table.Where(where).ToList();
         }
 
         public bool Insert(T entity)
         {
-            Table.Add(entity);
+            table.Add(entity);
             return Save();
         }
 
@@ -53,13 +57,13 @@ namespace Evant.DAL.Repositories
 
         public bool Delete(T entity)
         {
-            Table.Remove(entity);
+            table.Remove(entity);
             return Save();
         }
 
         public T First(Func<T, bool> where)
         {
-            return Table.FirstOrDefault(where);
+            return table.FirstOrDefault(where);
         }
 
         private bool Save()

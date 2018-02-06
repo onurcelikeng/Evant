@@ -5,25 +5,25 @@ namespace Evant.Helpers
 {
     public class BaseController : Controller
     {
-        public override OkObjectResult Ok(object value)
+        public override OkObjectResult Ok(object data)
         {
             var response = new ResultDTO<object>()
             {
                 StatusCode = 200,
                 IsSuccess = true,
                 Message = "",
-                Data = value
+                Data = data
             };
             return base.Ok(response);
         }
 
-        public override NotFoundObjectResult NotFound(object value)
+        public override NotFoundObjectResult NotFound(object message)
         {
             var response = new ResultDTO<object>()
             {
                 StatusCode = 404,
                 IsSuccess = false,
-                Message = value.ToString(),
+                Message = message.ToString(),
                 Data = null
             };
             return base.NotFound(response);
@@ -40,5 +40,6 @@ namespace Evant.Helpers
             };
             return base.BadRequest(response);
         }
+
     }
 }
