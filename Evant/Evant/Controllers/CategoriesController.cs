@@ -47,7 +47,7 @@ namespace Evant.Controllers
             var category = _categoryRepo.First(c => c.Id == id);
             if (category == null)
             {
-                return NotFound("Böyle bir kategori yok.");
+                return NotFound("Kayıt bulunamadı.");
             }
 
             return Ok(category);
