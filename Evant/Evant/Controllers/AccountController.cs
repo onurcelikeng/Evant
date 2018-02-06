@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using Evant.Contracts.DataTransferObjects.Account;
 using Evant.Contracts.DataTransferObjects.User;
 using Evant.DAL.EF.Tables;
@@ -11,7 +7,6 @@ using Evant.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using Evant.Storage.Interfaces;
 using Evant.Storage.Models;
 using System.Threading.Tasks;

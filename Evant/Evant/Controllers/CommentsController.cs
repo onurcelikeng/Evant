@@ -39,9 +39,16 @@ namespace Evant.Controllers
                     LastName = c.User.LastName,
                     PhotoUrl = c.User.Photo
                 }
-            });
+            }).ToList();
 
-            return Ok(commnets);
+            if (commnets.IsNullOrEmpty())
+            {
+                return NotFound("Kayıt bulunamadı.");
+            }
+            else
+            {
+                return Ok(commnets);
+            }
         }
 
         [Authorize]

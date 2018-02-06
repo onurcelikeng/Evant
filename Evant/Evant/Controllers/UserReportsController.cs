@@ -50,9 +50,16 @@ namespace Evant.Controllers
                     LastName = ur.ReportedUser.LastName,
                     PhotoUrl = ur.ReportedUser.Photo
                 }
-            });
+            }).ToList();
 
-            return Ok(userReports);
+            if (userReports.IsNullOrEmpty())
+            {
+                return NotFound("Kayıt bulunamadı.");
+            }
+            else
+            {
+                return Ok(userReports);
+            }
         }
 
         [Authorize]

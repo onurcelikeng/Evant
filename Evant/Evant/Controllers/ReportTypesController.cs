@@ -29,9 +29,16 @@ namespace Evant.Controllers
                 ReportTypeId = c.Id,
                 Name = c.Name,
                 Level = c.Level
-            });
+            }).ToList();
 
-            return Ok(reportTypes);
+            if (reportTypes.IsNullOrEmpty())
+            {
+                return NotFound("Kayıt bulunamadı.");
+            }
+            else
+            {
+                return Ok(reportTypes);
+            }
         }
 
         [HttpGet("{id}")]

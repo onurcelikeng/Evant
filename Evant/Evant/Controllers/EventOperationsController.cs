@@ -32,9 +32,16 @@ namespace Evant.Controllers
                 FirstName = u.User.FirstName,
                 LastName = u.User.LastName,
                 PhotoUrl = u.User.Photo
-            });
+            }).ToList();
 
-            return Ok(users);
+            if (users.IsNullOrEmpty())
+            {
+                return NotFound("Kayıt bulunamadı.");
+            }
+            else
+            {
+                return Ok(users);
+            }
         }
 
         [Authorize]

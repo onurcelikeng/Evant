@@ -28,9 +28,16 @@ namespace Evant.Controllers
             {
                 Id = t.Id,
                 Name = t.Name
-            });
+            }).ToList();
 
-            return Ok(tags);
+            if (tags.IsNullOrEmpty())
+            {
+                return NotFound("Kayıt bulunamadı.");
+            }
+            else
+            {
+                return Ok(tags);
+            }
         }
 
         [HttpGet("{id}")]

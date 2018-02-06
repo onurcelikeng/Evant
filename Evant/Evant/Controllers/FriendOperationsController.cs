@@ -28,15 +28,22 @@ namespace Evant.Controllers
         public IActionResult GetFollowers()
         {
             Guid userId = User.GetUserId();
-            var users = _friendOperationRepo.Where(fo => fo.FollowingId == userId).Select(u => new UserInfoDTO()
+            var followers = _friendOperationRepo.Where(fo => fo.FollowingId == userId).Select(u => new UserInfoDTO()
             {
                 UserId = u.FollowerUser.Id,
                 FirstName = u.FollowerUser.FirstName,
                 LastName = u.FollowerUser.LastName,
                 PhotoUrl = u.FollowerUser.Photo
-            });
+            }).ToList();
 
-            return Ok(users);
+            if (followers.IsNullOrEmpty())
+            {
+                return NotFound("Kayıt bulunamadı.");
+            }
+            else
+            {
+                return Ok(followers);
+            }
         }
 
         [Authorize]
@@ -45,15 +52,22 @@ namespace Evant.Controllers
         public IActionResult GetFollowings()
         {
             Guid userId = User.GetUserId();
-            var users = _friendOperationRepo.Where(fo => fo.FollowerId == userId).Select(u => new UserInfoDTO()
+            var followings = _friendOperationRepo.Where(fo => fo.FollowerId == userId).Select(u => new UserInfoDTO()
             {
                 UserId = u.FollowingUser.Id,
                 FirstName = u.FollowingUser.FirstName,
                 LastName = u.FollowingUser.LastName,
                 PhotoUrl = u.FollowingUser.Photo
-            });
+            }).ToList();
 
-            return Ok(users);
+            if (followings.IsNullOrEmpty())
+            {
+                return NotFound("Kayıt bulunamadı.");
+            }
+            else
+            {
+                return Ok(followings);
+            }
         }
 
         [Authorize]

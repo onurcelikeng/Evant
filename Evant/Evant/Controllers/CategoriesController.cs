@@ -29,9 +29,16 @@ namespace Evant.Controllers
                 CategoryId = c.Id,
                 Name = c.Name,
                 PhotoUrl = c.Icon
-            });
+            }).ToList();
 
-            return Ok(categories);
+            if (categories.IsNullOrEmpty())
+            {
+                return NotFound("Kayıt bulunamadı.");
+            }
+            else
+            {
+                return Ok(categories);
+            }
         }
 
         [HttpGet("{id}")]
