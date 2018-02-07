@@ -86,6 +86,23 @@ namespace Evant.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserSettings",
+                columns: table => new
+                {
+                    UserSettingId = table.Column<Guid>(nullable: false),
+                    IsCommentNotif = table.Column<bool>(type: "bit", nullable: false),
+                    IsEventNewComerNotif = table.Column<bool>(type: "bit", nullable: false),
+                    IsEventUpdateNotif = table.Column<bool>(type: "bit", nullable: false),
+                    IsFriendshipNotif = table.Column<bool>(type: "bit", nullable: false),
+                    Language = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    Theme = table.Column<string>(type: "nvarchar(20)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserSettings", x => x.UserSettingId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -100,11 +117,18 @@ namespace Evant.DAL.Migrations
                     Password = table.Column<string>(type: "nvarchar(160)", nullable: false),
                     Photo = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     Role = table.Column<string>(type: "nvarchar(20)", nullable: false),
-                    UpdateAt = table.Column<DateTime>(nullable: false)
+                    UpdateAt = table.Column<DateTime>(nullable: false),
+                    UserSettingId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_UserSettings_Id",
+                        column: x => x.Id,
+                        principalTable: "UserSettings",
+                        principalColumn: "UserSettingId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -121,6 +145,8 @@ namespace Evant.DAL.Migrations
                     Photo = table.Column<string>(type: "nvarchar(80)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(40)", nullable: false),
+                    TotalComments = table.Column<int>(type: "int", nullable: false),
+                    TotalParticipants = table.Column<int>(type: "int", nullable: false),
                     UpdateAt = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<Guid>(nullable: false)
                 },
@@ -230,6 +256,7 @@ namespace Evant.DAL.Migrations
                     IsLoggedin = table.Column<bool>(type: "bit", nullable: false),
                     Model = table.Column<string>(type: "nvarchar(40)", nullable: false),
                     OS = table.Column<string>(type: "nvarchar(40)", nullable: false),
+                    PlayerId = table.Column<string>(type: "nvarchar(80)", nullable: false),
                     UpdateAt = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<Guid>(nullable: false)
                 },
@@ -487,6 +514,9 @@ namespace Evant.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "UserSettings");
         }
     }
 }
