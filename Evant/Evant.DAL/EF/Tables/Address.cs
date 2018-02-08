@@ -2,9 +2,9 @@
 
 namespace Evant.DAL.EF.Tables
 {
-    public class Address
+    public class Address : BaseEntity
     {
-        public Guid AddressId { get; set; }
+        public Guid EventId { get; set; }
 
         public string City { get; set; }
 

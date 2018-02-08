@@ -7,6 +7,7 @@ namespace Evant.DAL.EF.Tables
     {
         public Event()
         {
+            EventAddress = new Address();
             EventTags = new List<EventTag>();
             EventComments = new List<Comment>();
             EventOperations = new List<EventOperation>();
@@ -16,8 +17,6 @@ namespace Evant.DAL.EF.Tables
         public Guid UserId { get; set; }
 
         public Guid CategoryId { get; set; }
-
-        public Guid AddressId { get; set; }
 
         public string Title { get; set; }
 

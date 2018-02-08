@@ -74,45 +74,34 @@ namespace Evant.Controllers
             if (!ModelState.IsValid)
                 return BadRequest("Eksik bilgi girdiniz.");
 
-            var addressId = new Guid();
-            var newAddress = new Address()
+            Guid userId = User.GetUserId();
+            var newEvent = new Event()
             {
-                AddressId = addressId,
-                City = model.City,
-                Town = model.Town,
-                Latitude = model.Latitude,
-                Longitude = model.Longitude
+                UserId = userId,
+                CategoryId = model.CategoryId,
+                Title = model.Title,
+                Description = model.Description,
+                IsPrivate = model.IsPrivate,
+                StartDate = model.StartAt,
+                FinishDate = model.FinishAt,
+                Photo = "test_photo",
+                EventAddress = new Address()
+                {
+                    City = model.City,
+                    Town = model.Town,
+                    Latitude = model.Latitude,
+                    Longitude = model.Longitude,
+                }
             };
-            var result = _addressRepo.Insert(newAddress);
-            if(result)
+
+            var response = _eventRepo.Insert(newEvent);
+            if (response)
             {
-                Guid userId = User.GetUserId();
-                var newEvent = new Event()
-                {
-                    Id = new Guid(),
-                    UserId = userId,
-                    AddressId = addressId,
-                    CategoryId = model.CategoryId,
-                    Title = model.Title,
-                    Description = model.Description,
-                    IsPrivate = model.IsPrivate,
-                    StartDate = model.StartAt,
-                    FinishDate = model.FinishAt,
-                    Photo = "test_photo",
-                };
-                var response = _eventRepo.Insert(newEvent);
-                if (response)
-                {
-                    return Ok("Etkinlik oluşturuldu.");
-                }
-                else
-                {
-                    return BadRequest("Etkinlik oluşturulamadı.");
-                }
+                return Ok("Etkinlik oluşturuldu.");
             }
             else
             {
-                return BadRequest("Bir hata oluştu.");
+                return BadRequest("Etkinlik oluşturulamadı.");
             }
         }
 
