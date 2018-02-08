@@ -58,11 +58,6 @@ namespace Evant.Controllers
 
             else
             {
-                var newSetting = new UserSetting()
-                {
-                    Id = Guid.NewGuid()
-                };
-
                 var newUser = new User
                 {
                     Id = new Guid(),
@@ -75,7 +70,7 @@ namespace Evant.Controllers
                     IsFacebook = false,
                     Photo = null,
                     FacebookId = null,
-                    UserSetting = newSetting
+                    UserSetting = new UserSetting()
                 };
 
                 var response = _userRepo.Insert(newUser);
