@@ -71,6 +71,23 @@ namespace Evant.Controllers
         }
 
         [Authorize]
+        [HttpGet("{friendId}")]
+        public IActionResult IsFollow([FromRoute] Guid friendId)
+        {
+            Guid userId = User.GetUserId();
+
+            var selectedFriendOperation = _friendOperationRepo.First(fo => fo.FollowingId == friendId && fo.FollowerId == userId);
+            if(selectedFriendOperation == null)
+            {
+                return BadRequest("Takip etmiyorsun.");
+            }
+            else
+            {
+                return Ok("Takip ediyorsun.");
+            }
+        }
+
+        [Authorize]
         [HttpPost("{friendId}")]
         public IActionResult Follow([FromRoute] Guid friendId)
         {
