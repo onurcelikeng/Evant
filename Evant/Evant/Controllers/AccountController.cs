@@ -210,6 +210,7 @@ namespace Evant.Controllers
             }
             else
             {
+                selectedUserSetting.UpdateAt = DateTime.Now;
                 selectedUserSetting.Theme = model.Theme;
                 selectedUserSetting.Language = model.Language;
                 selectedUserSetting.IsCommentNotif = model.IsCommentNotif;
