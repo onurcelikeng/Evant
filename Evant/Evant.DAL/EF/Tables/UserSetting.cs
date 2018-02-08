@@ -2,9 +2,9 @@
 
 namespace Evant.DAL.EF.Tables
 {
-    public class UserSetting
+    public class UserSetting : BaseEntity
     {
-        public Guid UserSettingId { get; set; }
+        public Guid UserId { get; set; }
 
         public string Theme { get; set; } = "light";
 

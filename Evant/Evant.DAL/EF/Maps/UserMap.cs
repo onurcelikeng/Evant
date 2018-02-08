@@ -10,7 +10,6 @@ namespace Evant.DAL.EF.Maps
         {
             entityBuilder.ToTable("Users");
 
-            entityBuilder.Property(x => x.UserSettingId).HasColumnName(@"UserSettingId").IsRequired();
             entityBuilder.Property(x => x.FacebookId).HasColumnName(@"FacebookId").HasColumnType("nvarchar(20)");
             entityBuilder.Property(x => x.FirstName).HasColumnName(@"FirstName").IsRequired().HasColumnType("nvarchar(20)");
             entityBuilder.Property(x => x.LastName).HasColumnName(@"LastName").IsRequired().HasColumnType("nvarchar(20)");
@@ -21,7 +20,7 @@ namespace Evant.DAL.EF.Maps
             entityBuilder.Property(x => x.IsActive).HasColumnName(@"IsActive").IsRequired().HasColumnType("bit");
             entityBuilder.Property(x => x.IsFacebook).HasColumnName(@"IsFacebook").IsRequired().HasColumnType("bit");
 
-            entityBuilder.HasOne(a => a.UserSetting).WithOne(b => b.User).HasForeignKey<User>(c => c.Id).OnDelete(DeleteBehavior.Restrict);
+            entityBuilder.HasOne(a => a.UserSetting).WithOne(b => b.User).HasForeignKey<UserSetting>(c => c.UserId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

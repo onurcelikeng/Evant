@@ -27,10 +27,10 @@ namespace Evant.Controllers
         private readonly IAzureBlobStorage _blobStorage;
 
 
-        public AccountController(IRepository<User> userRepo, 
-            IRepository<UserSetting> userSettingRepo, 
+        public AccountController(IRepository<User> userRepo,
+            IRepository<UserSetting> userSettingRepo,
             IJwtFactory jwtFactory,
-            IConfiguration configuration, 
+            IConfiguration configuration,
             IAzureBlobStorage blobStorage)
         {
             _userRepo = userRepo;
@@ -58,27 +58,24 @@ namespace Evant.Controllers
 
             else
             {
-                var userSettingId = new Guid();
                 var newSetting = new UserSetting()
                 {
-                    UserSettingId = userSettingId,
+                    Id = Guid.NewGuid()
                 };
-                var result = _userSettingRepo.Insert(newSetting);
 
                 var newUser = new User
                 {
                     Id = new Guid(),
-                    UserSettingId = userSettingId,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,
                     Password = user.Password,
-                    CreatedAt = DateTime.Now,
                     Role = "User",
                     IsActive = true,
                     IsFacebook = false,
                     Photo = null,
-                    FacebookId = null
+                    FacebookId = null,
+                    UserSetting = newSetting
                 };
 
                 var response = _userRepo.Insert(newUser);
@@ -205,8 +202,9 @@ namespace Evant.Controllers
             if (!ModelState.IsValid)
                 return BadRequest("Eksik bilgi girdiniz.");
 
-            var selectedUserSetting = _userSettingRepo.First(us => us.UserSettingId == model.UserSettingId);
-            if(selectedUserSetting == null)
+            Guid userId = User.GetUserId();
+            var selectedUserSetting = _userSettingRepo.First(us => us.UserId == userId);
+            if (selectedUserSetting == null)
             {
                 return NotFound("Kayıt bulunamadı.");
             }
@@ -220,7 +218,7 @@ namespace Evant.Controllers
                 selectedUserSetting.IsFriendshipNotif = model.IsFriendshipNotif;
 
                 var response = _userSettingRepo.Update(selectedUserSetting);
-                if(response)
+                if (response)
                 {
                     return Ok("Kullanıcı ayarları güncellendi.");
                 }

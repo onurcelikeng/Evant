@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Evant.DAL.EF.Tables
 {
@@ -12,6 +11,6 @@ namespace Evant.DAL.EF.Tables
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        public DateTime UpdateAt { get; set; } = DateTime.Now; //nullable
+        public DateTime UpdateAt { get; set; } //nullable
     }
 }

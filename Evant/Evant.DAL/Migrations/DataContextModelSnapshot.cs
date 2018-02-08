@@ -376,7 +376,8 @@ namespace Evant.DAL.Migrations
 
             modelBuilder.Entity("Evant.DAL.EF.Tables.User", b =>
                 {
-                    b.Property<Guid>("Id");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedAt");
 
@@ -422,9 +423,6 @@ namespace Evant.DAL.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("UpdateAt");
-
-                    b.Property<Guid>("UserSettingId")
-                        .HasColumnName("UserSettingId");
 
                     b.HasKey("Id");
 
@@ -510,9 +508,10 @@ namespace Evant.DAL.Migrations
 
             modelBuilder.Entity("Evant.DAL.EF.Tables.UserSetting", b =>
                 {
-                    b.Property<Guid>("UserSettingId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("UserSettingId");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedAt");
 
                     b.Property<bool>("IsCommentNotif")
                         .HasColumnName("IsCommentNotif")
@@ -540,7 +539,15 @@ namespace Evant.DAL.Migrations
                         .HasColumnName("Theme")
                         .HasColumnType("nvarchar(20)");
 
-                    b.HasKey("UserSettingId");
+                    b.Property<DateTime>("UpdateAt");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnName("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("UserSettings");
                 });
@@ -631,14 +638,6 @@ namespace Evant.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Evant.DAL.EF.Tables.User", b =>
-                {
-                    b.HasOne("Evant.DAL.EF.Tables.UserSetting", "UserSetting")
-                        .WithOne("User")
-                        .HasForeignKey("Evant.DAL.EF.Tables.User", "Id")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
             modelBuilder.Entity("Evant.DAL.EF.Tables.UserDevice", b =>
                 {
                     b.HasOne("Evant.DAL.EF.Tables.User", "User")
@@ -662,6 +661,14 @@ namespace Evant.DAL.Migrations
                     b.HasOne("Evant.DAL.EF.Tables.User", "ReporterUser")
                         .WithMany("ReporterUsers")
                         .HasForeignKey("ReporterUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Evant.DAL.EF.Tables.UserSetting", b =>
+                {
+                    b.HasOne("Evant.DAL.EF.Tables.User", "User")
+                        .WithOne("UserSetting")
+                        .HasForeignKey("Evant.DAL.EF.Tables.UserSetting", "UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618

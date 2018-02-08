@@ -7,6 +7,7 @@ namespace Evant.DAL.EF.Tables
     {
         public User()
         {
+            UserSetting = new UserSetting();
             Followings = new List<FriendOperation>();
             Followers = new List<FriendOperation>();
             Events = new List<Event>();
@@ -19,7 +20,6 @@ namespace Evant.DAL.EF.Tables
             ReporterUsers = new List<UserReport>();
         }
 
-        public Guid UserSettingId { get; set; }
 
         public string FacebookId { get; set; }
 

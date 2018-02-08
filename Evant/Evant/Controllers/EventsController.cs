@@ -84,29 +84,35 @@ namespace Evant.Controllers
                 Longitude = model.Longitude
             };
             var result = _addressRepo.Insert(newAddress);
-
-            Guid userId = User.GetUserId();
-            var newEvent = new Event()
+            if(result)
             {
-                Id = new Guid(),
-                UserId = userId,
-                AddressId = addressId,
-                CategoryId = model.CategoryId,
-                Title = model.Title,
-                Description = model.Description,
-                IsPrivate = model.IsPrivate,
-                StartDate = model.StartAt,
-                FinishDate = model.FinishAt,
-                Photo = "test_photo",
-            };
-            var response = _eventRepo.Insert(newEvent);
-            if(response)
-            {
-                return Ok("Etkinlik oluşturuldu.");
+                Guid userId = User.GetUserId();
+                var newEvent = new Event()
+                {
+                    Id = new Guid(),
+                    UserId = userId,
+                    AddressId = addressId,
+                    CategoryId = model.CategoryId,
+                    Title = model.Title,
+                    Description = model.Description,
+                    IsPrivate = model.IsPrivate,
+                    StartDate = model.StartAt,
+                    FinishDate = model.FinishAt,
+                    Photo = "test_photo",
+                };
+                var response = _eventRepo.Insert(newEvent);
+                if (response)
+                {
+                    return Ok("Etkinlik oluşturuldu.");
+                }
+                else
+                {
+                    return BadRequest("Etkinlik oluşturulamadı.");
+                }
             }
             else
             {
-                return BadRequest("Etkinlik oluşturulamadı.");
+                return BadRequest("Bir hata oluştu.");
             }
         }
 

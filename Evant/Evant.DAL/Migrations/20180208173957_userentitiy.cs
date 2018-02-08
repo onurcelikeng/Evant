@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Evant.DAL.Migrations
 {
-    public partial class baseentity : Migration
+    public partial class userentitiy : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
