@@ -39,7 +39,7 @@ namespace Evant
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add MVC
+            // Add MVCd
             services.AddMvc();
 
             // Add DBContext
