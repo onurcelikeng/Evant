@@ -133,7 +133,7 @@ namespace Evant.Controllers
         [Route("test")]
         public IActionResult test()
         {
-            return Ok("test action");
+            return Ok("test action"); //
         }
 
     }
