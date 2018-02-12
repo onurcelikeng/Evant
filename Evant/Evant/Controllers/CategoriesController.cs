@@ -129,5 +129,12 @@ namespace Evant.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("test")]
+        public IActionResult test()
+        {
+            return Ok("test action");
+        }
+
     }
 }
