@@ -7,7 +7,7 @@ namespace Evant.DAL.EF.Tables
     {
         public User()
         {
-            UserSetting = new UserSetting();
+            //UserSetting = new UserSetting();
             Followings = new List<FriendOperation>();
             Followers = new List<FriendOperation>();
             Events = new List<Event>();

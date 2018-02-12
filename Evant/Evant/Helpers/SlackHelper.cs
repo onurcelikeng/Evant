@@ -34,8 +34,10 @@ namespace Evant.Helpers
 
             using (WebClient client = new WebClient())
             {
-                NameValueCollection data = new NameValueCollection();
-                data["payload"] = payloadJson;
+                NameValueCollection data = new NameValueCollection
+                {
+                    ["payload"] = payloadJson
+                };
 
                 var response = client.UploadValues(_uri, "POST", data);
 
