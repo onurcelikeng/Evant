@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <ApplicationInsightsResourceId>/subscriptions/cddf65b3-0381-49f0-a8d7-68fd30fd3b6b/resourcegroups/EvantResourceGroup/providers/microsoft.insights/components/evantapp</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/cddf65b3-0381-49f0-a8d7-68fd30fd3b6b/resourcegroups/EvantResourceGroup/providers/microsoft.insights/components/evantapp</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
@@ -32,6 +35,10 @@
     <ProjectReference Include="..\Evant.DAL\Evant.DAL.csproj" />
     <ProjectReference Include="..\Evant.NotificationCenter\Evant.NotificationCenter.csproj" />
     <ProjectReference Include="..\Evant.Storage\Evant.Storage.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>

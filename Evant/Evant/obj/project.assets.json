@@ -13064,6 +13064,7 @@
       "Evant.DAL >= 1.0.0",
       "Evant.NotificationCenter >= 1.0.0",
       "Evant.Storage >= 1.0.0",
+      "Microsoft.ApplicationInsights.AspNetCore >= 2.1.1",
       "Microsoft.AspNetCore.All >= 2.0.5",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 2.0.1",
       "Microsoft.NETCore.App >= 2.0.0",
@@ -13129,6 +13130,10 @@
     "frameworks": {
       "netcoreapp2.0": {
         "dependencies": {
+          "Microsoft.ApplicationInsights.AspNetCore": {
+            "target": "Package",
+            "version": "[2.1.1, )"
+          },
           "Microsoft.AspNetCore.All": {
             "target": "Package",
             "version": "[2.0.5, )"
