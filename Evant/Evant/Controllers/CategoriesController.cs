@@ -24,7 +24,7 @@ namespace Evant.Controllers
         [HttpGet]
         public IActionResult GetCategories()
         {
-            var categories = _categoryRepo.GetAll().Select(c => new CategoryDTO()
+            var categories = _categoryRepo.GetAll().Select(c => new CategoryDetailDTO()
             {
                 CategoryId = c.Id,
                 Name = c.Name,
@@ -54,7 +54,7 @@ namespace Evant.Controllers
         }
 
         [HttpPut]
-        public IActionResult PutCategory([FromBody] CategoryDTO category)
+        public IActionResult PutCategory([FromBody] CategoryDetailDTO category)
         {
             if (!ModelState.IsValid)
             {
@@ -127,13 +127,6 @@ namespace Evant.Controllers
             {
                 return BadRequest("Kategori silinemedi.");
             }
-        }
-
-        [HttpGet]
-        [Route("test")]
-        public IActionResult test()
-        {
-            return Ok("test action"); //
         }
 
     }
