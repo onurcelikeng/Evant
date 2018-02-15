@@ -19,7 +19,9 @@ namespace Evant.Controllers
         private readonly IRepository<FriendOperation> _friendOperationRepo;
 
 
-        public EventsController(IRepository<Event> eventRepo, IRepository<Address> addressRepo, IRepository<FriendOperation> friendOperationRepo)
+        public EventsController(IRepository<Event> eventRepo, 
+            IRepository<Address> addressRepo, 
+            IRepository<FriendOperation> friendOperationRepo)
         {
             _eventRepo = eventRepo;
             _addressRepo = addressRepo;
@@ -28,21 +30,41 @@ namespace Evant.Controllers
 
 
         [Authorize]
-        [HttpGet]
-        public IActionResult GetMyFollowingsEvents()
-        {
-            Guid userId = User.GetUserId();
-
-            var events = _friendOperationRepo.Where(fo => fo.FollowerId == userId);
-
-            return Ok();
-        }
-
-        [Authorize]
         [HttpGet("{userId}")]
         public IActionResult GetUserEvents([FromRoute] Guid userId)
         {
             var events = _eventRepo.Where(e => e.UserId == userId).Select(e => new EventInfoDTO()
+            {
+                EventId = e.Id,
+                Title = e.Title,
+                Start = e.StartDate,
+                PhotoUrl = e.Photo,
+                User = new UserInfoDTO()
+                {
+                    UserId = e.User.Id,
+                    FirstName = e.User.FirstName,
+                    LastName = e.User.LastName,
+                    PhotoUrl = e.User.Photo
+                }
+            }).ToList();
+
+            if (events.IsNullOrEmpty())
+            {
+                return NotFound("Kayıt bulunamadı.");
+            }
+            else
+            {
+                return Ok(events);
+            }
+        }
+
+
+        [Authorize]
+        [HttpGet]
+        [Route("categoryevents/{categoryId}")]
+        public IActionResult GetEventsByCategory([FromRoute] Guid categoryId)
+        {
+            var events = _eventRepo.Where(e => e.CategoryId == categoryId).Select(e => new EventInfoDTO()
             {
                 EventId = e.Id,
                 Title = e.Title,
