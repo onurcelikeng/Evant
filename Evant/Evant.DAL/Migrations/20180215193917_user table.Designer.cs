@@ -11,14 +11,53 @@ using System;
 namespace Evant.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20180215193917_user table")]
+    partial class usertable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Evant.DAL.EF.Tables.Address", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnName("City")
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<Guid>("EventId")
+                        .HasColumnName("EventId");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnName("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnName("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Town")
+                        .IsRequired()
+                        .HasColumnName("Town")
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime>("UpdateAt");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId")
+                        .IsUnique();
+
+                    b.ToTable("Addresses");
+                });
 
             modelBuilder.Entity("Evant.DAL.EF.Tables.Category", b =>
                 {
@@ -81,11 +120,6 @@ namespace Evant.DAL.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnName("CategoryId");
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnName("City")
-                        .HasColumnType("nvarchar(20)");
-
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("Description")
@@ -100,14 +134,6 @@ namespace Evant.DAL.Migrations
                     b.Property<bool>("IsPrivate")
                         .HasColumnName("IsPrivate")
                         .HasColumnType("bit");
-
-                    b.Property<double>("Latitude")
-                        .HasColumnName("Latitude")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Longitude")
-                        .HasColumnName("Longitude")
-                        .HasColumnType("float");
 
                     b.Property<string>("Photo")
                         .IsRequired()
@@ -130,11 +156,6 @@ namespace Evant.DAL.Migrations
                     b.Property<int>("TotalParticipants")
                         .HasColumnName("TotalParticipants")
                         .HasColumnType("int");
-
-                    b.Property<string>("Town")
-                        .IsRequired()
-                        .HasColumnName("Town")
-                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("UpdateAt");
 
@@ -537,6 +558,14 @@ namespace Evant.DAL.Migrations
                         .IsUnique();
 
                     b.ToTable("UserSettings");
+                });
+
+            modelBuilder.Entity("Evant.DAL.EF.Tables.Address", b =>
+                {
+                    b.HasOne("Evant.DAL.EF.Tables.Event", "Event")
+                        .WithOne("EventAddress")
+                        .HasForeignKey("Evant.DAL.EF.Tables.Address", "EventId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Evant.DAL.EF.Tables.Comment", b =>

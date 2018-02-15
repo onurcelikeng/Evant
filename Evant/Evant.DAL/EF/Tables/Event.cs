@@ -7,7 +7,6 @@ namespace Evant.DAL.EF.Tables
     {
         public Event()
         {
-            EventAddress = new Address();
             EventTags = new List<EventTag>();
             EventComments = new List<Comment>();
             EventOperations = new List<EventOperation>();
@@ -30,6 +29,14 @@ namespace Evant.DAL.EF.Tables
 
         public string Photo { get; set; }
 
+        public string City { get; set; }
+
+        public string Town { get; set; }
+
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
+
         public int TotalParticipants { get; set; } = 0;
 
         public int TotalComments { get; set; } = 0;
@@ -37,8 +44,6 @@ namespace Evant.DAL.EF.Tables
 
         // Foreign keys
         public virtual User User { get; set; }
-
-        public virtual Address EventAddress { get; set; }
 
         public virtual Category Category { get; set; }
 
@@ -49,5 +54,6 @@ namespace Evant.DAL.EF.Tables
         public virtual ICollection<Comment> EventComments { get; set; }
 
         public virtual ICollection<EventOperation> EventOperations { get; set; }
+
     }
 }

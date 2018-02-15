@@ -15,16 +15,13 @@ namespace Evant.Controllers
     public class EventsController : BaseController
     {
         private readonly IRepository<Event> _eventRepo;
-        private readonly IRepository<Address> _addressRepo;
         private readonly IRepository<FriendOperation> _friendOperationRepo;
 
 
         public EventsController(IRepository<Event> eventRepo, 
-            IRepository<Address> addressRepo, 
             IRepository<FriendOperation> friendOperationRepo)
         {
             _eventRepo = eventRepo;
-            _addressRepo = addressRepo;
             _friendOperationRepo = friendOperationRepo;
         }
 
@@ -107,13 +104,10 @@ namespace Evant.Controllers
                 StartDate = model.StartAt,
                 FinishDate = model.FinishAt,
                 Photo = "test_photo",
-                EventAddress = new Address()
-                {
-                    City = model.City,
-                    Town = model.Town,
-                    Latitude = model.Latitude,
-                    Longitude = model.Longitude,
-                }
+                City = model.City,
+                Town = model.Town,
+                Latitude = model.Latitude,
+                Longitude = model.Longitude
             };
 
             var response = _eventRepo.Insert(newEvent);
@@ -135,23 +129,16 @@ namespace Evant.Controllers
             if (selectedEvent == null)
                 return NotFound("Etkinlik bulunamadı.");
 
-            var addressResponse = _addressRepo.Delete(selectedEvent.EventAddress);
-            if (addressResponse)
+            var response = _eventRepo.Delete(selectedEvent);
+            if (response)
             {
-                var eventResponse = _eventRepo.Delete(selectedEvent);
-                if (eventResponse)
-                {
-                    return Ok("Etkinlik ve adresi silindi.");
-                }
-                else
-                {
-                    return BadRequest("Etkinlik silinemedi.");
-                }
+                return Ok("Etkinlik silindi.");
             }
             else
             {
-                return BadRequest("Etkinlik adresi silinemedi.");
+                return BadRequest("Etkinlik silinemedi.");
             }
+
         }
 
     }

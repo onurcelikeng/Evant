@@ -13,7 +13,6 @@ namespace Evant.DAL.EF
         public DbSet<Event> Events { get; set; }
         public DbSet<Comment> EventComments { get; set; }
         public DbSet<EventOperation> EventOperations { get; set; }
-        public DbSet<Address> EventAddresses { get; set; }
         public DbSet<FriendOperation> FriendOperations { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<Tag> Tags { get; set; }
@@ -40,7 +39,6 @@ namespace Evant.DAL.EF
             new EventMap(modelBuilder.Entity<Event>());
             new CommentMap(modelBuilder.Entity<Comment>());
             new EventOperationMap(modelBuilder.Entity<EventOperation>());
-            new AddressMap(modelBuilder.Entity<Address>());
             new FriendOperationMap(modelBuilder.Entity<FriendOperation>());
             new LogMap(modelBuilder.Entity<Log>());
             new TagMap(modelBuilder.Entity<Tag>());

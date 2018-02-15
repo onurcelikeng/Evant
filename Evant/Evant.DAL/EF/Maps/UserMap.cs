@@ -20,7 +20,7 @@ namespace Evant.DAL.EF.Maps
             entityBuilder.Property(x => x.IsActive).HasColumnName(@"IsActive").IsRequired().HasColumnType("bit");
             entityBuilder.Property(x => x.IsFacebook).HasColumnName(@"IsFacebook").IsRequired().HasColumnType("bit");
 
-            entityBuilder.HasOne(a => a.UserSetting).WithOne(b => b.User).HasForeignKey<UserSetting>(c => c.UserId).OnDelete(DeleteBehavior.Restrict);
+            entityBuilder.HasOne(a => a.Setting).WithOne(b => b.User).HasForeignKey<UserSetting>(b => b.UserId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

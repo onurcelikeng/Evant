@@ -7,7 +7,6 @@ namespace Evant.DAL.EF.Tables
     {
         public User()
         {
-            //UserSetting = new UserSetting();
             Followings = new List<FriendOperation>();
             Followers = new List<FriendOperation>();
             Events = new List<Event>();
@@ -41,7 +40,7 @@ namespace Evant.DAL.EF.Tables
 
 
         // Foreign keys
-        public virtual UserSetting UserSetting { get; set; }
+        public virtual UserSetting Setting { get; set; }
 
 
         // Reverse navigation

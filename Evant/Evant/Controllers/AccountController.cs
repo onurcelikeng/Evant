@@ -70,7 +70,7 @@ namespace Evant.Controllers
                     IsFacebook = false,
                     Photo = null,
                     FacebookId = null,
-                    UserSetting = new UserSetting()
+                    Setting = new UserSetting()
                 };
 
                 var response = _userRepo.Insert(newUser);
