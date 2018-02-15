@@ -54,7 +54,7 @@ namespace Evant.Controllers
         }
 
         [HttpPut]
-        public IActionResult PutCategory([FromBody] CategoryDetailDTO category)
+        public IActionResult AddCategory([FromBody] CategoryDetailDTO category)
         {
             if (!ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace Evant.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostCategory([FromBody] CategoryDTO category)
+        public IActionResult UpdateCategory([FromBody] CategoryDTO category)
         {
             if (!ModelState.IsValid)
             {
