@@ -55,7 +55,6 @@ namespace Evant.Controllers
             }
         }
 
-
         [Authorize]
         [HttpGet]
         [Route("categoryevents/{categoryId}")]

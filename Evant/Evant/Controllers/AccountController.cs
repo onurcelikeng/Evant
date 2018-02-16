@@ -221,18 +221,13 @@ namespace Evant.Controllers
         public IActionResult ChangePassword([FromBody] ChangePasswordDTO password)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest("Eksik bilgi girdiniz.");
-            }
 
             if (password.NewPassword != password.ReNewPassword)
-            {
                 return BadRequest("Şifreler aynı değil.");
-            }
 
             Guid userId = User.GetUserId();
             var user = _userRepo.First(u => u.Id == userId);
-
             if (user != null)
             {
                 if (user.Password == password.OldPassword)
@@ -241,9 +236,9 @@ namespace Evant.Controllers
                     user.UpdateAt = DateTime.Now;
 
                     var response = _userRepo.Update(user);
-
                     if (response)
                     {
+                        User.Logout();
                         return Ok("Şifreniz başarıyla güncellendi.");
                     }
 
@@ -253,7 +248,7 @@ namespace Evant.Controllers
                 return BadRequest("Şifrenizi hatalı girdiniz.");
             }
 
-            return BadRequest("Böyle bir kullanıcı bulunamadı.");
+            return BadRequest("Kayıt bulunamadı.");
         }
 
         [Authorize]
