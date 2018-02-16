@@ -95,7 +95,7 @@ namespace Evant.Controllers
 
             var selectedFriendOperation = _friendOperationRepo.First(fo => fo.FollowerId == userId && fo.FollowingId == friendId);
             if (selectedFriendOperation != null)
-                return BadRequest("Zaten takip ediyorsunuz.");
+                return BadRequest("Kayıt bulunamadı.");
 
             var model = new FriendOperation()
             {
@@ -123,7 +123,7 @@ namespace Evant.Controllers
 
             var selectedFriendOperation = _friendOperationRepo.First(fo => fo.FollowerId == userId && fo.FollowingId == friendId);
             if (selectedFriendOperation == null)
-                return BadRequest("Zaten takip etmiyorsun.");
+                return BadRequest("Kayıt bulunamadı.");
 
             var response = _friendOperationRepo.Delete(selectedFriendOperation);
             if (response)

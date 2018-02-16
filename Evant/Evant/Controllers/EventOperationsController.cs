@@ -74,7 +74,7 @@ namespace Evant.Controllers
         {
             var selectedEventOperation = _eventOperationRepo.First(eo => eo.Id == eventOperationId);
             if(selectedEventOperation == null)
-                return NotFound("Etkinliğe daha önce katılmadınız.");
+                return NotFound("Kayıt bulunamadı.");
 
             var response = _eventOperationRepo.Delete(selectedEventOperation);
             if (response)

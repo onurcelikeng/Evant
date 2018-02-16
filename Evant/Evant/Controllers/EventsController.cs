@@ -95,6 +95,7 @@ namespace Evant.Controllers
             Guid userId = User.GetUserId();
             var newEvent = new Event()
             {
+                Id = new Guid(),
                 UserId = userId,
                 CategoryId = model.CategoryId,
                 Title = model.Title,

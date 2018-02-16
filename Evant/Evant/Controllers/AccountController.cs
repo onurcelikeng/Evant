@@ -67,7 +67,7 @@ namespace Evant.Controllers
                     Role = "User",
                     IsActive = true,
                     IsFacebook = false,
-                    Photo = null,
+                    Photo = "https://evantstorage.blob.core.windows.net/users/default.jpeg",
                     FacebookId = null,
                     Setting = new UserSetting()
                 };
