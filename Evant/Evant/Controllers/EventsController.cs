@@ -122,12 +122,20 @@ namespace Evant.Controllers
         }
 
         [Authorize]
+        [HttpPut]
+        public IActionResult PublicEvent()
+        {
+
+            return Ok();
+        }
+
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult DeleteEvent([FromRoute] Guid id)
         {
             var selectedEvent = _eventRepo.First(e => e.Id == id);
             if (selectedEvent == null)
-                return NotFound("Etkinlik bulunamadı.");
+                return NotFound("Kayıt bulunamadı.");
 
             var response = _eventRepo.Delete(selectedEvent);
             if (response)
@@ -138,7 +146,6 @@ namespace Evant.Controllers
             {
                 return BadRequest("Etkinlik silinemedi.");
             }
-
         }
 
     }
