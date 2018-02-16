@@ -14,9 +14,7 @@ namespace Evant.Helpers
 
         public static void Logout(this ClaimsPrincipal userClaims)
         {
-            var claim = userClaims;
-            
+            userClaims.Logout();
         }
-
     }
 }

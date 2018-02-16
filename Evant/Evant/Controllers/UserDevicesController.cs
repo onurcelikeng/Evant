@@ -73,13 +73,15 @@ namespace Evant.Controllers
         }
 
         [Authorize]
-        [HttpGet("{deviceId}")]
+        [HttpGet]
+        [Route("logout/{deviceId}")]
         public IActionResult CloseDevice([FromRoute] string deviceId)
         {
             var selectedDevice = _userDevicesRepo.First(d => d.DeviceId == deviceId);
             if (selectedDevice == null)
+            {
                 return BadRequest("Kayıt bulunamadı.");
-
+            }
             else
             {
                 selectedDevice.IsLoggedin = false;
@@ -88,6 +90,7 @@ namespace Evant.Controllers
                 var response = _userDevicesRepo.Update(selectedDevice);
                 if (response)
                 {
+                    User.Logout();
                     return Ok("Cihazda oturum kapatıldı.");
                 }
                 else

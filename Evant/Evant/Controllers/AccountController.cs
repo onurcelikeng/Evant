@@ -55,7 +55,6 @@ namespace Evant.Controllers
             {
                 return BadRequest("Eposta adresi zaten kullanılıyor.");
             }
-
             else
             {
                 var newUser = new User
@@ -107,15 +106,6 @@ namespace Evant.Controllers
         [HttpGet]
         [Route("fblogin")]
         public IActionResult FacebookLogin()
-        {
-            //...
-            return Ok();
-        }
-
-        [Authorize]
-        [HttpGet]
-        [Route("logout")]
-        public IActionResult Logout()
         {
             //...
             return Ok();
