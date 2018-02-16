@@ -3,6 +3,7 @@ using Evant.Contracts.DataTransferObjects.UserDevice;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
 using Evant.Helpers;
+using Evant.NotificationCenter.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,11 +14,14 @@ namespace Evant.Controllers
     public class UserDevicesController : BaseController
     {
         private readonly IRepository<UserDevice> _userDevicesRepo;
+        private readonly IOneSignal _oneSignal;
 
 
-        public UserDevicesController(IRepository<UserDevice> userDevicesRepo)
+        public UserDevicesController(IRepository<UserDevice> userDevicesRepo,
+            IOneSignal oneSignal)
         {
             _userDevicesRepo = userDevicesRepo;
+            _oneSignal = oneSignal;
         }
 
 
@@ -63,11 +67,12 @@ namespace Evant.Controllers
                 var response = _userDevicesRepo.Insert(newDevice);
                 if (response)
                 {
-                    return Ok("Cihaz güncellendi.");
+                    _oneSignal.AddDevice(device);
+                    return Ok("Cihazınız eklendi.");
                 }
                 else
                 {
-                    return BadRequest("Cihaz güncellenemedi.");
+                    return BadRequest("Cihaz eklenemedi.");
                 }
             }
         }

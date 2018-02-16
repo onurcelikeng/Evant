@@ -11,6 +11,6 @@ namespace Evant.DAL.EF.Tables
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        public DateTime UpdateAt { get; set; } //nullable
+        public DateTime UpdateAt { get; set; }
     }
 }

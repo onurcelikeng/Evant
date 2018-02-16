@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
+using Evant.Contracts.DataTransferObjects.UserDevice;
+using System.Threading.Tasks;
 
 namespace Evant.NotificationCenter.Interfaces
 {
     public interface IOneSignal
     {
-        void SaveDevice();
+        void AddDevice(UserDeviceDTO device);
         void SendNotification();
     }
 }

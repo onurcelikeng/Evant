@@ -2,14 +2,14 @@
 {
     public sealed class UserDeviceDTO
     {
-        public string DeviceId { get; set; }
+        public string DeviceId { get; set; } //UniqId
 
-        public string PlayerId { get; set; }
+        public string PlayerId { get; set; } //One Signal
 
-        public string Brand { get; set; }
+        public string Brand { get; set; } //iPhone
 
-        public string Model { get; set; }
+        public string Model { get; set; } //6S
 
-        public string OS { get; set; }
+        public string OS { get; set; } //iOS 11.2.5
     }
 }
