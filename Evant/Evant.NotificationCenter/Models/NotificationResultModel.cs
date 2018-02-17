@@ -2,12 +2,12 @@
 
 namespace Evant.NotificationCenter.Models
 {
-    public class DeviceResultModel
+    public class NotificationResultModel
     {
-        [DeserializeAs(Name = "success")]
-        public bool IsSuccess { get; set; }
-
         [DeserializeAs(Name = "id")]
         public string Id { get; set; }
+
+        [DeserializeAs(Name = "recipients")]
+        public int Recipients { get; set; }
     }
 }

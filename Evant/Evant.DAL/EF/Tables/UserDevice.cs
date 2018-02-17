@@ -11,19 +11,19 @@ namespace Evant.DAL.EF.Tables
         public Guid UserId { get; set; }
 
         [Required]
-        public string DeviceId { get; set; }
+        public string DeviceId { get; set; } //retwfdwdr676
 
         [Required]
         public string PlayerId { get; set; }
 
         [Required]
-        public string Brand { get; set; }
+        public string Brand { get; set; } //Apple
 
         [Required]
-        public string Model { get; set; }
+        public string Model { get; set; } //iPhone 6S
 
         [Required]
-        public string OS { get; set; }
+        public string OS { get; set; } //iOS 11
 
         [Required]
         public bool IsLoggedin { get; set; } = true;

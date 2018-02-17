@@ -8,7 +8,7 @@
 
         public OneSignalSetting(string appId, string restApiKey)
         {
-            this.AppId = AppId;
+            this.AppId = appId;
             this.RestApiKey = restApiKey;
         }
 

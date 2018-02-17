@@ -1,6 +1,13 @@
 ﻿using Evant.Contracts.DataTransferObjects.UserDevice;
+using Evant.NotificationCenter.Enums;
 using Evant.NotificationCenter.Interfaces;
+using Evant.NotificationCenter.Models;
+using Evant.NotificationCenter.Serializers;
 using Evant.NotificationCenter.Settings;
+using RestSharp;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -10,56 +17,72 @@ namespace Evant.NotificationCenter
 {
     public class OneSignal : IOneSignal
     {
-        private readonly OneSignalSetting _settings;
         private string baseUrl = "https://onesignal.com/api/v1";
+        private readonly OneSignalSetting _settings;
+        private readonly RestClient _restClient;
 
 
         public OneSignal(OneSignalSetting settings)
         {
             _settings = settings;
+            _restClient = new RestClient(baseUrl);
         }
 
 
-        public void AddDevice(UserDeviceDTO device)
+        public DeviceResultModel AddDevice(UserDeviceDTO device)
         {
-            var request = WebRequest.Create(baseUrl + "/players") as HttpWebRequest;
+            RestRequest restRequest = new RestRequest("players", Method.POST);
 
-            request.KeepAlive = true;
-            request.Method = "POST";
-            request.ContentType = "application/json; charset=utf-8";
-            request.Headers.Add("authorization", "Basic " + _settings.RestApiKey);
-
-            byte[] byteArray = Encoding.UTF8.GetBytes("{"
-                                                    + "\"app_id\": \"" + _settings.AppId + "\","
-                                                     + "\"identifier\": \"" + device.DeviceId + "\","
-                                                      + "\"device_type\": \"" + 0 + "\"}");
-            string responseContent = null;
-
-            try
+            restRequest.AddHeader("Authorization", string.Format("Basic {0}", _settings.RestApiKey));
+            restRequest.RequestFormat = DataFormat.Json;
+            restRequest.JsonSerializer = new NewtonsoftJsonSerializer();
+            restRequest.AddBody(new DeviceAddOptions()
             {
-                using (var writer = request.GetRequestStream())
-                {
-                    writer.Write(byteArray, 0, byteArray.Length);
-                }
+                AppId = _settings.AppId,
+                Identifier = device.DeviceId,
+                DeviceType = DeviceTypeEnum.iOS,
+                DeviceModel = device.Model,
+                DeviceOS = device.OS
+            });
 
-                using (var response = request.GetResponse() as HttpWebResponse)
-                {
-                    using (var reader = new StreamReader(response.GetResponseStream()))
-                    {
-                        responseContent = reader.ReadToEnd();
-                    }
-                }
-            }
-            catch (WebException ex)
+            var restResponse = _restClient.Execute<DeviceResultModel>(restRequest);
+            if (restResponse.ErrorException != null)
             {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-                System.Diagnostics.Debug.WriteLine(new StreamReader(ex.Response.GetResponseStream()).ReadToEnd());
+                throw restResponse.ErrorException;
             }
-            System.Diagnostics.Debug.WriteLine(responseContent);
+
+            return restResponse.Data;
         }
 
-        public void SendNotification()
+        public NotificationResultModel SendNotification(string playerId, string message)
         {
+            RestRequest restRequest = new RestRequest("notifications", Method.POST);
+
+            restRequest.AddHeader("Authorization", string.Format("Basic {0}", _settings.RestApiKey));
+
+            restRequest.RequestFormat = DataFormat.Json;
+            restRequest.JsonSerializer = new NewtonsoftJsonSerializer();
+
+            var options = new NotificationCreateOptions()
+            {
+                AppId = _settings.AppId,
+                Contents = new Dictionary<string, string>
+                {
+                    { "tr",  message}
+                },
+                IncludedSegments = new List<string>
+                {
+                    playerId
+                }
+            };
+
+            var restResponse = _restClient.Execute<NotificationResultModel>(restRequest);
+            if (restResponse.ErrorException != null)
+            {
+                throw restResponse.ErrorException;
+            }
+
+            return restResponse.Data;
 
         }
 

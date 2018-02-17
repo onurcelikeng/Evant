@@ -25,7 +25,7 @@ namespace Evant.Helpers
             if(statusCode == 500)
             {
                 SlackHelper slackHelper = new SlackHelper();
-                string content = "Entity: " + table + ", Status: " + statusCode + " ex: " + ex;
+                string content = "Entity: " + table + ", Status: " + statusCode + " Action: " + action + " ex: " + ex;
                 slackHelper.PostMessage(content);
             }
 
