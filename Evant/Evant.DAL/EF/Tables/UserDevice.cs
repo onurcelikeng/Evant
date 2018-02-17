@@ -26,11 +26,9 @@ namespace Evant.DAL.EF.Tables
         public string OS { get; set; }
 
         [Required]
-        [DefaultValue(true)]
-        public bool IsLoggedin { get; set; }
+        public bool IsLoggedin { get; set; } = true;
 
 
-        // Foreign keys
         public virtual User User { get; set; }
     }
 }

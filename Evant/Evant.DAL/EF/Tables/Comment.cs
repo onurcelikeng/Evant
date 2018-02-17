@@ -15,7 +15,6 @@ namespace Evant.DAL.EF.Tables
         public string Content { get; set; }
 
 
-        // Foreign keys
         public virtual User User { get; set; }
 
         public virtual Event Event { get; set; }

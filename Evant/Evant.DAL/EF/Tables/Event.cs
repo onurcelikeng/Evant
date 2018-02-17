@@ -57,16 +57,12 @@ namespace Evant.DAL.EF.Tables
         public int TotalComments { get; set; }
 
 
-        // Foreign keys
         public virtual User User { get; set; }
 
         public virtual Category Category { get; set; }
 
-
-        // Reverse navigation
         public virtual ICollection<Comment> EventComments { get; set; }
 
         public virtual ICollection<EventOperation> EventOperations { get; set; }
-
     }
 }

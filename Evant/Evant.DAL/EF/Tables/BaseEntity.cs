@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Evant.DAL.EF.Tables
@@ -14,6 +13,7 @@ namespace Evant.DAL.EF.Tables
 
         public DateTime UpdateAt { get; set; }
 
+        [Required]
         public bool IsDeleted { get; set; } = false; //soft delete
     }
 }

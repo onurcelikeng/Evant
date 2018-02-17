@@ -13,7 +13,6 @@ namespace Evant.DAL.EF.Tables
         public string Keyword { get; set; }
 
 
-        // Foreign keys
         public virtual User User { get; set; }
     }
 }

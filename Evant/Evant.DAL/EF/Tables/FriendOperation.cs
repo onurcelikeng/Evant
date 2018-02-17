@@ -11,7 +11,6 @@ namespace Evant.DAL.EF.Tables
         public Guid FollowerUserId { get; set; } //takip eden
 
 
-        // Foreign keys
         public virtual User FollowerUser { get; set; }
 
         public virtual User FollowingUser { get; set; }

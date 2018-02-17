@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,13 +9,13 @@ namespace Evant.DAL.EF.Tables
     {
         public User()
         {
-            //Followings = new List<FriendOperation>();
-            //Followers = new List<FriendOperation>();
-            //Events = new List<Event>();
-            //EventComments = new List<Comment>();
-            //EventOperations = new List<EventOperation>();
-            //UserDevices = new List<UserDevice>();
-            //UserSearchHistories = new List<SearchHistory>();
+            Followers = new List<FriendOperation>();
+            Followings = new List<FriendOperation>();
+            Events = new List<Event>();
+            EventComments = new List<Comment>();
+            EventOperations = new List<EventOperation>();
+            UserDevices = new List<UserDevice>();
+            UserSearchHistories = new List<SearchHistory>();
         }
 
 
@@ -34,28 +33,23 @@ namespace Evant.DAL.EF.Tables
         [Required]
         public string Password { get; set; }
 
-        [DefaultValue(null)]
-        public string Photo { get; set; }
+        public string Photo { get; set; } = null;
 
         [Required]
         public string Role { get; set; }
 
         [Required]
-        [DefaultValue(true)]
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         [Required]
         public bool IsFacebook { get; set; }
 
 
-        // Foreign keys
         public virtual UserSetting Setting { get; set; }
 
-
-        // Reverse navigation
-        public virtual ICollection<FriendOperation> Followings { get; set; }
-
         public virtual ICollection<FriendOperation> Followers { get; set; }
+
+        public virtual ICollection<FriendOperation> Followings { get; set; }
 
         public virtual ICollection<Event> Events { get; set; }
 
@@ -66,6 +60,5 @@ namespace Evant.DAL.EF.Tables
         public virtual ICollection<UserDevice> UserDevices { get; set; }
 
         public virtual ICollection<SearchHistory> UserSearchHistories { get; set; }
-
     }
 }
