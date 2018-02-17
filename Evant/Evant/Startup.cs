@@ -51,6 +51,8 @@ namespace Evant
             services.AddSingleton<IFriendOperationRepository, FriendOperationRepository>();
             services.AddSingleton<ICommentRepository, CommentRepository>();
             services.AddSingleton<IEventOperationRepository, EventOperationRepository>();
+            services.AddSingleton<IEventRepository, EventRepository>();
+            services.AddSingleton<IUserRepository, UserRepository>();
 
             // Scoped
             services.AddScoped<IJwtFactory, JwtFactory>();

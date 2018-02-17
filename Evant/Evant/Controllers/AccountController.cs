@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Evant.Storage.Extensions;
 using Evant.Contracts.DataTransferObjects.UserSettingDTO.cs;
 using Evant.Auth;
+using Evant.DAL.Repositories.Interfaces;
 
 namespace Evant.Controllers
 {
@@ -20,14 +21,15 @@ namespace Evant.Controllers
     [Route("api/account")]
     public class AccountController : BaseController
     {
-        private readonly IRepository<User> _userRepo;
+
+        private readonly IUserRepository _userRepo;
         private readonly IRepository<UserSetting> _userSettingRepo;
         private readonly IJwtFactory _jwtFactory;
         private readonly IConfiguration _configuration;
         private readonly IAzureBlobStorage _blobStorage;
 
 
-        public AccountController(IRepository<User> userRepo,
+        public AccountController(IUserRepository userRepo,
             IRepository<UserSetting> userSettingRepo,
             IJwtFactory jwtFactory,
             IConfiguration configuration,
@@ -43,21 +45,21 @@ namespace Evant.Controllers
 
         [HttpPost]
         [Route("register")]
-        public IActionResult Register([FromBody] RegisterDTO user)
+        public async Task<IActionResult> Register([FromBody] RegisterDTO user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Eksik bilgi girdiniz.");
             }
 
-            var selectedUser = _userRepo.First(u => u.Email == user.Email);
+            var selectedUser = await _userRepo.First(u => u.Email == user.Email);
             if (selectedUser != null)
             {
                 return BadRequest("Eposta adresi zaten kullanılıyor.");
             }
             else
             {
-                var newUser = new User
+                var entity = new User
                 {
                     Id = new Guid(),
                     FirstName = user.FirstName,
@@ -72,7 +74,7 @@ namespace Evant.Controllers
                     Setting = new UserSetting()
                 };
 
-                var response = _userRepo.Insert(newUser);
+                var response = await _userRepo.Add(entity);
                 if (response)
                 {
                     return Ok("Kullanıcı eklendi.");
@@ -86,14 +88,14 @@ namespace Evant.Controllers
 
         [HttpPost]
         [Route("token")]
-        public IActionResult Login([FromBody] LoginDTO user)
+        public async Task<IActionResult> Login([FromBody] LoginDTO user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Eksik bilgi girdiniz.");
             }
 
-            var selectedUser = _userRepo.First(u => u.Email == user.Email && u.Password == user.Password);
+            var selectedUser = await _userRepo.Login(user.Email, user.Password);
             if (selectedUser != null)
             {
                 var token = _jwtFactory.GenerateJwtToken(selectedUser);
@@ -114,11 +116,11 @@ namespace Evant.Controllers
         [Authorize]
         [HttpGet]
         [Route("me")]
-        public IActionResult GetMe()
+        public async Task<IActionResult> GetMe()
         {
             Guid userId = User.GetUserId();
 
-            var user = _userRepo.First(u => u.Id == userId);
+            var user = await _userRepo.GetUser(userId);
             if (user == null)
             {
                 return BadRequest("Kayıt bulunamadı.");
@@ -158,12 +160,12 @@ namespace Evant.Controllers
                 var isUploaded = await _blobStorage.UploadAsync(blobName, fileStream);
                 if (isUploaded)
                 {
-                    var selectedUser = _userRepo.First(u => u.Id == userId);
+                    var selectedUser = await _userRepo.GetUser(userId);
                     selectedUser.UpdateAt = DateTime.Now;
                     selectedUser.Photo = "https://evantstorage.blob.core.windows.net/users/" + blobName;
 
-                    var resposne = _userRepo.Update(selectedUser);
-                    if (resposne)
+                    var response = await _userRepo.Update(selectedUser);
+                    if (response)
                         return Ok("photo uploaded.");
                     else
                         return BadRequest("photo not uploaded.");
@@ -182,13 +184,13 @@ namespace Evant.Controllers
         [Authorize]
         [HttpPut]
         [Route("settings")]
-        public IActionResult ChangeUserSetting([FromBody] UserSettingDTO model)
+        public async Task<IActionResult> ChangeUserSetting([FromBody] UserSettingDTO model)
         {
             if (!ModelState.IsValid)
                 return BadRequest("Eksik bilgi girdiniz.");
 
             Guid userId = User.GetUserId();
-            var selectedUserSetting = _userSettingRepo.First(us => us.UserId == userId);
+            var selectedUserSetting = await _userSettingRepo.First(us => us.UserId == userId);
             if (selectedUserSetting == null)
             {
                 return NotFound("Kayıt bulunamadı.");
@@ -203,7 +205,7 @@ namespace Evant.Controllers
                 selectedUserSetting.IsEventUpdateNotif = model.IsEventUpdateNotif;
                 selectedUserSetting.IsFriendshipNotif = model.IsFriendshipNotif;
 
-                var response = _userSettingRepo.Update(selectedUserSetting);
+                var response = await _userSettingRepo.Update(selectedUserSetting);
                 if (response)
                 {
                     return Ok("Kullanıcı ayarları güncellendi.");
@@ -218,7 +220,7 @@ namespace Evant.Controllers
         [Authorize]
         [HttpPut]
         [Route("password")]
-        public IActionResult ChangePassword([FromBody] ChangePasswordDTO password)
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO password)
         {
             if (!ModelState.IsValid)
                 return BadRequest("Eksik bilgi girdiniz.");
@@ -227,7 +229,7 @@ namespace Evant.Controllers
                 return BadRequest("Şifreler aynı değil.");
 
             Guid userId = User.GetUserId();
-            var user = _userRepo.First(u => u.Id == userId);
+            var user = await _userRepo.First(u => u.Id == userId);
             if (user != null)
             {
                 if (user.Password == password.OldPassword)
@@ -235,7 +237,7 @@ namespace Evant.Controllers
                     user.Password = password.NewPassword;
                     user.UpdateAt = DateTime.Now;
 
-                    var response = _userRepo.Update(user);
+                    var response = await _userRepo.Update(user);
                     if (response)
                     {
                         User.Logout();
@@ -254,11 +256,11 @@ namespace Evant.Controllers
         [Authorize]
         [HttpGet]
         [Route("deactive")]
-        public IActionResult DeActiveAccount()
+        public async Task<IActionResult> DeActiveAccount()
         {
             Guid userId = User.GetUserId();
-            var user = _userRepo.First(u => u.Id == userId);
 
+            var user = await _userRepo.GetUser(userId);
             if (user != null)
             {
                 if (user.IsActive)
@@ -266,20 +268,25 @@ namespace Evant.Controllers
                     user.IsActive = false;
                     user.UpdateAt = DateTime.Now;
 
-                    var response = _userRepo.Update(user);
-
+                    var response = await _userRepo.Update(user);
                     if (response)
                     {
                         return Ok("Hesabınız başarıyla deaktif edilmiştir.");
                     }
-
-                    return BadRequest("Hesabınız deaktif edilemedi.");
+                    else
+                    {
+                        return BadRequest("Hesabınız deaktif edilemedi.");
+                    }
                 }
-
-                return BadRequest("Hesap zaten deaktif edilmiş.");
+                else
+                {
+                    return BadRequest("Hesap zaten deaktif edilmiş.");
+                }
             }
-
-            return BadRequest("Kayıt bulunamadı.");
+            else
+            {
+                return BadRequest("Kayıt bulunamadı.");
+            }
         }
 
     }
