@@ -46,9 +46,9 @@ namespace Evant
             // Add DBContext
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DevDbConnection")));
 
-            // Add Generic Repository
+            // Repositories
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IFriendOperationRepository, FriendOperationRepository>();
+            services.AddSingleton<IFriendOperationRepository, FriendOperationRepository>();
 
             // Scoped
             services.AddScoped<IJwtFactory, JwtFactory>();

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Evant.Contracts.DataTransferObjects.Category;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
@@ -21,9 +22,9 @@ namespace Evant.Controllers
 
 
         [HttpGet]
-        public IActionResult GetCategories()
+        public async Task<IActionResult> GetCategories()
         {
-            var categories = _categoryRepo.GetAll().Select(c => new CategoryDetailDTO()
+            var categories =(await _categoryRepo.All()).Select(c => new CategoryDetailDTO()
             {
                 CategoryId = c.Id,
                 Name = c.Name,
