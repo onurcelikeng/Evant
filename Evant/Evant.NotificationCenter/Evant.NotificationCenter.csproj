@@ -13,8 +13,4 @@
     <ProjectReference Include="..\Evant.Contracts\Evant.Contracts.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
-
 </Project>
