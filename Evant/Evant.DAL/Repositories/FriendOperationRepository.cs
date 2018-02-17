@@ -4,6 +4,7 @@ using Evant.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,12 +17,43 @@ namespace Evant.DAL.Repositories
 
         }
 
-        public async Task<List<FriendOperation>> List()
+
+        public async Task<List<FriendOperation>> Followers(Guid userId)
         {
-            return await Table.Include(t => t.FollowerUser)
-                              .Include(t => t.FollowingUser).ToListAsync();
+            return await Table
+                .Include(t => t.FollowerUser)
+                .Include(t => t.FollowingUser)
+                .Where(t => t.FollowerUserId == userId)
+                .ToListAsync();
         }
 
+        public async Task<List<FriendOperation>> Followings(Guid userId)
+        {
+            return await Table
+                .Include(t => t.FollowerUser)
+                .Include(t => t.FollowingUser)
+                .Where(t => t.FollowerUserId == userId)
+                .ToListAsync();
+        }
+
+        public async Task<Guid> Follow(FriendOperation entity)
+        {
+            try
+            {
+                await Table.AddAsync(entity);
+                await Context.SaveChangesAsync();
+                return entity.Id;
+            }
+            catch (Exception)
+            {
+                return Guid.Empty;
+            }
+        }
+
+        public async Task<bool> UnFollow(FriendOperation entity)
+        {
+            return await this.Delete(entity);
+        }
 
     }
 }

@@ -15,15 +15,12 @@ namespace Evant.Controllers
     [Route("api/friendoperations")]
     public class FriendOperationsController : BaseController
     {
-        private readonly IRepository<FriendOperation> _friendOperationRepo;
-        private readonly IFriendOperationRepository _friend;
+        private readonly IFriendOperationRepository _friendOperationRepo;
 
 
-        public FriendOperationsController(IRepository<FriendOperation> friendOperationRepo,
-            IFriendOperationRepository friend)
+        public FriendOperationsController(IFriendOperationRepository friendOperationRepo)
         {
             _friendOperationRepo = friendOperationRepo;
-            _friend = friend;
         }
 
 
@@ -33,9 +30,8 @@ namespace Evant.Controllers
         public async Task<IActionResult> GetFollowers()
         {
             Guid userId = User.GetUserId();
-            var deneme = await _friend.List();
-            var asd = _friendOperationRepo.GetAll();
-            var followers = _friendOperationRepo.Where(fo => fo.FollowingUserId == userId).Select(u => new UserInfoDTO()
+
+            var followers = (await _friendOperationRepo.Followers(userId)).Select(u => new UserInfoDTO()
             {
                 UserId = u.FollowerUser.Id,
                 FirstName = u.FollowerUser.FirstName,
@@ -56,10 +52,10 @@ namespace Evant.Controllers
         [Authorize]
         [HttpGet]
         [Route("followings")]
-        public IActionResult GetFollowings()
+        public async Task<IActionResult> GetFollowings()
         {
             Guid userId = User.GetUserId();
-            var followings = _friendOperationRepo.Where(fo => fo.FollowerUserId == userId).Select(u => new UserInfoDTO()
+            var followings = (await _friendOperationRepo.Followings(userId)).Select(u => new UserInfoDTO()
             {
                 UserId = u.FollowingUser.Id,
                 FirstName = u.FollowingUser.FirstName,
@@ -79,12 +75,13 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpGet("{friendId}")]
-        public IActionResult IsFollow([FromRoute] Guid friendId)
+        public async Task<IActionResult> IsFollow([FromRoute] Guid friendId)
         {
             Guid userId = User.GetUserId();
 
-            var selectedFriendOperation = _friendOperationRepo.First(fo => fo.FollowingUserId == friendId && fo.FollowerUserId == userId);
-            if(selectedFriendOperation == null)
+
+            var selectedFriendOperation = await _friendOperationRepo.First(fo => fo.FollowingUserId == friendId && fo.FollowerUserId == userId);
+            if (selectedFriendOperation == null)
             {
                 return BadRequest("Takip etmiyorsun.");
             }
@@ -96,11 +93,11 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpPost("{friendId}")]
-        public IActionResult Follow([FromRoute] Guid friendId)
+        public async Task<IActionResult> Follow([FromRoute] Guid friendId)
         {
             Guid userId = User.GetUserId();
 
-            var selectedFriendOperation = _friendOperationRepo.First(fo => fo.FollowerUserId == userId && fo.FollowingUserId == friendId);
+            var selectedFriendOperation = await _friendOperationRepo.First(fo => fo.FollowerUserId == userId && fo.FollowingUserId == friendId);
             if (selectedFriendOperation != null)
                 return BadRequest("Zaten takip ediyorsun.");
 
@@ -111,8 +108,8 @@ namespace Evant.Controllers
                 FollowingUserId = friendId
             };
 
-            var response = _friendOperationRepo.Insert(model);
-            if(response)
+            var response = await _friendOperationRepo.Add(model);
+            if (response)
             {
                 return Ok("Takip etmeye başladın.");
             }
@@ -124,15 +121,17 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpDelete("{friendId}")]
-        public IActionResult UnFollow([FromRoute] Guid friendId)
+        public async Task<IActionResult> UnFollow([FromRoute] Guid friendId)
         {
             Guid userId = User.GetUserId();
 
-            var selectedFriendOperation = _friendOperationRepo.First(fo => fo.FollowerUserId == userId && fo.FollowingUserId == friendId);
+            var selectedFriendOperation = await _friendOperationRepo.First(fo => fo.FollowerUserId == userId && fo.FollowingUserId == friendId);
             if (selectedFriendOperation == null)
+            {
                 return BadRequest("Zaten takip etmiyorsun.");
-
-            var response = _friendOperationRepo.Delete(selectedFriendOperation);
+            }
+                
+            var response = await _friendOperationRepo.Delete(selectedFriendOperation);
             if (response)
             {
                 return Ok("Takip etmeyi bıraktın.");

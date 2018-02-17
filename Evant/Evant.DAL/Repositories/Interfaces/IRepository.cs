@@ -1,22 +1,22 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Evant.DAL.Interfaces.Repositories
 {
     public interface IRepository<T> where T : class
     {
-        IEnumerable<T> GetAll();
+        DbSet<T> Table { get; }
+        DbContext Context { get; }
+        Task<List<T>> Where(Expression<Func<T, bool>> where);
+        Task<T> First(Expression<Func<T, bool>> first = null);
 
-        T Get(object id);
-
-        bool Insert(T entity);
-
-        bool Update(T entity);
-
-        List<T> Where(Func<T, bool> where);
-
-        T First(Func<T, bool> where);
-
-        bool Delete(T entity);
+        Task<List<T>> All();
+        Task<bool> Add(T entity);
+        Task<bool> Update(T entity);
+        Task<bool> Delete(T entity);
+        Task<bool> Save();
     }
 }

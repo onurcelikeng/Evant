@@ -11,16 +11,14 @@ namespace Evant.DAL.Repositories
 {
     public class Repository<T> : IDisposable, IRepository<T> where T : class
     {
-        private DataContext context;
+        private DataContext dbContext;
         private DbSet<T> table;
-        public DbContext Context { get => context; }
-        public DbSet<T> Table { get => table; }
 
 
-        public Repository(DataContext context)
+        public Repository(DataContext dbContext)
         {
-            this.context = context;
-            this.table = context.Set<T>();
+            this.dbContext = dbContext;
+            this.table = this.dbContext.Set<T>();
         }
 
         ~Repository()
@@ -29,48 +27,47 @@ namespace Evant.DAL.Repositories
         }
 
 
-        public IEnumerable<T> GetAll()
+        public DbContext Context { get => dbContext; }
+        public DbSet<T> Table { get => table; }
+
+
+        public async Task<List<T>> All()
         {
-            return table.ToList();
+            return await table.ToListAsync();
         }
 
-        public T Get(object id)
+        public async Task<List<T>> Where(Expression<Func<T, bool>> where)
         {
-            return table.Find(id);
+            return await Table.Where(where).ToListAsync();
         }
 
-        public List<T> Where(Func<T, bool> where)
+        public async Task<T> First(Expression<Func<T, bool>> first = null)
         {
-            return table.Where(where).ToList();
+            return await Table.FirstOrDefaultAsync(first);
         }
 
-        public bool Insert(T entity)
+        public async Task<bool> Add(T entity)
         {
             table.Add(entity);
-            return Save();
+            return await Save();
         }
 
-        public bool Update(T entity)
+        public async Task<bool> Update(T entity)
         {
-            return Save();
+            return await Save();
         }
 
-        public bool Delete(T entity)
+        public async Task<bool> Delete(T entity)
         {
             table.Remove(entity);
-            return Save();
+            return await Save();
         }
 
-        public T First(Func<T, bool> where)
-        {
-            return table.FirstOrDefault(where);
-        }
-
-        private bool Save()
+        public async Task<bool> Save()
         {
             try
             {
-                context.SaveChanges();
+                await dbContext.SaveChangesAsync();
                 return true;
             }
 
@@ -83,7 +80,7 @@ namespace Evant.DAL.Repositories
 
         public void Dispose()
         {
-            this.context.Dispose();
+            this.dbContext.Dispose();
         }
     }
 }
