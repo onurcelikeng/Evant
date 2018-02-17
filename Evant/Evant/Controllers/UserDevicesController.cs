@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Evant.Contracts.DataTransferObjects.UserDevice;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
@@ -27,19 +28,19 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult SaveDevice([FromBody] UserDeviceDTO device)
+        public async Task<IActionResult> SaveDevice([FromBody] UserDeviceDTO device)
         {
             if (!ModelState.IsValid)
                 return BadRequest("Eksik bilgi girdiniz.");
 
-            var selectedDevice = _userDevicesRepo.First(d => d.DeviceId == device.DeviceId);
+            var selectedDevice = await _userDevicesRepo.First(d => d.DeviceId == device.DeviceId);
             if (selectedDevice != null)
             {
                 selectedDevice.IsLoggedin = true;
                 selectedDevice.UpdateAt = DateTime.Now;
                 selectedDevice.PlayerId = device.PlayerId;
 
-                var response = _userDevicesRepo.Update(selectedDevice);
+                var response = await _userDevicesRepo.Update(selectedDevice);
                 if (response)
                 {
                     return Ok("Cihaz güncellendi.");
@@ -64,7 +65,7 @@ namespace Evant.Controllers
                     IsLoggedin = true,
                 };
 
-                var response = _userDevicesRepo.Insert(newDevice);
+                var response = await _userDevicesRepo.Add(newDevice);
                 if (response)
                 {
                     _oneSignal.AddDevice(device);
@@ -80,9 +81,9 @@ namespace Evant.Controllers
         [Authorize]
         [HttpGet]
         [Route("logout/{deviceId}")]
-        public IActionResult CloseDevice([FromRoute] string deviceId)
+        public async Task<IActionResult> CloseDevice([FromRoute] string deviceId)
         {
-            var selectedDevice = _userDevicesRepo.First(d => d.DeviceId == deviceId);
+            var selectedDevice = await _userDevicesRepo.First(d => d.DeviceId == deviceId);
             if (selectedDevice == null)
             {
                 return BadRequest("Kayıt bulunamadı.");
@@ -92,7 +93,7 @@ namespace Evant.Controllers
                 selectedDevice.IsLoggedin = false;
                 selectedDevice.UpdateAt = DateTime.Now;
 
-                var response = _userDevicesRepo.Update(selectedDevice);
+                var response = await _userDevicesRepo.Update(selectedDevice);
                 if (response)
                 {
                     User.Logout();

@@ -2,6 +2,7 @@
 using Evant.DAL.Interfaces.Repositories;
 using Evant.Interfaces;
 using System;
+using System.Threading.Tasks;
 
 namespace Evant.Helpers
 {
@@ -16,7 +17,7 @@ namespace Evant.Helpers
         }
 
 
-        public void Log(string table, string status, string message = null, string ex = null)
+        public async void Log(string table, string status, string message = null, string ex = null)
         {
             try
             {
@@ -30,7 +31,7 @@ namespace Evant.Helpers
                     Exception = ex,
                 };
 
-                var response = _logRepo.Insert(newLog);
+                var response = await _logRepo.Add(newLog);
             }
             catch (Exception)
             {
