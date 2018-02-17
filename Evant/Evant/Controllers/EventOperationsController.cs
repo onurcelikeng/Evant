@@ -58,7 +58,7 @@ namespace Evant.Controllers
                 EventId = eventId
             };
 
-            var response = await _eventOperationRepo.Attend(entity);
+            var response = await _eventOperationRepo.Add(entity);
             if (response)
             {
                 return Ok("Etkinliğe katıldınız.");
@@ -77,7 +77,7 @@ namespace Evant.Controllers
             if(selectedEventOperation == null)
                 return NotFound("Kayıt bulunamadı.");
 
-            var response = await _eventOperationRepo.Leave(selectedEventOperation);
+            var response = await _eventOperationRepo.Delete(selectedEventOperation);
             if (response)
             {
                 return Ok("Etkinlikten ayrıldınız.");

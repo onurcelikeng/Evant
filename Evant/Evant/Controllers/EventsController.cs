@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Evant.Contracts.DataTransferObjects.Event;
 using Evant.Contracts.DataTransferObjects.User;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
+using Evant.DAL.Repositories.Interfaces;
 using Evant.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,23 +16,20 @@ namespace Evant.Controllers
     [Route("api/events")]
     public class EventsController : BaseController
     {
-        private readonly IRepository<Event> _eventRepo;
-        private readonly IRepository<FriendOperation> _friendOperationRepo;
+        private readonly IEventRepository _eventRepo;
 
 
-        public EventsController(IRepository<Event> eventRepo, 
-            IRepository<FriendOperation> friendOperationRepo)
+        public EventsController(IEventRepository eventRepo)
         {
             _eventRepo = eventRepo;
-            _friendOperationRepo = friendOperationRepo;
         }
 
 
         [Authorize]
         [HttpGet("{userId}")]
-        public IActionResult GetUserEvents([FromRoute] Guid userId)
+        public async Task<IActionResult> GetUserEvents([FromRoute] Guid userId)
         {
-            var events = _eventRepo.Where(e => e.UserId == userId).Select(e => new EventInfoDTO()
+            var events = (await _eventRepo.UserEvents(userId)).Select(e => new EventInfoDTO()
             {
                 EventId = e.Id,
                 Title = e.Title,
@@ -58,9 +57,9 @@ namespace Evant.Controllers
         [Authorize]
         [HttpGet]
         [Route("categoryevents/{categoryId}")]
-        public IActionResult GetEventsByCategory([FromRoute] Guid categoryId)
+        public async Task<IActionResult> GetEventsByCategory([FromRoute] Guid categoryId)
         {
-            var events = _eventRepo.Where(e => e.CategoryId == categoryId).Select(e => new EventInfoDTO()
+            var events = (await _eventRepo.EventsByCategory(categoryId)).Select(e => new EventInfoDTO()
             {
                 EventId = e.Id,
                 Title = e.Title,
@@ -87,13 +86,13 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult AddEvent([FromBody] EventDTO model)
+        public async Task<IActionResult> AddEvent([FromBody] EventDTO model)
         {
             if (!ModelState.IsValid)
                 return BadRequest("Eksik bilgi girdiniz.");
 
             Guid userId = User.GetUserId();
-            var newEvent = new Event()
+            var entity = new Event()
             {
                 Id = new Guid(),
                 UserId = userId,
@@ -110,7 +109,7 @@ namespace Evant.Controllers
                 Longitude = model.Longitude
             };
 
-            var response = _eventRepo.Insert(newEvent);
+            var response = await _eventRepo.Add(entity);
             if (response)
             {
                 return Ok("Etkinlik oluşturuldu.");
@@ -122,22 +121,14 @@ namespace Evant.Controllers
         }
 
         [Authorize]
-        [HttpPut]
-        public IActionResult PublicEvent()
-        {
-
-            return Ok();
-        }
-
-        [Authorize]
         [HttpDelete("{id}")]
-        public IActionResult DeleteEvent([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteEvent([FromRoute] Guid id)
         {
-            var selectedEvent = _eventRepo.First(e => e.Id == id);
+            var selectedEvent = await _eventRepo.First(e => e.Id == id);
             if (selectedEvent == null)
                 return NotFound("Kayıt bulunamadı.");
 
-            var response = _eventRepo.Delete(selectedEvent);
+            var response = await _eventRepo.Delete(selectedEvent);
             if (response)
             {
                 return Ok("Etkinlik silindi.");

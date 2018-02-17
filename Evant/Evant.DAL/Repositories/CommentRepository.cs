@@ -26,24 +26,5 @@ namespace Evant.DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<bool> AddComment(Comment entity)
-        {
-            try
-            {
-                await Table.AddAsync(entity);
-                await Context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public async Task<bool> DeleteComment(Comment entity)
-        {
-            return await this.Delete(entity);
-        }
-
     }
 }

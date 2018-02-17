@@ -25,24 +25,5 @@ namespace Evant.DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<bool> Attend(EventOperation entity)
-        {
-            try
-            {
-                await Table.AddAsync(entity);
-                await Context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public async Task<bool> Leave(EventOperation entity)
-        {
-            return await this.Delete(entity);
-        }
-
     }
 }

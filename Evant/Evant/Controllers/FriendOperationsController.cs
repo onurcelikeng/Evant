@@ -108,7 +108,7 @@ namespace Evant.Controllers
                 FollowingUserId = friendId
             };
 
-            var response = await _friendOperationRepo.Follow(entity);
+            var response = await _friendOperationRepo.Add(entity);
             if (response)
             {
                 return Ok("Takip etmeye başladın.");
@@ -131,7 +131,7 @@ namespace Evant.Controllers
                 return BadRequest("Zaten takip etmiyorsun.");
             }
                 
-            var response = await _friendOperationRepo.UnFollow(selectedFriendOperation);
+            var response = await _friendOperationRepo.Delete(selectedFriendOperation);
             if (response)
             {
                 return Ok("Takip etmeyi bıraktın.");

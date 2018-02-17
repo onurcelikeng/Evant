@@ -68,7 +68,7 @@ namespace Evant.Controllers
                 UserId = userId
             };
 
-            var response = await _commentRepo.AddComment(entity);
+            var response = await _commentRepo.Add(entity);
             if (response)
             {
                 return Ok("Yorum eklendi.");
@@ -89,7 +89,7 @@ namespace Evant.Controllers
                 return NotFound("Kayıt bulunamadı.");
             }
 
-            var response = await _commentRepo.DeleteComment(comment);
+            var response = await _commentRepo.Delete(comment);
             if (response)
             {
                 return Ok("yorum silindi.");

@@ -36,24 +36,5 @@ namespace Evant.DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<bool> Follow(FriendOperation entity)
-        {
-            try
-            {
-                await Table.AddAsync(entity);
-                await Context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public async Task<bool> UnFollow(FriendOperation entity)
-        {
-            return await this.Delete(entity);
-        }
-
     }
 }

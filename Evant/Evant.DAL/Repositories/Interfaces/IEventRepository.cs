@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Evant.DAL.Repositories.Interfaces
 {
-    public interface ICommentRepository : IRepository<Comment>
+    public interface IEventRepository : IRepository<Event>
     {
-        Task<List<Comment>> Comments(Guid eventId);
+        Task<List<Event>> UserEvents(Guid userId);
+        Task<List<Event>> EventsByCategory(Guid categoryId);
     }
 }
