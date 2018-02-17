@@ -10,7 +10,7 @@ namespace Evant.DAL.Repositories.Interfaces
     {
         Task<List<FriendOperation>> Followers(Guid userId);
         Task<List<FriendOperation>> Followings(Guid userId);
-        Task<Guid> Follow(FriendOperation entity);
+        Task<bool> Follow(FriendOperation entity);
         Task<bool> UnFollow(FriendOperation entity);
     }
 }

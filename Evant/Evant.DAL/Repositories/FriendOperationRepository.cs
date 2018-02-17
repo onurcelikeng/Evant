@@ -36,17 +36,17 @@ namespace Evant.DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Guid> Follow(FriendOperation entity)
+        public async Task<bool> Follow(FriendOperation entity)
         {
             try
             {
                 await Table.AddAsync(entity);
                 await Context.SaveChangesAsync();
-                return entity.Id;
+                return true;
             }
             catch (Exception)
             {
-                return Guid.Empty;
+                return false;
             }
         }
 

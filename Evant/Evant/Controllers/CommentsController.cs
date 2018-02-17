@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Evant.Contracts.DataTransferObjects.Comment;
 using Evant.Contracts.DataTransferObjects.User;
 using Evant.DAL.EF.Tables;
-using Evant.DAL.Interfaces.Repositories;
+using Evant.DAL.Repositories.Interfaces;
 using Evant.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,10 @@ namespace Evant.Controllers
     [Route("api/comments")]
     public class CommentsController : BaseController
     {
-        private readonly IRepository<Comment> _commentRepo;
+        private readonly ICommentRepository _commentRepo;
+        
 
-
-        public CommentsController(IRepository<Comment> commentRepo)
+        public CommentsController(ICommentRepository commentRepo)
         {
             _commentRepo = commentRepo;
         }
@@ -25,9 +26,9 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpGet("{eventId}")]
-        public IActionResult GetComments([FromRoute] Guid eventId)
+        public async Task<IActionResult> GetComments([FromRoute] Guid eventId)
         {
-            var commnets = _commentRepo.Where(c => c.EventId == eventId).Select(c => new CommentDetailDTO()
+            var commnets =(await _commentRepo.Comments(eventId)).Select(c => new CommentDetailDTO()
             {
                 CommentId = c.Id,
                 Content = c.Content,
@@ -53,21 +54,21 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult AddComment([FromBody] CommentDTO model)
+        public async Task<IActionResult> AddComment([FromBody] CommentDTO model)
         {
             if (!ModelState.IsValid)
                 return BadRequest("Eksik bilgi girdiniz.");
 
             Guid userId = User.GetUserId();
 
-            var comment = new Comment()
+            var entity = new Comment()
             {
                 Id = new Guid(),
                 EventId = model.EventId,
                 UserId = userId
             };
 
-            var response = _commentRepo.Insert(comment);
+            var response = await _commentRepo.AddComment(entity);
             if (response)
             {
                 return Ok("Yorum eklendi.");
@@ -80,13 +81,15 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpDelete("{commentId}")]
-        public IActionResult DeleteComment([FromRoute] Guid commentId)
+        public async Task<IActionResult> DeleteComment([FromRoute] Guid commentId)
         {
-            var comment = _commentRepo.First(c => c.Id == commentId);
+            var comment = await _commentRepo.First(c => c.Id == commentId);
             if (comment == null)
-                return NotFound("Yorum bulunamadı.");
+            {
+                return NotFound("Kayıt bulunamadı.");
+            }
 
-            var response = _commentRepo.Delete(comment);
+            var response = await _commentRepo.DeleteComment(comment);
             if (response)
             {
                 return Ok("yorum silindi.");

@@ -49,6 +49,7 @@ namespace Evant
             // Repositories
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddSingleton<IFriendOperationRepository, FriendOperationRepository>();
+            services.AddSingleton<ICommentRepository, CommentRepository>();
 
             // Scoped
             services.AddScoped<IJwtFactory, JwtFactory>();
