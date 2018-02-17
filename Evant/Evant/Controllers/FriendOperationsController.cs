@@ -3,9 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Evant.Contracts.DataTransferObjects.User;
 using Evant.DAL.EF.Tables;
-using Evant.DAL.Interfaces.Repositories;
 using Evant.DAL.Repositories.Interfaces;
 using Evant.Helpers;
+using Evant.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,11 +16,14 @@ namespace Evant.Controllers
     public class FriendOperationsController : BaseController
     {
         private readonly IFriendOperationRepository _friendOperationRepo;
+        private readonly ILogHelper _logHelper;
 
 
-        public FriendOperationsController(IFriendOperationRepository friendOperationRepo)
+        public FriendOperationsController(IFriendOperationRepository friendOperationRepo,
+            ILogHelper logHelper)
         {
             _friendOperationRepo = friendOperationRepo;
+            _logHelper = logHelper;
         }
 
 
@@ -29,23 +32,31 @@ namespace Evant.Controllers
         [Route("followers")]
         public async Task<IActionResult> GetFollowers()
         {
-            Guid userId = User.GetUserId();
-
-            var followers = (await _friendOperationRepo.Followers(userId)).Select(u => new UserInfoDTO()
+            try
             {
-                UserId = u.FollowerUser.Id,
-                FirstName = u.FollowerUser.FirstName,
-                LastName = u.FollowerUser.LastName,
-                PhotoUrl = u.FollowerUser.Photo
-            }).ToList();
+                Guid userId = User.GetUserId();
 
-            if (followers.IsNullOrEmpty())
-            {
-                return NotFound("Kayıt bulunamadı.");
+                var followers = (await _friendOperationRepo.Followers(userId)).Select(u => new UserInfoDTO()
+                {
+                    UserId = u.FollowerUser.Id,
+                    FirstName = u.FollowerUser.FirstName,
+                    LastName = u.FollowerUser.LastName,
+                    PhotoUrl = u.FollowerUser.Photo
+                }).ToList();
+
+                if (followers.IsNullOrEmpty())
+                {
+                    return NotFound("Kayıt bulunamadı.");
+                }
+                else
+                {
+                    return Ok(followers);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Ok(followers);
+                _logHelper.Log("Logs", 500, ex.Message);
+                return null;
             }
         }
 
@@ -54,22 +65,30 @@ namespace Evant.Controllers
         [Route("followings")]
         public async Task<IActionResult> GetFollowings()
         {
-            Guid userId = User.GetUserId();
-            var followings = (await _friendOperationRepo.Followings(userId)).Select(u => new UserInfoDTO()
+            try
             {
-                UserId = u.FollowingUser.Id,
-                FirstName = u.FollowingUser.FirstName,
-                LastName = u.FollowingUser.LastName,
-                PhotoUrl = u.FollowingUser.Photo
-            }).ToList();
+                Guid userId = User.GetUserId();
+                var followings = (await _friendOperationRepo.Followings(userId)).Select(u => new UserInfoDTO()
+                {
+                    UserId = u.FollowingUser.Id,
+                    FirstName = u.FollowingUser.FirstName,
+                    LastName = u.FollowingUser.LastName,
+                    PhotoUrl = u.FollowingUser.Photo
+                }).ToList();
 
-            if (followings.IsNullOrEmpty())
-            {
-                return NotFound("Kayıt bulunamadı.");
+                if (followings.IsNullOrEmpty())
+                {
+                    return NotFound("Kayıt bulunamadı.");
+                }
+                else
+                {
+                    return Ok(followings);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Ok(followings);
+                _logHelper.Log("Logs", 500, ex.Message);
+                return null;
             }
         }
 
@@ -77,17 +96,24 @@ namespace Evant.Controllers
         [HttpGet("{friendId}")]
         public async Task<IActionResult> IsFollow([FromRoute] Guid friendId)
         {
-            Guid userId = User.GetUserId();
-
-
-            var selectedFriendOperation = await _friendOperationRepo.First(fo => fo.FollowingUserId == friendId && fo.FollowerUserId == userId);
-            if (selectedFriendOperation == null)
+            try
             {
-                return BadRequest("Takip etmiyorsun.");
+                Guid userId = User.GetUserId();
+
+                var selectedFriendOperation = await _friendOperationRepo.First(fo => fo.FollowingUserId == friendId && fo.FollowerUserId == userId);
+                if (selectedFriendOperation == null)
+                {
+                    return BadRequest("Takip etmiyorsun.");
+                }
+                else
+                {
+                    return Ok("Takip ediyorsun.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Ok("Takip ediyorsun.");
+                _logHelper.Log("Logs", 500, ex.Message);
+                return null;
             }
         }
 
@@ -95,27 +121,35 @@ namespace Evant.Controllers
         [HttpPost("{friendId}")]
         public async Task<IActionResult> Follow([FromRoute] Guid friendId)
         {
-            Guid userId = User.GetUserId();
-
-            var selectedFriendOperation = await _friendOperationRepo.First(fo => fo.FollowerUserId == userId && fo.FollowingUserId == friendId);
-            if (selectedFriendOperation != null)
-                return BadRequest("Zaten takip ediyorsun.");
-
-            var entity = new FriendOperation()
+            try
             {
-                Id = new Guid(),
-                FollowerUserId = userId,
-                FollowingUserId = friendId
-            };
+                Guid userId = User.GetUserId();
 
-            var response = await _friendOperationRepo.Add(entity);
-            if (response)
-            {
-                return Ok("Takip etmeye başladın.");
+                var selectedFriendOperation = await _friendOperationRepo.First(fo => fo.FollowerUserId == userId && fo.FollowingUserId == friendId);
+                if (selectedFriendOperation != null)
+                    return BadRequest("Zaten takip ediyorsun.");
+
+                var entity = new FriendOperation()
+                {
+                    Id = new Guid(),
+                    FollowerUserId = userId,
+                    FollowingUserId = friendId
+                };
+
+                var response = await _friendOperationRepo.Add(entity);
+                if (response)
+                {
+                    return Ok("Takip etmeye başladın.");
+                }
+                else
+                {
+                    return BadRequest("Takip ederken hata oluştu.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest("Takip ederken hata oluştu.");
+                _logHelper.Log("Logs", 500, ex.Message);
+                return null;
             }
         }
 
@@ -123,22 +157,30 @@ namespace Evant.Controllers
         [HttpDelete("{friendId}")]
         public async Task<IActionResult> UnFollow([FromRoute] Guid friendId)
         {
-            Guid userId = User.GetUserId();
+            try
+            {
+                Guid userId = User.GetUserId();
 
-            var selectedFriendOperation = await _friendOperationRepo.First(fo => fo.FollowerUserId == userId && fo.FollowingUserId == friendId);
-            if (selectedFriendOperation == null)
-            {
-                return BadRequest("Zaten takip etmiyorsun.");
+                var selectedFriendOperation = await _friendOperationRepo.First(fo => fo.FollowerUserId == userId && fo.FollowingUserId == friendId);
+                if (selectedFriendOperation == null)
+                {
+                    return BadRequest("Zaten takip etmiyorsun.");
+                }
+
+                var response = await _friendOperationRepo.Delete(selectedFriendOperation);
+                if (response)
+                {
+                    return Ok("Takip etmeyi bıraktın.");
+                }
+                else
+                {
+                    return BadRequest("Takip etmeyi bırakırken hata oluştu.");
+                }
             }
-                
-            var response = await _friendOperationRepo.Delete(selectedFriendOperation);
-            if (response)
+            catch (Exception ex)
             {
-                return Ok("Takip etmeyi bıraktın.");
-            }
-            else
-            {
-                return BadRequest("Takip etmeyi bırakırken hata oluştu.");
+                _logHelper.Log("Logs", 500, ex.Message);
+                return null;
             }
         }
 

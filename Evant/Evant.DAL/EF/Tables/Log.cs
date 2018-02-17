@@ -11,7 +11,7 @@ namespace Evant.DAL.EF.Tables
 
         public string Message { get; set; } //nullable
 
-        public string Status { get; set; }
+        public int StatusCode { get; set; }
 
         public string Exception { get; set; } //nullable
     }

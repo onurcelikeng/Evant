@@ -4,6 +4,7 @@ using Evant.Contracts.DataTransferObjects.UserDevice;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
 using Evant.Helpers;
+using Evant.Interfaces;
 using Evant.NotificationCenter.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +16,16 @@ namespace Evant.Controllers
     public class UserDevicesController : BaseController
     {
         private readonly IRepository<UserDevice> _userDevicesRepo;
+        private readonly ILogHelper _logHelper;
         private readonly IOneSignal _oneSignal;
 
 
         public UserDevicesController(IRepository<UserDevice> userDevicesRepo,
+            ILogHelper logHelper,
             IOneSignal oneSignal)
         {
             _userDevicesRepo = userDevicesRepo;
+            _logHelper = logHelper;
             _oneSignal = oneSignal;
         }
 
@@ -30,51 +34,61 @@ namespace Evant.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveDevice([FromBody] UserDeviceDTO device)
         {
-            if (!ModelState.IsValid)
-                return BadRequest("Eksik bilgi girdiniz.");
-
-            var selectedDevice = await _userDevicesRepo.First(d => d.DeviceId == device.DeviceId);
-            if (selectedDevice != null)
+            try
             {
-                selectedDevice.IsLoggedin = true;
-                selectedDevice.UpdateAt = DateTime.Now;
-                selectedDevice.PlayerId = device.PlayerId;
-
-                var response = await _userDevicesRepo.Update(selectedDevice);
-                if (response)
+                if (!ModelState.IsValid)
                 {
-                    return Ok("Cihaz güncellendi.");
+                    return BadRequest("Eksik bilgi girdiniz.");
+                }
+
+                var selectedDevice = await _userDevicesRepo.First(d => d.DeviceId == device.DeviceId);
+                if (selectedDevice != null)
+                {
+                    selectedDevice.IsLoggedin = true;
+                    selectedDevice.UpdateAt = DateTime.Now;
+                    selectedDevice.PlayerId = device.PlayerId;
+
+                    var response = await _userDevicesRepo.Update(selectedDevice);
+                    if (response)
+                    {
+                        return Ok("Cihaz güncellendi.");
+                    }
+                    else
+                    {
+                        return BadRequest("Cihaz güncellenemedi.");
+                    }
                 }
                 else
                 {
-                    return BadRequest("Cihaz güncellenemedi.");
+                    Guid userId = User.GetUserId();
+                    var newDevice = new UserDevice()
+                    {
+                        Id = new Guid(),
+                        UserId = userId,
+                        DeviceId = device.DeviceId,
+                        PlayerId = device.PlayerId,
+                        Brand = device.Brand,
+                        Model = device.Model,
+                        OS = device.OS,
+                        IsLoggedin = true,
+                    };
+
+                    var response = await _userDevicesRepo.Add(newDevice);
+                    if (response)
+                    {
+                        _oneSignal.AddDevice(device);
+                        return Ok("Cihazınız eklendi.");
+                    }
+                    else
+                    {
+                        return BadRequest("Cihaz eklenemedi.");
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                Guid userId = User.GetUserId();
-                var newDevice = new UserDevice()
-                {
-                    Id = new Guid(),
-                    UserId = userId,
-                    DeviceId = device.DeviceId,
-                    PlayerId = device.PlayerId,
-                    Brand = device.Brand,
-                    Model = device.Model,
-                    OS = device.OS,
-                    IsLoggedin = true,
-                };
-
-                var response = await _userDevicesRepo.Add(newDevice);
-                if (response)
-                {
-                    _oneSignal.AddDevice(device);
-                    return Ok("Cihazınız eklendi.");
-                }
-                else
-                {
-                    return BadRequest("Cihaz eklenemedi.");
-                }
+                _logHelper.Log("UserDevices", 500, ex.Message);
+                return null;
             }
         }
 
@@ -83,26 +97,34 @@ namespace Evant.Controllers
         [Route("logout/{deviceId}")]
         public async Task<IActionResult> CloseDevice([FromRoute] string deviceId)
         {
-            var selectedDevice = await _userDevicesRepo.First(d => d.DeviceId == deviceId);
-            if (selectedDevice == null)
+            try
             {
-                return BadRequest("Kayıt bulunamadı.");
-            }
-            else
-            {
-                selectedDevice.IsLoggedin = false;
-                selectedDevice.UpdateAt = DateTime.Now;
-
-                var response = await _userDevicesRepo.Update(selectedDevice);
-                if (response)
+                var selectedDevice = await _userDevicesRepo.First(d => d.DeviceId == deviceId);
+                if (selectedDevice == null)
                 {
-                    User.Logout();
-                    return Ok("Cihazda oturum kapatıldı.");
+                    return BadRequest("Kayıt bulunamadı.");
                 }
                 else
                 {
-                    return BadRequest("Cihazda oturum kapatılamadı.");
+                    selectedDevice.IsLoggedin = false;
+                    selectedDevice.UpdateAt = DateTime.Now;
+
+                    var response = await _userDevicesRepo.Update(selectedDevice);
+                    if (response)
+                    {
+                        User.Logout();
+                        return Ok("Cihazda oturum kapatıldı.");
+                    }
+                    else
+                    {
+                        return BadRequest("Cihazda oturum kapatılamadı.");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("UserDevices", 500, ex.Message);
+                return null;
             }
         }
 

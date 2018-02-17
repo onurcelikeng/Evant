@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Evant.Contracts.DataTransferObjects.Category;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
 using Evant.Helpers;
+using Evant.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
@@ -13,31 +15,42 @@ namespace Evant.Controllers
     public class CategoriesController : BaseController
     {
         private readonly IRepository<Category> _categoryRepo;
+        private readonly ILogHelper _logHelper;
 
 
-        public CategoriesController(IRepository<Category> categoryRepo)
+        public CategoriesController(IRepository<Category> categoryRepo,
+            ILogHelper logHelper)
         {
             _categoryRepo = categoryRepo;
+            _logHelper = logHelper;
         }
 
 
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
-            var categories =(await _categoryRepo.All()).Select(c => new CategoryDetailDTO()
+            try
             {
-                CategoryId = c.Id,
-                Name = c.Name,
-                PhotoUrl = c.Icon
-            }).ToList();
+                var categories = (await _categoryRepo.All()).Select(c => new CategoryDetailDTO()
+                {
+                    CategoryId = c.Id,
+                    Name = c.Name,
+                    PhotoUrl = c.Icon
+                }).ToList();
 
-            if (categories.IsNullOrEmpty())
-            {
-                return NotFound("Kayıt bulunamadı.");
+                if (categories.IsNullOrEmpty())
+                {
+                    return NotFound("Kayıt bulunamadı.");
+                }
+                else
+                {
+                    return Ok(categories);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Ok(categories);
+                _logHelper.Log("Categories", 500, ex.Message);
+                return null;
             }
         }
 
