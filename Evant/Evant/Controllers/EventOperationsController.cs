@@ -52,7 +52,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("EventOperations", 500, ex.Message);
+                _logHelper.Log("EventOperations", 500, "GetEventUsers", ex.Message);
                 return null;
             }
         }
@@ -84,7 +84,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("EventOperations", 500, ex.Message);
+                _logHelper.Log("EventOperations", 500, "JoinEvent", ex.Message);
                 return null;
             }
         }
@@ -113,7 +113,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("EventOperations", 500, ex.Message);
+                _logHelper.Log("EventOperations", 500, "LeaveEvent", ex.Message);
                 return null;
             }
         }

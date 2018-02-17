@@ -177,6 +177,8 @@ namespace Evant.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Action");
+
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("Exception");
@@ -189,7 +191,8 @@ namespace Evant.DAL.Migrations
 
                     b.Property<int>("StatusCode");
 
-                    b.Property<string>("Table");
+                    b.Property<string>("Table")
+                        .IsRequired();
 
                     b.Property<DateTime>("UpdateAt");
 

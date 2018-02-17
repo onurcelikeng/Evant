@@ -87,7 +87,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("UserDevices", 500, ex.Message);
+                _logHelper.Log("UserDevices", 500, "SaveDevice", ex.Message);
                 return null;
             }
         }
@@ -123,7 +123,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("UserDevices", 500, ex.Message);
+                _logHelper.Log("UserDevices", 500, "CloseDevice", ex.Message);
                 return null;
             }
         }

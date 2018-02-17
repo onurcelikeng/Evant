@@ -59,7 +59,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Comments", 500, ex.Message);
+                _logHelper.Log("Comments", 500, "GetComments", ex.Message);
                 return null;
             }
         }
@@ -96,7 +96,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Comments", 500, ex.Message);
+                _logHelper.Log("Comments", 500, "AddComment", ex.Message);
                 return null;
             }
         }
@@ -125,7 +125,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Comments", 500, ex.Message);
+                _logHelper.Log("Comments", 500, "DeleteComment", ex.Message);
                 return null;
             }
         }

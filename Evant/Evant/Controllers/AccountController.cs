@@ -6,7 +6,6 @@ using Evant.DAL.Interfaces.Repositories;
 using Evant.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Evant.Storage.Interfaces;
 using Evant.Storage.Models;
 using System.Threading.Tasks;
@@ -14,6 +13,7 @@ using Evant.Storage.Extensions;
 using Evant.Contracts.DataTransferObjects.UserSettingDTO.cs;
 using Evant.Auth;
 using Evant.DAL.Repositories.Interfaces;
+using Evant.Interfaces;
 
 namespace Evant.Controllers
 {
@@ -21,24 +21,23 @@ namespace Evant.Controllers
     [Route("api/account")]
     public class AccountController : BaseController
     {
-
         private readonly IUserRepository _userRepo;
         private readonly IRepository<UserSetting> _userSettingRepo;
+        private readonly ILogHelper _logHelper;
         private readonly IJwtFactory _jwtFactory;
-        private readonly IConfiguration _configuration;
         private readonly IAzureBlobStorage _blobStorage;
 
 
         public AccountController(IUserRepository userRepo,
             IRepository<UserSetting> userSettingRepo,
+            ILogHelper logHelper,
             IJwtFactory jwtFactory,
-            IConfiguration configuration,
             IAzureBlobStorage blobStorage)
         {
             _userRepo = userRepo;
             _userSettingRepo = userSettingRepo;
+            _logHelper = logHelper;
             _jwtFactory = jwtFactory;
-            _configuration = configuration;
             _blobStorage = blobStorage;
         }
 
@@ -47,42 +46,50 @@ namespace Evant.Controllers
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDTO user)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest("Eksik bilgi girdiniz.");
-            }
-
-            var selectedUser = await _userRepo.First(u => u.Email == user.Email);
-            if (selectedUser != null)
-            {
-                return BadRequest("Eposta adresi zaten kullanılıyor.");
-            }
-            else
-            {
-                var entity = new User
+                if (!ModelState.IsValid)
                 {
-                    Id = new Guid(),
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    Password = user.Password,
-                    Role = "User",
-                    IsActive = true,
-                    IsFacebook = false,
-                    Photo = "https://evantstorage.blob.core.windows.net/users/default.jpeg",
-                    FacebookId = null,
-                    Setting = new UserSetting()
-                };
+                    return BadRequest("Eksik bilgi girdiniz.");
+                }
 
-                var response = await _userRepo.Add(entity);
-                if (response)
+                var selectedUser = await _userRepo.First(u => u.Email == user.Email);
+                if (selectedUser != null)
                 {
-                    return Ok("Kullanıcı eklendi.");
+                    return BadRequest("Eposta adresi zaten kullanılıyor.");
                 }
                 else
                 {
-                    return BadRequest("Kullanıcı eklenemedi.");
+                    var entity = new User
+                    {
+                        Id = new Guid(),
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email,
+                        Password = user.Password,
+                        Role = "User",
+                        IsActive = true,
+                        IsFacebook = false,
+                        Photo = "https://evantstorage.blob.core.windows.net/users/default.jpeg",
+                        FacebookId = null,
+                        Setting = new UserSetting()
+                    };
+
+                    var response = await _userRepo.Add(entity);
+                    if (response)
+                    {
+                        return Ok("Kullanıcı eklendi.");
+                    }
+                    else
+                    {
+                        return BadRequest("Kullanıcı eklenemedi.");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("Users", 500, "Register", ex.Message);
+                return null;
             }
         }
 
@@ -90,19 +97,37 @@ namespace Evant.Controllers
         [Route("token")]
         public async Task<IActionResult> Login([FromBody] LoginDTO user)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest("Eksik bilgi girdiniz.");
-            }
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Eksik bilgi girdiniz.");
+                }
 
-            var selectedUser = await _userRepo.Login(user.Email, user.Password);
-            if (selectedUser != null)
+                var selectedUser = await _userRepo.Login(user.Email, user.Password);
+                if (selectedUser != null)
+                {
+                    var token = _jwtFactory.GenerateJwtToken(selectedUser);
+                    return Ok(token);
+                }
+                else
+                {
+                    var response = await _userRepo.First(u => u.Email == user.Email);
+                    if(response != null)
+                    {
+                        return BadRequest("Şifreniz yanlış.");
+                    }
+                    else
+                    {
+                        return NotFound("Kayıt bulunamadı.");
+                    }
+                }
+            }
+            catch (Exception ex)
             {
-                var token = _jwtFactory.GenerateJwtToken(selectedUser);
-                return Ok(token);
+                _logHelper.Log("Users", 500, "Login", ex.Message);
+                return null;
             }
-
-            return BadRequest("Böyle bir kullanıcı yok.");
         }
 
         [HttpGet]
@@ -118,25 +143,33 @@ namespace Evant.Controllers
         [Route("me")]
         public async Task<IActionResult> GetMe()
         {
-            Guid userId = User.GetUserId();
+            try
+            {
+                Guid userId = User.GetUserId();
 
-            var user = await _userRepo.GetUser(userId);
-            if (user == null)
-            {
-                return BadRequest("Kayıt bulunamadı.");
-            }
-            else
-            {
-                var model = new UserDetailDTO()
+                var user = await _userRepo.GetUser(userId);
+                if (user == null)
                 {
-                    UserId = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    PhotoUrl = user.Photo
-                };
+                    return BadRequest("Kayıt bulunamadı.");
+                }
+                else
+                {
+                    var model = new UserDetailDTO()
+                    {
+                        UserId = user.Id,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email,
+                        PhotoUrl = user.Photo
+                    };
 
-                return Ok(model);
+                    return Ok(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("Users", 500, "GetMe", ex.Message);
+                return null;
             }
         }
 
@@ -175,9 +208,10 @@ namespace Evant.Controllers
                     return Ok("photo uploaded.");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("photo not uploaded.");
+                _logHelper.Log("Users", 500, "UploadPhoto", ex.Message);
+                return null;
             }
         }
 
@@ -222,35 +256,43 @@ namespace Evant.Controllers
         [Route("password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO password)
         {
-            if (!ModelState.IsValid)
-                return BadRequest("Eksik bilgi girdiniz.");
-
-            if (password.NewPassword != password.ReNewPassword)
-                return BadRequest("Şifreler aynı değil.");
-
-            Guid userId = User.GetUserId();
-            var user = await _userRepo.First(u => u.Id == userId);
-            if (user != null)
+            try
             {
-                if (user.Password == password.OldPassword)
-                {
-                    user.Password = password.NewPassword;
-                    user.UpdateAt = DateTime.Now;
+                if (!ModelState.IsValid)
+                    return BadRequest("Eksik bilgi girdiniz.");
 
-                    var response = await _userRepo.Update(user);
-                    if (response)
+                if (password.NewPassword != password.ReNewPassword)
+                    return BadRequest("Şifreler aynı değil.");
+
+                Guid userId = User.GetUserId();
+                var user = await _userRepo.First(u => u.Id == userId);
+                if (user != null)
+                {
+                    if (user.Password == password.OldPassword)
                     {
-                        User.Logout();
-                        return Ok("Şifreniz başarıyla güncellendi.");
+                        user.Password = password.NewPassword;
+                        user.UpdateAt = DateTime.Now;
+
+                        var response = await _userRepo.Update(user);
+                        if (response)
+                        {
+                            User.Logout();
+                            return Ok("Şifreniz başarıyla güncellendi.");
+                        }
+
+                        return Ok("Şifreniz güncellenemedi.");
                     }
 
-                    return Ok("Şifreniz güncellenemedi.");
+                    return BadRequest("Şifrenizi hatalı girdiniz.");
                 }
 
-                return BadRequest("Şifrenizi hatalı girdiniz.");
+                return BadRequest("Kayıt bulunamadı.");
             }
-
-            return BadRequest("Kayıt bulunamadı.");
+            catch (Exception ex)
+            {
+                _logHelper.Log("Users", 500, "ChangePassword", ex.Message);
+                return null;
+            }
         }
 
         [Authorize]
@@ -258,34 +300,42 @@ namespace Evant.Controllers
         [Route("deactive")]
         public async Task<IActionResult> DeActiveAccount()
         {
-            Guid userId = User.GetUserId();
-
-            var user = await _userRepo.GetUser(userId);
-            if (user != null)
+            try
             {
-                if (user.IsActive)
-                {
-                    user.IsActive = false;
-                    user.UpdateAt = DateTime.Now;
+                Guid userId = User.GetUserId();
 
-                    var response = await _userRepo.Update(user);
-                    if (response)
+                var user = await _userRepo.GetUser(userId);
+                if (user != null)
+                {
+                    if (user.IsActive)
                     {
-                        return Ok("Hesabınız başarıyla deaktif edilmiştir.");
+                        user.IsActive = false;
+                        user.UpdateAt = DateTime.Now;
+
+                        var response = await _userRepo.Update(user);
+                        if (response)
+                        {
+                            return Ok("Hesabınız başarıyla deaktif edilmiştir.");
+                        }
+                        else
+                        {
+                            return BadRequest("Hesabınız deaktif edilemedi.");
+                        }
                     }
                     else
                     {
-                        return BadRequest("Hesabınız deaktif edilemedi.");
+                        return BadRequest("Hesap zaten deaktif edilmiş.");
                     }
                 }
                 else
                 {
-                    return BadRequest("Hesap zaten deaktif edilmiş.");
+                    return BadRequest("Kayıt bulunamadı.");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest("Kayıt bulunamadı.");
+                _logHelper.Log("Users", 500, "DeActiveAccount", ex.Message);
+                return null;
             }
         }
 

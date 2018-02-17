@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Evant.DAL.EF.Tables
 {
@@ -7,12 +8,16 @@ namespace Evant.DAL.EF.Tables
     {
         public string Ip { get; set; }
 
+        [Required]
         public string Table { get; set; }
 
-        public string Message { get; set; } //nullable
+        public string Message { get; set; }
 
+        public string Action { get; set; }
+
+        [Required]
         public int StatusCode { get; set; }
 
-        public string Exception { get; set; } //nullable
+        public string Exception { get; set; }
     }
 }

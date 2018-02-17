@@ -2,6 +2,6 @@
 {
     public interface ILogHelper
     {
-        void Log(string table, int statusCode, string ex = null, string message = null);
+        void Log(string table, int statusCode, string action, string ex = null, string message = null);
     }
 }

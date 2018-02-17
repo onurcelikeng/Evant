@@ -20,7 +20,7 @@ namespace Evant.Helpers
         }
 
 
-        public async void Log(string table, int statusCode, string ex = null, string message = null)
+        public async void Log(string table, int statusCode, string action, string ex = null, string message = null)
         {
             if(statusCode == 500)
             {
@@ -35,6 +35,7 @@ namespace Evant.Helpers
                 Ip = _accessor.HttpContext.Connection.RemoteIpAddress.ToString(),
                 Table = table,
                 StatusCode = statusCode,
+                Action = action,
                 Exception = ex,
                 Message = message
             };

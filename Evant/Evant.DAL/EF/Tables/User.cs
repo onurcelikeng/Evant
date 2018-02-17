@@ -33,13 +33,13 @@ namespace Evant.DAL.EF.Tables
         [Required]
         public string Password { get; set; }
 
-        public string Photo { get; set; } = null;
+        public string Photo { get; set; }
 
         [Required]
         public string Role { get; set; }
 
         [Required]
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; }
 
         [Required]
         public bool IsFacebook { get; set; }

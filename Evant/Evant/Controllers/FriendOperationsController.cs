@@ -55,7 +55,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Logs", 500, ex.Message);
+                _logHelper.Log("Logs", 500, "GetFollowers", ex.Message);
                 return null;
             }
         }
@@ -87,7 +87,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Logs", 500, ex.Message);
+                _logHelper.Log("Logs", 500, "GetFollowings", ex.Message);
                 return null;
             }
         }
@@ -112,7 +112,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Logs", 500, ex.Message);
+                _logHelper.Log("Logs", 500, "IsFollow", ex.Message);
                 return null;
             }
         }
@@ -148,7 +148,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Logs", 500, ex.Message);
+                _logHelper.Log("Logs", 500, "Follow", ex.Message);
                 return null;
             }
         }
@@ -179,7 +179,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Logs", 500, ex.Message);
+                _logHelper.Log("Logs", 500, "UnFollow", ex.Message);
                 return null;
             }
         }

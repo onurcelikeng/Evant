@@ -29,13 +29,14 @@ namespace Evant.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    Action = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     Exception = table.Column<string>(nullable: true),
                     Ip = table.Column<string>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     Message = table.Column<string>(nullable: true),
-                    Status = table.Column<string>(nullable: true),
-                    Table = table.Column<string>(nullable: true),
+                    StatusCode = table.Column<int>(nullable: false),
+                    Table = table.Column<string>(nullable: false),
                     UpdateAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>

@@ -11,8 +11,8 @@ using System;
 namespace Evant.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20180217160341_LogEntity")]
-    partial class LogEntity
+    [Migration("20180217170656_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -178,6 +178,8 @@ namespace Evant.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Action");
+
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("Exception");
@@ -190,7 +192,8 @@ namespace Evant.DAL.Migrations
 
                     b.Property<int>("StatusCode");
 
-                    b.Property<string>("Table");
+                    b.Property<string>("Table")
+                        .IsRequired();
 
                     b.Property<DateTime>("UpdateAt");
 

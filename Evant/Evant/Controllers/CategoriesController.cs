@@ -49,7 +49,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Categories", 500, ex.Message);
+                _logHelper.Log("Categories", 500, "GetCategories", ex.Message);
                 return null;
             }
         }
