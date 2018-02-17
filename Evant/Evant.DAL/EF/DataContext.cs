@@ -1,5 +1,4 @@
-﻿using Evant.DAL.EF.Maps;
-using Evant.DAL.EF.Tables;
+﻿using Evant.DAL.EF.Tables;
 using Microsoft.EntityFrameworkCore;
 
 namespace Evant.DAL.EF
@@ -15,16 +14,12 @@ namespace Evant.DAL.EF
         public DbSet<EventOperation> EventOperations { get; set; }
         public DbSet<FriendOperation> FriendOperations { get; set; }
         public DbSet<Log> Logs { get; set; }
-        public DbSet<Tag> Tags { get; set; }
-        public DbSet<EventTag> EventTags { get; set; }
-        public DbSet<ReportType> ReportTypes { get; set; }
-        public DbSet<UserReport> UserReports { get; set; }
         public DbSet<UserSetting> UserSettings { get; set; }
-        public DbSet<Notification> Notifications { get; set; }
 
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
+            
         }
 
 
@@ -32,21 +27,21 @@ namespace Evant.DAL.EF
         {
             base.OnModelCreating(modelBuilder);
 
-            new UserMap(modelBuilder.Entity<User>());
-            new UserDeviceMap(modelBuilder.Entity<UserDevice>());
-            new SearchHistoryMap(modelBuilder.Entity<SearchHistory>());
-            new CategoryMap(modelBuilder.Entity<Category>());
-            new EventMap(modelBuilder.Entity<Event>());
-            new CommentMap(modelBuilder.Entity<Comment>());
-            new EventOperationMap(modelBuilder.Entity<EventOperation>());
-            new FriendOperationMap(modelBuilder.Entity<FriendOperation>());
-            new LogMap(modelBuilder.Entity<Log>());
-            new TagMap(modelBuilder.Entity<Tag>());
-            new EventTagMap(modelBuilder.Entity<EventTag>());
-            new NotificationMap(modelBuilder.Entity<Notification>());
-            new ReportTypeMap(modelBuilder.Entity<ReportType>());
-            new UserReportMap(modelBuilder.Entity<UserReport>());
-            new UserSettingMap(modelBuilder.Entity<UserSetting>());
+            //Comment Entity
+            modelBuilder.Entity<Comment>().HasOne(a => a.User).WithMany(b => b.EventComments).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Comment>().HasOne(a => a.Event).WithMany(b => b.EventComments).HasForeignKey(c => c.EventId).OnDelete(DeleteBehavior.Restrict);
+
+            ////Event Entity
+            //modelBuilder.Entity<Event>().HasOne(a => a.User).WithMany(b => b.Events).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<Event>().HasOne(a => a.Category).WithMany(b => b.Events).HasForeignKey(c => c.CategoryId);
+
+            //EventOperaation Entity
+            modelBuilder.Entity<EventOperation>().HasOne(a => a.User).WithMany(b => b.EventOperations).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<EventOperation>().HasOne(a => a.Event).WithMany(b => b.EventOperations).HasForeignKey(c => c.EventId).OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<FriendOperation>().HasOne(a => a.FollowerUser).WithMany(b => b.Followers).HasForeignKey(c => c.FollowerUserId).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<FriendOperation>().HasOne(a => a.FollowingUser).WithMany(b => b.Followings).HasForeignKey(c => c.FollowingUserId).OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

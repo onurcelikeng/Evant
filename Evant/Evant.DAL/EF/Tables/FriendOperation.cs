@@ -1,12 +1,14 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Evant.DAL.EF.Tables
 {
+    [Table("FriendOperations")]
     public class FriendOperation : BaseEntity
     {
-        public Guid FollowingId { get; set; } //takip edilen
+        public Guid FollowingUserId { get; set; } //takip edilen
 
-        public Guid FollowerId { get; set; } //takip eden
+        public Guid FollowerUserId { get; set; } //takip eden
 
 
         // Foreign keys

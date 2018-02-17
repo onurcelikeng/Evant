@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Evant.DAL.EF.Tables
 {
+    [Table("Events")]
     public class Event : BaseEntity
     {
         public Event()
         {
-            EventTags = new List<EventTag>();
             EventComments = new List<Comment>();
             EventOperations = new List<EventOperation>();
         }
@@ -17,29 +20,41 @@ namespace Evant.DAL.EF.Tables
 
         public Guid CategoryId { get; set; }
 
+        [Required, MaxLength(40)]
         public string Title { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
+        [Required]
         public DateTime StartDate { get; set; }
 
         public DateTime FinishDate { get; set; }
 
+        [Required]
         public bool IsPrivate { get; set; }
 
         public string Photo { get; set; }
 
+        [Required]
         public string City { get; set; }
 
+        [Required]
         public string Town { get; set; }
 
+        [Required]
         public double Latitude { get; set; }
 
+        [Required]
         public double Longitude { get; set; }
 
-        public int TotalParticipants { get; set; } = 0;
+        [Required]
+        [DefaultValue(0)]
+        public int TotalParticipants { get; set; }
 
-        public int TotalComments { get; set; } = 0;
+        [Required]
+        [DefaultValue(0)]
+        public int TotalComments { get; set; }
 
 
         // Foreign keys
@@ -49,8 +64,6 @@ namespace Evant.DAL.EF.Tables
 
 
         // Reverse navigation
-        public virtual ICollection<EventTag> EventTags { get; set; }
-
         public virtual ICollection<Comment> EventComments { get; set; }
 
         public virtual ICollection<EventOperation> EventOperations { get; set; }

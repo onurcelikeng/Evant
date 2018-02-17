@@ -1,5 +1,8 @@
-﻿namespace Evant.DAL.EF.Tables
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Evant.DAL.EF.Tables
 {
+    [Table("Logs")]
     public class Log : BaseEntity
     {
         public string Ip { get; set; }

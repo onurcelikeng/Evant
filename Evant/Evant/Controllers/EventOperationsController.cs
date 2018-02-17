@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Evant.Controllers
 {
     [Produces("application/json")]
-    [Route("api/eventpperaitons")]
+    [Route("api/eventoperations")]
     public class EventOperationsController : BaseController
     {
         private readonly IRepository<EventOperation> _eventOperationRepo;

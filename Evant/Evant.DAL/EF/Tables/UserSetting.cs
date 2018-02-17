@@ -1,22 +1,38 @@
 ﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Evant.DAL.EF.Tables
 {
+    [Table("UserSettings")]
     public class UserSetting : BaseEntity
     {
         public Guid UserId { get; set; }
 
-        public string Theme { get; set; } = "light";
+        [Required]
+        [DefaultValue("light")]
+        public string Theme { get; set; }
 
-        public string Language { get; set; } = "tr";
+        [Required]
+        [DefaultValue("tr")]
+        public string Language { get; set; }
 
-        public bool IsFriendshipNotif { get; set; } = true;
+        [Required]
+        [DefaultValue(true)]
+        public bool IsFriendshipNotif { get; set; }
 
-        public bool IsCommentNotif { get; set; } = true;
+        [Required]
+        [DefaultValue(true)]
+        public bool IsCommentNotif { get; set; }
 
-        public bool IsEventNewComerNotif { get; set; } = true;
+        [Required]
+        [DefaultValue(true)]
+        public bool IsEventNewComerNotif { get; set; }
 
-        public bool IsEventUpdateNotif { get; set; } = true;
+        [Required]
+        [DefaultValue(true)]
+        public bool IsEventUpdateNotif { get; set; }
 
 
         // Foreign keys

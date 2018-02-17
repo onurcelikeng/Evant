@@ -2,6 +2,7 @@
 using Evant.DAL.EF;
 using Evant.DAL.Interfaces.Repositories;
 using Evant.DAL.Repositories;
+using Evant.DAL.Repositories.Interfaces;
 using Evant.Helpers;
 using Evant.Interfaces;
 using Evant.NotificationCenter;
@@ -43,15 +44,15 @@ namespace Evant
             services.AddMvc();
 
             // Add DBContext
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DevDbConnection")));
 
             // Add Generic Repository
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IFriendOperationRepository, FriendOperationRepository>();
 
             // Scoped
             services.AddScoped<IJwtFactory, JwtFactory>();
             services.AddScoped<ILogHelper, LogHelper>();
-            services.AddScoped<INotificationHelper, NotificationHelper>();
 
             // OneSignal
             services.AddScoped<IOneSignal>(factory =>
@@ -129,7 +130,7 @@ namespace Evant
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Evant API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Evant API V1");             
             });
 
             app.UseMvc();
