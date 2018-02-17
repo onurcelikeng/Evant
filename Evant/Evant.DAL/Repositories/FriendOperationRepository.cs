@@ -23,7 +23,7 @@ namespace Evant.DAL.Repositories
             return await Table
                 .Include(t => t.FollowerUser)
                 .Include(t => t.FollowingUser)
-                .Where(t => t.FollowerUserId == userId)
+                .Where(t => t.FollowingUserId == userId)
                 .ToListAsync();
         }
 

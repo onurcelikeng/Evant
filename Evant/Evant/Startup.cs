@@ -48,11 +48,11 @@ namespace Evant
 
             // Repositories
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddSingleton<IFriendOperationRepository, FriendOperationRepository>();
-            services.AddSingleton<ICommentRepository, CommentRepository>();
-            services.AddSingleton<IEventOperationRepository, EventOperationRepository>();
-            services.AddSingleton<IEventRepository, EventRepository>();
-            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddScoped<IFriendOperationRepository, FriendOperationRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IEventOperationRepository, EventOperationRepository>();
+            services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             // Scoped
             services.AddScoped<IJwtFactory, JwtFactory>();

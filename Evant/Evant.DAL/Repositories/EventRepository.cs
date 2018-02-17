@@ -23,7 +23,7 @@ namespace Evant.DAL.Repositories
             return await Table
                 .Include(t => t.Category)
                 .Include(t => t.User)
-                .Where(t => t.UserId == userId)
+                .Where(t => t.UserId == userId && t.IsDeleted == false)
                 .ToListAsync();
         }
 
@@ -32,7 +32,7 @@ namespace Evant.DAL.Repositories
             return await Table
                 .Include(t => t.Category)
                 .Include(t => t.User)
-                .Where(t => t.CategoryId == categoryId)
+                .Where(t => t.CategoryId == categoryId && t.IsDeleted == false)
                 .ToListAsync();
         }
 
