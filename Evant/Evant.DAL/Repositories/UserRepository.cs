@@ -29,6 +29,8 @@ namespace Evant.DAL.Repositories
         {
             return await Table
                 .Include(t => t.Setting)
+                .Include(t => t.Followers)
+                .Include(t => t.Followings)
                 .SingleOrDefaultAsync(t => t.Id == userId);
         }
 

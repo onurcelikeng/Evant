@@ -25,5 +25,13 @@ namespace Evant.DAL.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<EventOperation>> UserEventOperations(Guid userId)
+        {
+            return await Table
+                .Include(t => t.Event)
+                .Where(t => t.UserId == userId && !t.IsDeleted)
+                .ToListAsync();
+        }
+
     }
 }

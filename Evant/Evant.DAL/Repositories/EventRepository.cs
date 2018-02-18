@@ -36,5 +36,15 @@ namespace Evant.DAL.Repositories
                 .ToListAsync();
         }
 
+        public async Task<bool> SoftDelete(Guid eventId)
+        {
+            var data = await this.First(t => t.Id == eventId);
+            if (data != null)
+            {
+                data.IsDeleted = true;
+                return await this.Update(data);
+            }
+            return false;
+        }
     }
 }

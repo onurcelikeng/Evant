@@ -13,5 +13,9 @@ namespace Evant.Contracts.DataTransferObjects.User
         public string Email { get; set; }
 
         public string PhotoUrl { get; set; }
+
+        public int FollowersCount { get; set; }
+
+        public int FollowingsCount { get; set; }
     }
 }

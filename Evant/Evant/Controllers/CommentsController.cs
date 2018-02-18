@@ -18,7 +18,7 @@ namespace Evant.Controllers
     {
         private readonly ICommentRepository _commentRepo;
         private readonly ILogHelper _logHelper;
-        
+
 
         public CommentsController(ICommentRepository commentRepo,
             ILogHelper logHelper)
@@ -75,13 +75,11 @@ namespace Evant.Controllers
                     return BadRequest("Eksik bilgi girdiniz.");
                 }
 
-                Guid userId = User.GetUserId();
-
                 var entity = new Comment()
                 {
                     Id = new Guid(),
                     EventId = model.EventId,
-                    UserId = userId
+                    UserId = User.GetUserId()
                 };
 
                 var response = await _commentRepo.Add(entity);
@@ -107,7 +105,9 @@ namespace Evant.Controllers
         {
             try
             {
-                var comment = await _commentRepo.First(c => c.Id == commentId);
+                Guid userId = User.GetUserId();
+
+                var comment = await _commentRepo.First(c => c.Id == commentId && c.UserId == userId);
                 if (comment == null)
                 {
                     return NotFound("Kayıt bulunamadı.");

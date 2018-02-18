@@ -9,5 +9,6 @@ namespace Evant.DAL.Repositories.Interfaces
     public interface IEventOperationRepository : IRepository<EventOperation>
     {
         Task<List<EventOperation>> Participants(Guid eventId);
+        Task<List<EventOperation>> UserEventOperations(Guid userId);
     }
 }

@@ -10,5 +10,6 @@ namespace Evant.DAL.Repositories.Interfaces
     {
         Task<List<Event>> UserEvents(Guid userId);
         Task<List<Event>> EventsByCategory(Guid categoryId);
+        Task<bool> SoftDelete(Guid eventId);
     }
 }

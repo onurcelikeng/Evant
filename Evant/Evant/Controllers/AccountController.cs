@@ -160,7 +160,9 @@ namespace Evant.Controllers
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         Email = user.Email,
-                        PhotoUrl = user.Photo
+                        PhotoUrl = user.Photo,
+                        FollowersCount = user.Followers.Count,
+                        FollowingsCount = user.Followings.Count
                     };
 
                     return Ok(model);
