@@ -59,7 +59,6 @@ namespace Evant.NotificationCenter
             RestRequest restRequest = new RestRequest("notifications", Method.POST);
 
             restRequest.AddHeader("Authorization", string.Format("Basic {0}", _settings.RestApiKey));
-
             restRequest.RequestFormat = DataFormat.Json;
             restRequest.JsonSerializer = new NewtonsoftJsonSerializer();
 

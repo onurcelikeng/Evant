@@ -4,8 +4,6 @@
     {
         public string DeviceId { get; set; } //UniqId
 
-        public string PlayerId { get; set; } //One Signal
-
         public string Brand { get; set; } //iPhone
 
         public string Model { get; set; } //6S

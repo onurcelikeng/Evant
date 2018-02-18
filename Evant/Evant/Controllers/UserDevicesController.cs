@@ -46,7 +46,6 @@ namespace Evant.Controllers
                 {
                     selectedDevice.IsLoggedin = true;
                     selectedDevice.UpdateAt = DateTime.Now;
-                    selectedDevice.PlayerId = device.PlayerId;
 
                     var response = await _userDevicesRepo.Update(selectedDevice);
                     if (response)

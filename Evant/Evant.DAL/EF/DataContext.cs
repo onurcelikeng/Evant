@@ -39,8 +39,8 @@ namespace Evant.DAL.EF
             modelBuilder.Entity<EventOperation>().HasOne(a => a.User).WithMany(b => b.EventOperations).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<EventOperation>().HasOne(a => a.Event).WithMany(b => b.EventOperations).HasForeignKey(c => c.EventId).OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<FriendOperation>().HasOne(a => a.FollowerUser).WithMany(b => b.Followers).HasForeignKey(c => c.FollowerUserId).OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<FriendOperation>().HasOne(a => a.FollowingUser).WithMany(b => b.Followings).HasForeignKey(c => c.FollowingUserId).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<FriendOperation>().HasOne(a => a.FollowerUser).WithMany(b => b.Followings).HasForeignKey(c => c.FollowerUserId).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<FriendOperation>().HasOne(a => a.FollowingUser).WithMany(b => b.Followers).HasForeignKey(c => c.FollowingUserId).OnDelete(DeleteBehavior.Restrict);
 
         }
     }
