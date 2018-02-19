@@ -53,8 +53,8 @@ namespace Evant.NotificationCenter.Models
         /// Users in these segments will receive a notification. 
         /// This targeting parameter is only compatible with excluded_segments.
         /// </summary>
-        [JsonProperty("included_segments")]
-        public IList<string> IncludedSegments { get; set; }
+        [JsonProperty("include_player_ids")]
+        public IList<string> PlayerIds { get; set; }
 
         /// <summary>
         /// Sets the web push notification's icon. 

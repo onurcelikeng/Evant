@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Evant.Constants;
 using Evant.Contracts.DataTransferObjects.User;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Repositories.Interfaces;
 using Evant.Helpers;
 using Evant.Interfaces;
+using Evant.NotificationCenter.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Evant.Constants.NotificationConstant;
 
 namespace Evant.Controllers
 {
@@ -16,13 +19,16 @@ namespace Evant.Controllers
     public class FriendOperationsController : BaseController
     {
         private readonly IFriendOperationRepository _friendOperationRepo;
+        private readonly INotificationHelper _notificationHelper;
         private readonly ILogHelper _logHelper;
 
 
         public FriendOperationsController(IFriendOperationRepository friendOperationRepo,
+            INotificationHelper notificationHelper,
             ILogHelper logHelper)
         {
             _friendOperationRepo = friendOperationRepo;
+            _notificationHelper = notificationHelper;
             _logHelper = logHelper;
         }
 
@@ -125,25 +131,30 @@ namespace Evant.Controllers
             {
                 Guid userId = User.GetUserId();
 
-                var selectedFriendOperation = await _friendOperationRepo.First(fo => fo.FollowerUserId == userId && fo.FollowingUserId == friendId);
-                if (selectedFriendOperation != null)
+                var friendOperation = await _friendOperationRepo.First(fo => fo.FollowerUserId == userId && fo.FollowingUserId == friendId);
+                if (friendOperation != null)
+                {
                     return BadRequest("Zaten takip ediyorsun.");
-
-                var entity = new FriendOperation()
-                {
-                    Id = new Guid(),
-                    FollowerUserId = userId,
-                    FollowingUserId = friendId
-                };
-
-                var response = await _friendOperationRepo.Add(entity);
-                if (response)
-                {
-                    return Ok("Takip etmeye başladın.");
                 }
                 else
                 {
-                    return BadRequest("Takip ederken hata oluştu.");
+                    var entity = new FriendOperation()
+                    {
+                        Id = new Guid(),
+                        FollowerUserId = userId,
+                        FollowingUserId = friendId
+                    };
+
+                    var response = await _friendOperationRepo.Add(entity);
+                    if (response)
+                    {
+                        await _notificationHelper.SendFollowNotification(userId, friendId);
+                        return Ok("Takip etmeye başladın.");
+                    }
+                    else
+                    {
+                        return BadRequest("Takip ederken hata oluştu.");
+                    }
                 }
             }
             catch (Exception ex)

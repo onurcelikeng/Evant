@@ -29,51 +29,24 @@ namespace Evant.NotificationCenter
         }
 
 
-        public DeviceResultModel AddDevice(UserDeviceDTO device)
-        {
-            RestRequest restRequest = new RestRequest("players", Method.POST);
-
-            restRequest.AddHeader("Authorization", string.Format("Basic {0}", _settings.RestApiKey));
-            restRequest.RequestFormat = DataFormat.Json;
-            restRequest.JsonSerializer = new NewtonsoftJsonSerializer();
-            restRequest.AddBody(new DeviceAddOptions()
-            {
-                AppId = _settings.AppId,
-                Identifier = device.DeviceId,
-                DeviceType = DeviceTypeEnum.iOS,
-                DeviceModel = device.Model,
-                DeviceOS = device.OS
-            });
-
-            var restResponse = _restClient.Execute<DeviceResultModel>(restRequest);
-            if (restResponse.ErrorException != null)
-            {
-                throw restResponse.ErrorException;
-            }
-
-            return restResponse.Data;
-        }
-
-        public NotificationResultModel SendNotification(string playerId, string message)
+        public NotificationResultModel SendNotification(List<string> playerIds, string message)
         {
             RestRequest restRequest = new RestRequest("notifications", Method.POST);
 
             restRequest.AddHeader("Authorization", string.Format("Basic {0}", _settings.RestApiKey));
+            restRequest.AddHeader("Content-Type", "application/json; charset=utf-8");
             restRequest.RequestFormat = DataFormat.Json;
             restRequest.JsonSerializer = new NewtonsoftJsonSerializer();
-
-            var options = new NotificationCreateOptions()
+            restRequest.AddBody(new NotificationCreateOptions()
             {
                 AppId = _settings.AppId,
                 Contents = new Dictionary<string, string>
                 {
-                    { "tr",  message}
+                    { "tr",  message},
+                    { "en", message }
                 },
-                IncludedSegments = new List<string>
-                {
-                    playerId
-                }
-            };
+                PlayerIds = playerIds
+            });
 
             var restResponse = _restClient.Execute<NotificationResultModel>(restRequest);
             if (restResponse.ErrorException != null)
@@ -82,7 +55,6 @@ namespace Evant.NotificationCenter
             }
 
             return restResponse.Data;
-
         }
 
     }

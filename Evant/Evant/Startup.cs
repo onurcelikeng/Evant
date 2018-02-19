@@ -59,6 +59,7 @@ namespace Evant
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IJwtFactory, JwtFactory>();
             services.AddScoped<ILogHelper, LogHelper>();
+            services.AddScoped<INotificationHelper, NotificationHelper>();
 
             // OneSignal
             services.AddScoped<IOneSignal>(factory =>
