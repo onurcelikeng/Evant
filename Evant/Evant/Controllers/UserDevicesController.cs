@@ -59,31 +59,22 @@ namespace Evant.Controllers
                 }
                 else
                 {
-                    var result = _oneSignal.AddDevice(device);
-                    if (result.IsSuccess)
+                    Guid userId = User.GetUserId();
+                    var entity = new UserDevice()
                     {
-                        Guid userId = User.GetUserId();
-                        var entity = new UserDevice()
-                        {
-                            Id = new Guid(),
-                            UserId = userId,
-                            DeviceId = device.DeviceId,
-                            PlayerId = result.Id,
-                            Brand = device.Brand,
-                            Model = device.Model,
-                            OS = device.OS,
-                            IsLoggedin = true,
-                        };
+                        Id = new Guid(),
+                        UserId = userId,
+                        DeviceId = device.DeviceId,
+                        Brand = device.Brand,
+                        Model = device.Model,
+                        OS = device.OS,
+                        IsLoggedin = true,
+                    };
 
-                        var response = await _userDevicesRepo.Add(entity);
-                        if (response)
-                        {
-                            return Ok("Cihazınız eklendi.");
-                        }
-                        else
-                        {
-                            return BadRequest("Cihaz eklenemedi.");
-                        }
+                    var response = await _userDevicesRepo.Add(entity);
+                    if (response)
+                    {
+                        return Ok("Cihazınız eklendi.");
                     }
                     else
                     {

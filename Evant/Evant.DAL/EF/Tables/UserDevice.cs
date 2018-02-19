@@ -14,9 +14,6 @@ namespace Evant.DAL.EF.Tables
         public string DeviceId { get; set; } //retwfdwdr676
 
         [Required]
-        public string PlayerId { get; set; }
-
-        [Required]
         public string Brand { get; set; } //Apple
 
         [Required]
