@@ -41,7 +41,7 @@ namespace Evant.Controllers
                 }
                 else
                 {
-                    var model = new UserDetailDTO()
+                    var model = new BaseUserDetailDTO()
                     {
                         UserId = user.Id,
                         FirstName = user.FirstName,

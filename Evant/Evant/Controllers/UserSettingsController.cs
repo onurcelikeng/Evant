@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Evant.Contracts.DataTransferObjects.UserSettingDTO.cs;
+using Evant.Contracts.DataTransferObjects.UserSettingDTO;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
 using Evant.Helpers;

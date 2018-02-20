@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Evant.Contracts.DataTransferObjects.UserSettingDTO.cs
+namespace Evant.Contracts.DataTransferObjects.UserSettingDTO
 {
     public sealed class UserSettingDTO
     {

@@ -12,6 +12,7 @@ using Evant.Storage.Extensions;
 using Evant.Auth;
 using Evant.DAL.Repositories.Interfaces;
 using Evant.Interfaces;
+using Evant.Contracts.DataTransferObjects.UserSettingDTO;
 
 namespace Evant.Controllers
 {
@@ -157,7 +158,12 @@ namespace Evant.Controllers
                         Email = user.Email,
                         PhotoUrl = user.Photo,
                         FollowersCount = user.Followers.Count,
-                        FollowingsCount = user.Followings.Count
+                        FollowingsCount = user.Followings.Count,
+                        Settings = new UserSettingInfoDTO()
+                        {
+                            Language = user.Setting.Language,
+                            Theme = user.Setting.Theme
+                        }
                     };
 
                     return Ok(model);
