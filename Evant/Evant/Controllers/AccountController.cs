@@ -109,7 +109,7 @@ namespace Evant.Controllers
                 else
                 {
                     var response = await _userRepo.First(u => u.Email == user.Email);
-                    if(response != null)
+                    if (response != null)
                     {
                         return BadRequest("Şifreniz yanlış.");
                     }
@@ -219,6 +219,56 @@ namespace Evant.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        [Route("profile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UserUpdateDTO user)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest("Eksik bilgi girdiniz.");
+
+                Guid userId = User.GetUserId();
+
+                var selectedUser = await _userRepo.First(u => u.Id == userId);
+                if(selectedUser == null)
+                {
+                    return NotFound("Kayıt bulunamadı.");
+                }
+                else
+                {
+                    bool emailExist = await _userRepo.EmailCheck(user.Email);
+                    if (!emailExist)
+                    {
+                        return BadRequest("Eposta adresi başka bir kullanıcı tarafından kullanılıyor.");
+                    }
+                    else
+                    {
+                        selectedUser.FirstName = user.FirstName;
+                        selectedUser.LastName = user.LastName;
+                        selectedUser.Email = user.Email;
+
+                        var response = await _userRepo.Update(selectedUser);
+                        if (response)
+                        {
+                            return Ok("Kullanıcı bilgileri güncellendi.");
+                        }
+                        else
+                        {
+                            return BadRequest("Kullanıcı bilgileri güncellenemedi.");
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("Users", 500, "UpdateProfile", ex.Message);
+                return null;
+            }
+        }
+
+        [Authorize]
         [HttpPut]
         [Route("password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO password)
@@ -243,7 +293,6 @@ namespace Evant.Controllers
                         var response = await _userRepo.Update(user);
                         if (response)
                         {
-                            User.Logout();
                             return Ok("Şifreniz başarıyla güncellendi.");
                         }
 

@@ -9,5 +9,6 @@ namespace Evant.DAL.Repositories.Interfaces
     {
         Task<User> Login(string email, string password);
         Task<User> GetUser(Guid userId);
+        Task<bool> EmailCheck(string email);
     }
 }

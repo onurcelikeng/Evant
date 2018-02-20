@@ -34,5 +34,10 @@ namespace Evant.DAL.Repositories
                 .SingleOrDefaultAsync(t => t.Id == userId);
         }
 
+        public async Task<bool> EmailCheck(string email)
+        {
+            return (await Table.CountAsync(t => t.Email == email)) > 0;
+        }
+
     }
 }
