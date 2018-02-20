@@ -231,35 +231,39 @@ namespace Evant.Controllers
                 Guid userId = User.GetUserId();
 
                 var selectedUser = await _userRepo.First(u => u.Id == userId);
-                if(selectedUser == null)
+                if (selectedUser == null)
                 {
                     return NotFound("Kayıt bulunamadı.");
                 }
                 else
                 {
-                    bool emailExist = await _userRepo.EmailCheck(user.Email);
-                    if (!emailExist)
+                    if (selectedUser.Email != user.Email)
                     {
-                        return BadRequest("Eposta adresi başka bir kullanıcı tarafından kullanılıyor.");
-                    }
-                    else
-                    {
-                        selectedUser.FirstName = user.FirstName;
-                        selectedUser.LastName = user.LastName;
-                        selectedUser.Email = user.Email;
-
-                        var response = await _userRepo.Update(selectedUser);
-                        if (response)
+                        bool emailExist = await _userRepo.EmailCheck(user.Email);
+                        if (emailExist)
                         {
-                            return Ok("Kullanıcı bilgileri güncellendi.");
+                            return BadRequest("Eposta adresi başka bir kullanıcı tarafından kullanılıyor.");
                         }
                         else
                         {
-                            return BadRequest("Kullanıcı bilgileri güncellenemedi.");
+                            selectedUser.Email = user.Email;
                         }
                     }
-                }
 
+                    selectedUser.FirstName = user.FirstName;
+                    selectedUser.LastName = user.LastName;
+                    selectedUser.UpdateAt = DateTime.Now;
+
+                    var response = await _userRepo.Update(selectedUser);
+                    if (response)
+                    {
+                        return Ok("Kullanıcı bilgileri güncellendi.");
+                    }
+                    else
+                    {
+                        return BadRequest("Kullanıcı bilgileri güncellenemedi.");
+                    }
+                }
             }
             catch (Exception ex)
             {

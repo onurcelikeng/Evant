@@ -62,5 +62,19 @@ namespace Evant.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = (await _userRepo.All()).Select(u => new UserInfoDTO()
+            {
+                UserId = u.Id,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                PhotoUrl = u.Photo
+            });
+
+            return Ok(users);
+        }
+
     }
 }
