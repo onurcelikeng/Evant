@@ -92,7 +92,7 @@ namespace Evant.Controllers
         [Authorize]
         [HttpGet]
         [Route("logout/{deviceId}")]
-        public async Task<IActionResult> CloseDevice([FromRoute] string deviceId)
+        public async Task<IActionResult> Logout([FromRoute] string deviceId)
         {
             try
             {
