@@ -35,13 +35,11 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("followers")]
-        public async Task<IActionResult> GetFollowers()
+        [Route("followers/{userId}")]
+        public async Task<IActionResult> GetFollowers([FromRoute] Guid userId)
         {
             try
             {
-                Guid userId = User.GetUserId();
-
                 var followers = (await _friendOperationRepo.Followers(userId)).Select(u => new UserInfoDTO()
                 {
                     UserId = u.FollowerUser.Id,
@@ -68,12 +66,11 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("followings")]
-        public async Task<IActionResult> GetFollowings()
+        [Route("followings/{userId}")]
+        public async Task<IActionResult> GetFollowings([FromRoute] Guid userId)
         {
             try
             {
-                Guid userId = User.GetUserId();
                 var followings = (await _friendOperationRepo.Followings(userId)).Select(u => new UserInfoDTO()
                 {
                     UserId = u.FollowingUser.Id,

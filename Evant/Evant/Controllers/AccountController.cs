@@ -2,7 +2,6 @@
 using Evant.Contracts.DataTransferObjects.Account;
 using Evant.Contracts.DataTransferObjects.User;
 using Evant.DAL.EF.Tables;
-using Evant.DAL.Interfaces.Repositories;
 using Evant.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +9,6 @@ using Evant.Storage.Interfaces;
 using Evant.Storage.Models;
 using System.Threading.Tasks;
 using Evant.Storage.Extensions;
-using Evant.Contracts.DataTransferObjects.UserSettingDTO.cs;
 using Evant.Auth;
 using Evant.DAL.Repositories.Interfaces;
 using Evant.Interfaces;
@@ -22,20 +20,17 @@ namespace Evant.Controllers
     public class AccountController : BaseController
     {
         private readonly IUserRepository _userRepo;
-        private readonly IRepository<UserSetting> _userSettingRepo;
         private readonly ILogHelper _logHelper;
         private readonly IJwtFactory _jwtFactory;
         private readonly IAzureBlobStorage _blobStorage;
 
 
         public AccountController(IUserRepository userRepo,
-            IRepository<UserSetting> userSettingRepo,
             ILogHelper logHelper,
             IJwtFactory jwtFactory,
             IAzureBlobStorage blobStorage)
         {
             _userRepo = userRepo;
-            _userSettingRepo = userSettingRepo;
             _logHelper = logHelper;
             _jwtFactory = jwtFactory;
             _blobStorage = blobStorage;
@@ -214,42 +209,6 @@ namespace Evant.Controllers
             {
                 _logHelper.Log("Users", 500, "UploadPhoto", ex.Message);
                 return null;
-            }
-        }
-
-        [Authorize]
-        [HttpPut]
-        [Route("settings")]
-        public async Task<IActionResult> ChangeUserSetting([FromBody] UserSettingDTO model)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest("Eksik bilgi girdiniz.");
-
-            Guid userId = User.GetUserId();
-            var selectedUserSetting = await _userSettingRepo.First(us => us.UserId == userId);
-            if (selectedUserSetting == null)
-            {
-                return NotFound("Kayıt bulunamadı.");
-            }
-            else
-            {
-                selectedUserSetting.UpdateAt = DateTime.Now;
-                selectedUserSetting.Theme = model.Theme;
-                selectedUserSetting.Language = model.Language;
-                selectedUserSetting.IsCommentNotif = model.IsCommentNotif;
-                selectedUserSetting.IsEventNewComerNotif = model.IsEventNewComerNotif;
-                selectedUserSetting.IsEventUpdateNotif = model.IsEventUpdateNotif;
-                selectedUserSetting.IsFriendshipNotif = model.IsFriendshipNotif;
-
-                var response = await _userSettingRepo.Update(selectedUserSetting);
-                if (response)
-                {
-                    return Ok("Kullanıcı ayarları güncellendi.");
-                }
-                else
-                {
-                    return BadRequest("Kullanıcı ayarları güncellenemedi.");
-                }
             }
         }
 
