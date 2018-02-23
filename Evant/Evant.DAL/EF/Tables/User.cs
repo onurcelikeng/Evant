@@ -50,6 +50,9 @@ namespace Evant.DAL.EF.Tables
         [Required]
         public bool IsFacebook { get; set; }
 
+        [Required]
+        public bool IsBusinessAccount { get; set; } = false;
+
 
         public virtual UserSetting Setting { get; set; }
 

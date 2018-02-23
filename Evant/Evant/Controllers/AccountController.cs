@@ -324,6 +324,80 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpGet]
+        [Route("business")]
+        public async Task<IActionResult> SwitchtoBusinessAccount()
+        {
+            try
+            {
+                Guid userId = User.GetUserId();
+
+                var selectedUser = await _userRepo.First(u => u.Id == userId);
+                if(selectedUser == null)
+                {
+                    return BadRequest("Kayıt bulunamadı.");
+                }
+                else
+                {
+                    selectedUser.IsBusinessAccount = true;
+                    selectedUser.UpdateAt = DateTime.Now;
+
+                    var response = await _userRepo.Update(selectedUser);
+                    if (response)
+                    {
+                        return Ok("Business hesabına geçildi.");
+                    }
+                    else
+                    {
+                        return BadRequest("Business hesabına geçilemedi.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("Users", 500, "SwitchtoBusinessAccount", ex.Message);
+                return null;
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("normal")]
+        public async Task<IActionResult> SwitchtoNormalAccount()
+        {
+            try
+            {
+                Guid userId = User.GetUserId();
+
+                var selectedUser = await _userRepo.First(u => u.Id == userId);
+                if (selectedUser == null)
+                {
+                    return BadRequest("Kayıt bulunamadı.");
+                }
+                else
+                {
+                    selectedUser.IsBusinessAccount = false;
+                    selectedUser.UpdateAt = DateTime.Now;
+
+                    var response = await _userRepo.Update(selectedUser);
+                    if (response)
+                    {
+                        return Ok("Normal hesabına geçildi.");
+                    }
+                    else
+                    {
+                        return BadRequest("Normal hesabına geçilemedi.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("Users", 500, "SwitchtoNormalAccount", ex.Message);
+                return null;
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
         [Route("deactive")]
         public async Task<IActionResult> DeActiveAccount()
         {
