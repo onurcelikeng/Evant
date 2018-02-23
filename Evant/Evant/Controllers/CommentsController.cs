@@ -79,7 +79,8 @@ namespace Evant.Controllers
                 {
                     Id = new Guid(),
                     EventId = model.EventId,
-                    UserId = User.GetUserId()
+                    UserId = User.GetUserId(),
+                    Content = model.Content      
                 };
 
                 var response = await _commentRepo.Add(entity);

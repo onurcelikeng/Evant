@@ -58,6 +58,32 @@ namespace Evant.Controllers
         }
 
         [Authorize]
+        [HttpGet("status/{eventId}")]
+        public async Task<IActionResult> IsJoin([FromRoute] Guid eventId)
+        {
+            try
+            {
+                Guid userId = User.GetUserId();
+
+                var selectedEventOperation = await _eventOperationRepo.First(eo => eo.EventId == eventId && eo.UserId == userId);
+                if (selectedEventOperation == null)
+                {
+                    return BadRequest("Katılmamışsın.");
+                }
+                else
+                {
+                    return Ok("Katılmışsın.");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("EventOperations", 500, "IsFollow", ex.Message);
+                return null;
+            }
+
+        }
+
+        [Authorize]
         [HttpPost("{eventId}")]
         public async Task<IActionResult> JoinEvent([FromRoute] Guid eventId)
         {
@@ -65,21 +91,29 @@ namespace Evant.Controllers
             {
                 Guid userId = User.GetUserId();
 
-                var entity = new EventOperation()
+                var selectedEventOperation = await _eventOperationRepo.First(eo => eo.UserId == userId && eo.EventId == eventId);
+                if (selectedEventOperation != null)
                 {
-                    Id = new Guid(),
-                    UserId = userId,
-                    EventId = eventId
-                };
-
-                var response = await _eventOperationRepo.Add(entity);
-                if (response)
-                {
-                    return Ok("Etkinliğe katıldınız.");
+                    return BadRequest("Etkinliğe daha önce katıldınız.");
                 }
                 else
                 {
-                    return BadRequest("Etkinliğe katılamadınız.");
+                    var entity = new EventOperation()
+                    {
+                        Id = new Guid(),
+                        UserId = userId,
+                        EventId = eventId
+                    };
+
+                    var response = await _eventOperationRepo.Add(entity);
+                    if (response)
+                    {
+                        return Ok("Etkinliğe katıldınız.");
+                    }
+                    else
+                    {
+                        return BadRequest("Etkinliğe katılamadınız.");
+                    }
                 }
             }
             catch (Exception ex)
@@ -100,15 +134,18 @@ namespace Evant.Controllers
                 {
                     return NotFound("Kayıt bulunamadı.");
                 }
-
-                var response = await _eventOperationRepo.Delete(selectedEventOperation);
-                if (response)
-                {
-                    return Ok("Etkinlikten ayrıldınız.");
-                }
                 else
                 {
-                    return BadRequest("Etkinlikten ayrılamadınız.");
+                    var response = await _eventOperationRepo.Delete(selectedEventOperation);
+                    if (response)
+                    {
+                        return Ok("Etkinlikten ayrıldınız.");
+                    }
+                    else
+                    {
+                        return BadRequest("Etkinlikten ayrılamadınız.");
+                    }
+
                 }
             }
             catch (Exception ex)

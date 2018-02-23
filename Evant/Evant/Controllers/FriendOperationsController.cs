@@ -115,7 +115,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Logs", 500, "IsFollow", ex.Message);
+                _logHelper.Log("FriendOperations", 500, "IsFollow", ex.Message);
                 return null;
             }
         }
