@@ -124,12 +124,14 @@ namespace Evant.Controllers
         }
 
         [Authorize]
-        [HttpDelete("{eventOperationId}")]
-        public async Task<IActionResult> LeaveEvent([FromRoute] Guid eventOperationId)
+        [HttpDelete("{eventId}")]
+        public async Task<IActionResult> LeaveEvent([FromRoute] Guid eventId)
         {
             try
             {
-                var selectedEventOperation = await _eventOperationRepo.First(eo => eo.Id == eventOperationId);
+                Guid userId = User.GetUserId();
+
+                var selectedEventOperation = await _eventOperationRepo.First(eo => eo.EventId == eventId && eo.UserId == userId);
                 if (selectedEventOperation == null)
                 {
                     return NotFound("Kayıt bulunamadı.");
@@ -145,7 +147,6 @@ namespace Evant.Controllers
                     {
                         return BadRequest("Etkinlikten ayrılamadınız.");
                     }
-
                 }
             }
             catch (Exception ex)

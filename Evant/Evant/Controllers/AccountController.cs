@@ -164,6 +164,7 @@ namespace Evant.Controllers
                         LastName = user.LastName,
                         Email = user.Email,
                         PhotoUrl = user.Photo,
+                        IsBusiness = user.IsBusinessAccount,
                         FollowersCount = user.Followers.Count,
                         FollowingsCount = user.Followings.Count,
                         Settings = new UserSettingInfoDTO()
