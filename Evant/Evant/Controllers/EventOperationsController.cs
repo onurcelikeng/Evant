@@ -16,13 +16,19 @@ namespace Evant.Controllers
     public class EventOperationsController : BaseController
     {
         private readonly IEventOperationRepository _eventOperationRepo;
+        private readonly IEventRepository _eventRepo;
+        private readonly INotificationHelper _notificationHelper;
         private ILogHelper _logHelper;
 
 
         public EventOperationsController(IEventOperationRepository eventOperationRepo,
+            IEventRepository eventRepo,
+            INotificationHelper notificationHelper,
             ILogHelper logHelper)
         {
             _eventOperationRepo = eventOperationRepo;
+            _eventRepo = eventRepo;
+            _notificationHelper = notificationHelper;
             _logHelper = logHelper;
         }
 
@@ -108,6 +114,13 @@ namespace Evant.Controllers
                     var response = await _eventOperationRepo.Add(entity);
                     if (response)
                     {
+                        var searchedEvent = await _eventRepo.First(e => e.Id == eventId);
+                        if(searchedEvent != null)
+                        {
+                            Guid receiverId = searchedEvent.UserId;
+                            await _notificationHelper.SendEventAttendNotification(userId, receiverId);
+                        }
+
                         return Ok("Etkinliğe katıldınız.");
                     }
                     else

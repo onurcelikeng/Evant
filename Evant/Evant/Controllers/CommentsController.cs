@@ -17,13 +17,19 @@ namespace Evant.Controllers
     public class CommentsController : BaseController
     {
         private readonly ICommentRepository _commentRepo;
+        private readonly IEventRepository _eventRepo;
+        private readonly INotificationHelper _notificationHelper;
         private readonly ILogHelper _logHelper;
 
 
         public CommentsController(ICommentRepository commentRepo,
+            IEventRepository eventRepo,
+            INotificationHelper notificationHelper,
             ILogHelper logHelper)
         {
             _commentRepo = commentRepo;
+            _eventRepo = eventRepo;
+            _notificationHelper = notificationHelper;
             _logHelper = logHelper;
         }
 
@@ -75,17 +81,26 @@ namespace Evant.Controllers
                     return BadRequest("Eksik bilgi girdiniz.");
                 }
 
+                Guid userId = User.GetUserId();
+
                 var entity = new Comment()
                 {
                     Id = new Guid(),
                     EventId = model.EventId,
-                    UserId = User.GetUserId(),
-                    Content = model.Content      
+                    UserId = userId,
+                    Content = model.Content
                 };
 
                 var response = await _commentRepo.Add(entity);
                 if (response)
                 {
+                    var searchedEvent = await _eventRepo.First(e => e.Id == model.EventId);
+                    if (searchedEvent != null)
+                    {
+                        Guid receiverId = searchedEvent.UserId;
+                        await _notificationHelper.SendCommentNotification(userId, receiverId);
+                    }
+
                     return Ok("Yorum eklendi.");
                 }
                 else

@@ -11,7 +11,7 @@ namespace Evant.DAL.EF.Tables
 
         public Guid EventId { get; set; }
 
-        [Required, MaxLength(140)]
+        [Required]
         public string Content { get; set; }
 
 
