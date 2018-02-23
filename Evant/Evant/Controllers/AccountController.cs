@@ -103,6 +103,13 @@ namespace Evant.Controllers
                 var selectedUser = await _userRepo.Login(user.Email, user.Password);
                 if (selectedUser != null)
                 {
+                    if (!selectedUser.IsActive)
+                    {
+                        selectedUser.IsActive = true;
+                        selectedUser.UpdateAt = DateTime.Now;
+                        await _userRepo.Update(selectedUser);
+                    }
+
                     var token = _jwtFactory.GenerateJwtToken(selectedUser);
                     return Ok(token);
                 }
@@ -115,7 +122,7 @@ namespace Evant.Controllers
                     }
                     else
                     {
-                        return NotFound("Kayıt bulunamadı.");
+                        return NotFound("Kayıtlı e-posta adresi bulunamadı.");
                     }
                 }
             }
@@ -335,6 +342,7 @@ namespace Evant.Controllers
                         var response = await _userRepo.Update(user);
                         if (response)
                         {
+                            User.Logout();
                             return Ok("Hesabınız başarıyla deaktif edilmiştir.");
                         }
                         else
