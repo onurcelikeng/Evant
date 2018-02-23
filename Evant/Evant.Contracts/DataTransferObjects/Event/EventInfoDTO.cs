@@ -11,6 +11,10 @@ namespace Evant.Contracts.DataTransferObjects.Event
 
         public string PhotoUrl { get; set; }
 
+        public int TotalGoings { get; set; }
+
+        public int TotalComments { get; set; }
+
         public DateTime Start { get; set; }
 
         public UserInfoDTO User { get; set; }

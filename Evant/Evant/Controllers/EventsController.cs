@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Evant.Contracts.DataTransferObjects.Address;
+using Evant.Contracts.DataTransferObjects.Category;
 using Evant.Contracts.DataTransferObjects.Event;
 using Evant.Contracts.DataTransferObjects.User;
 using Evant.DAL.EF.Tables;
@@ -28,12 +30,56 @@ namespace Evant.Controllers
         }
 
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Timeline()
         {
-            // ...
-            return null;
+            try
+            {
+                var events = (await _eventRepo.Timeline()).Select(e => new EventDetailDTO()
+                {
+                    EventId = e.Id,
+                    Title = e.Title,
+                    Description = e.Description,
+                    Start = e.StartDate,
+                    Finish = e.FinishDate,
+                    PhotoUrl = e.Photo,
+                    TotalComments = e.EventComments.Count,
+                    TotalGoings = e.EventOperations.Count,
+                    Category = new CategoryInfoDTO()
+                    {
+                        CategoryId = e.Category.Id,
+                        Name = e.Category.Name
+                    },
+                    User = new UserInfoDTO()
+                    {
+                        UserId = e.User.Id,
+                        FirstName = e.User.FirstName,
+                        LastName = e.User.LastName,
+                        PhotoUrl = e.User.Photo
+                    },
+                    Address = new AddressInfoDTO()
+                    {
+                        City = e.City,
+                        Town = e.Town,
+                        Latitude = e.Latitude,
+                        Longitude = e.Longitude
+                    }
+                }).ToList();
+
+                if (events.IsNullOrEmpty())
+                {
+                    return NotFound("Kayıt bulunamadı.");
+                }
+                else
+                {
+                    return Ok(events);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("Events", 500, "Timeline", ex.Message);
+                return null;
+            }
         }
 
         [Authorize]

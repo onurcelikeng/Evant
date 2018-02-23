@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -32,6 +33,11 @@ namespace Evant.DAL.EF.Tables
 
         [Required]
         public string Password { get; set; }
+
+        [Required]
+        public DateTime Birthdate { get; set; }
+
+        public string Phone { get; set; }
 
         public string Photo { get; set; }
 

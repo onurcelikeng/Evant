@@ -109,7 +109,6 @@ namespace Evant.Controllers
                     var response = await _userDevicesRepo.Update(selectedDevice);
                     if (response)
                     {
-                        User.Logout();
                         return Ok("Cihazda oturum kapatıldı.");
                     }
                     else

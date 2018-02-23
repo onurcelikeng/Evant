@@ -342,7 +342,6 @@ namespace Evant.Controllers
                         var response = await _userRepo.Update(user);
                         if (response)
                         {
-                            User.Logout();
                             return Ok("Hesabınız başarıyla deaktif edilmiştir.");
                         }
                         else

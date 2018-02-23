@@ -21,6 +21,10 @@ namespace Evant.Contracts.DataTransferObjects.Event
 
         public string PhotoUrl { get; set; }
 
+        public int TotalGoings { get; set; }
+
+        public int TotalComments { get; set; }
+
         public CategoryInfoDTO Category { get; set; }
 
         public UserInfoDTO User { get; set; }

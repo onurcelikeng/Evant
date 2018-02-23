@@ -17,19 +17,15 @@ namespace Evant.DAL.Repositories
         }
 
 
-        public async Task<List<Event>> Timeline(Guid userId)
+        public async Task<List<Event>> Timeline()
         {
-            /*  
-             select E.Title, E.CreatedAt
-from Events as E 
-join Users as U on E.UserId = U.Id
-join FriendOperations as FO on FO.FollowingUserId = E.UserId
-where FO.FollowerUserId = 'EE58B427-7B63-4D48-EE8D-08D577DCEF07'
-order by E.CreatedAt desc  
-             */
-              
-            //var result = Table.FromSql();
-            return null;
+            return await Table
+                .Include(t => t.Category)
+                .Include(t => t.User)
+                .Include(t => t.EventComments)
+                .Include(t => t.EventOperations)
+                .Where(t => t.IsDeleted == false)
+                .ToListAsync();
         }
 
         public async Task<List<Event>> UserEvents(Guid userId)
