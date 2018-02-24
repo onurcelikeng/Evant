@@ -10,6 +10,7 @@ namespace Evant.DAL.EF.Tables
     {
         public User()
         {
+            GameBoard = new List<GameBoard>();
             Followers = new List<FriendOperation>();
             Followings = new List<FriendOperation>();
             Events = new List<Event>();
@@ -55,6 +56,8 @@ namespace Evant.DAL.EF.Tables
 
 
         public virtual UserSetting Setting { get; set; }
+
+        public virtual ICollection<GameBoard> GameBoard { get; set; }
 
         public virtual ICollection<FriendOperation> Followers { get; set; }
 
