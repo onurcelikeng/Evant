@@ -9,7 +9,7 @@ namespace Evant.DAL.EF.Tables
     {
         public Guid SenderUserId { get; set; }
 
-        [Required, MaxLength(80)]
+        [Required, MaxLength(120)]
         public string Content { get; set; }
 
         [Required]
