@@ -71,9 +71,47 @@ namespace Evant.Controllers
                 FirstName = u.FirstName,
                 LastName = u.LastName,
                 PhotoUrl = u.Photo
-            });
+            }).ToList();
 
-            return Ok(users);
+            if (users.IsNullOrEmpty())
+            {
+                return NotFound("Kayıt bulunamadı.");
+            }
+            else
+            {
+                return Ok(users);
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("search/{query}")]
+        public async Task<IActionResult> SearchUsers(string query)
+        {
+            try
+            {
+                var users = (await _userRepo.Search(query)).Select(u => new UserInfoDTO()
+                {
+                    UserId = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    PhotoUrl = u.Photo
+                }).ToList();
+
+                if (users.IsNullOrEmpty())
+                {
+                    return NotFound("Kayıt bulunamadı.");
+                }
+                else
+                {
+                    return Ok(users);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("Users", 500, "SearcUsers", ex.Message);
+                return null;
+            }
         }
 
     }

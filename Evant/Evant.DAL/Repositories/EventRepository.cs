@@ -46,6 +46,17 @@ namespace Evant.DAL.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<Event>> Search(string query)
+        {
+            return await Table
+                .Include(t => t.Category)
+                .Include(t => t.User)
+                .Include(t => t.EventComments)
+                .Include(t => t.EventOperations)
+                .Where(t => t.IsDeleted == false && (t.Description.ToLower().Contains(query.ToLower()) || t.Title.ToLower().Contains(query.ToLower())))
+                .ToListAsync();
+        }
+
         public async Task<bool> SoftDelete(Guid eventId)
         {
             var data = await this.First(t => t.Id == eventId);

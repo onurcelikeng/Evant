@@ -34,6 +34,13 @@ namespace Evant.DAL.Repositories
                 .SingleOrDefaultAsync(t => t.Id == userId);
         }
 
+        public async Task<List<User>> Search(string query)
+        {
+            return await Table
+                .Where(t => t.IsActive && (t.Email.ToLower().Contains(query.ToLower()) || t.FirstName.ToLower().Contains(query.ToLower()) || t.LastName.ToLower().Contains(query.ToLower())))
+                .ToListAsync();
+        }
+
         public async Task<bool> EmailCheck(string email)
         {
             return (await Table.CountAsync(t => t.Email == email)) > 0;
