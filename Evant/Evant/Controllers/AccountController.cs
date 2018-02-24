@@ -333,7 +333,7 @@ namespace Evant.Controllers
                 Guid userId = User.GetUserId();
 
                 var selectedUser = await _userRepo.First(u => u.Id == userId);
-                if(selectedUser == null)
+                if (selectedUser == null)
                 {
                     return BadRequest("Kayıt bulunamadı.");
                 }
