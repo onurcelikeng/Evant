@@ -17,13 +17,16 @@ namespace Evant.Controllers
     public class UsersController : BaseController
     {
         private readonly IUserRepository _userRepo;
+        private readonly ISearchHelper _searchHelper;
         private readonly ILogHelper _logHelper;
 
 
         public UsersController(IUserRepository userRepo,
+            ISearchHelper searchHelper,
             ILogHelper logHelper)
         {
             _userRepo = userRepo;
+            _searchHelper = searchHelper;
             _logHelper = logHelper;
         }
 
@@ -90,6 +93,9 @@ namespace Evant.Controllers
         {
             try
             {
+                Guid userId = User.GetUserId();
+                await _searchHelper.Add(userId, query);
+
                 var users = (await _userRepo.Search(query)).Select(u => new UserInfoDTO()
                 {
                     UserId = u.Id,

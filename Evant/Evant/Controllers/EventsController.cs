@@ -19,13 +19,16 @@ namespace Evant.Controllers
     public class EventsController : BaseController
     {
         private readonly IEventRepository _eventRepo;
+        private readonly ISearchHelper _searchHelper;
         private readonly ILogHelper _logHelper;
 
 
         public EventsController(IEventRepository eventRepo,
+            ISearchHelper searchHelper,
             ILogHelper logHelper)
         {
             _eventRepo = eventRepo;
+            _searchHelper = searchHelper;
             _logHelper = logHelper;
         }
 
@@ -164,6 +167,9 @@ namespace Evant.Controllers
         {
             try
             {
+                Guid userId = User.GetUserId();
+                await _searchHelper.Add(userId, query);
+
                 var events = (await _eventRepo.Search(query)).Select(e => new EventDetailDTO()
                 {
                     EventId = e.Id,
