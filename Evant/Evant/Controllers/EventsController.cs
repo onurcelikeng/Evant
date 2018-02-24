@@ -204,18 +204,12 @@ namespace Evant.Controllers
         }
 
         [Authorize]
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEvent([FromRoute] Guid id)
+        [HttpDelete("{eventId}")]
+        public async Task<IActionResult> DeleteEvent([FromRoute] Guid eventId)
         {
             try
             {
-                var selectedEvent = await _eventRepo.First(e => e.Id == id);
-                if (selectedEvent == null)
-                {
-                    return NotFound("Kayıt bulunamadı.");
-                }
-
-                var response = await _eventRepo.Delete(selectedEvent);
+                var response = await _eventRepo.SoftDelete(eventId);
                 if (response)
                 {
                     return Ok("Etkinlik silindi.");
