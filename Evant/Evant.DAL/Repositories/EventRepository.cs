@@ -17,7 +17,7 @@ namespace Evant.DAL.Repositories
         }
 
 
-        public async Task<List<Event>> Timeline()
+        public async Task<List<Event>> Timeline(Guid userId)
         {
             return await Table
                 .Include(t => t.Category)

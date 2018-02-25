@@ -108,7 +108,6 @@ namespace Evant.Helpers
                     var result = _oneSignal.SendNotification(playerIds, content);
                 }
             }
-
         }
 
     }

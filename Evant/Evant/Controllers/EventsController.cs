@@ -32,13 +32,14 @@ namespace Evant.Controllers
             _logHelper = logHelper;
         }
 
-
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Timeline()
         {
             try
             {
-                var events = (await _eventRepo.Timeline()).Select(e => new EventDetailDTO()
+                Guid userId = User.GetUserId();
+                var events = (await _eventRepo.Timeline(userId)).Select(e => new EventDetailDTO()
                 {
                     EventId = e.Id,
                     Title = e.Title,
@@ -259,6 +260,56 @@ namespace Evant.Controllers
             catch (Exception ex)
             {
                 _logHelper.Log("Events", 500, "AddEvent", ex.Message);
+                return null;
+            }
+        }
+
+        [Authorize]
+        [HttpPut]
+        public async Task<IActionResult> UpdateEvent([FromBody] EventDTO model)
+        {
+            try
+            {
+                var selectedEvent = await _eventRepo.First(e => e.Id == model.EventId);
+                if (selectedEvent == null)
+                {
+                    return NotFound("Kayıt bulunamadı.");
+                }
+                else
+                {
+                    Guid userId = User.GetUserId();
+
+                    var entity = new Event()
+                    {
+                        Id = (Guid)model.EventId,
+                        UserId = userId,
+                        CategoryId = model.CategoryId,
+                        Title = model.Title,
+                        Description = model.Description,
+                        IsPrivate = model.IsPrivate,
+                        StartDate = model.StartAt,
+                        FinishDate = model.FinishAt,
+                        Photo = "test_photo",
+                        City = model.City,
+                        Town = model.Town,
+                        Latitude = model.Latitude,
+                        Longitude = model.Longitude
+                    };
+
+                    var response = await _eventRepo.Update(entity);
+                    if (response)
+                    {
+                        return Ok("Etkinlik güncellendi.");
+                    }
+                    else
+                    {
+                        return BadRequest("Etkinlik güncellenemedi.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("Events", 500, "UpdateEvent", ex.Message);
                 return null;
             }
         }
