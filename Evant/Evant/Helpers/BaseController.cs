@@ -7,27 +7,27 @@ namespace Evant.Helpers
     {
         public override OkObjectResult Ok(object data)
         {
-            var response = new ResultDTO<object>();
-            if (data.GetType() == typeof(string))
-            {
-                response = new ResultDTO<object>()
-                {
-                    StatusCode = 200,
-                    IsSuccess = true,
-                    Message = data.ToString(),
-                    Data = null
-                };
-            }
-            else
-            {
-                response = new ResultDTO<object>()
+            //var response = new ResultDTO<object>();
+            //if (data.GetType() == typeof(string))
+            //{
+            //    response = new ResultDTO<object>()
+            //    {
+            //        StatusCode = 200,
+            //        IsSuccess = true,
+            //        Message = data.ToString(),
+            //        Data = null
+            //    };
+            //}
+            //else
+            
+                var response = new ResultDTO<object>()
                 {
                     StatusCode = 200,
                     IsSuccess = true,
                     Message = "",
                     Data = data
                 };
-            }
+            
 
             return base.Ok(response);
         }

@@ -32,6 +32,7 @@ namespace Evant.Controllers
             _logHelper = logHelper;
         }
 
+
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Timeline()

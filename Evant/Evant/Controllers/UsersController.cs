@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Evant.Contracts.DataTransferObjects.Timeline;
 using Evant.Contracts.DataTransferObjects.User;
 using Evant.DAL.Repositories.Interfaces;
 using Evant.Helpers;
@@ -17,15 +18,27 @@ namespace Evant.Controllers
     public class UsersController : BaseController
     {
         private readonly IUserRepository _userRepo;
+        private readonly IEventRepository _eventRepo;
+        private readonly ICommentRepository _commentRepo;
+        private readonly IFriendOperationRepository _friendOperationRepo;
+        private readonly IEventOperationRepository _eventOperationRepo;
         private readonly ISearchHelper _searchHelper;
         private readonly ILogHelper _logHelper;
 
 
         public UsersController(IUserRepository userRepo,
+            IEventRepository eventRepo,
+            ICommentRepository commentRepo,
+            IFriendOperationRepository friendOperationRepo,
+            IEventOperationRepository eventOperationRepo,
             ISearchHelper searchHelper,
             ILogHelper logHelper)
         {
             _userRepo = userRepo;
+            _eventRepo = eventRepo;
+            _commentRepo = commentRepo;
+            _friendOperationRepo = friendOperationRepo;
+            _eventOperationRepo = eventOperationRepo;
             _searchHelper = searchHelper;
             _logHelper = logHelper;
         }
@@ -83,6 +96,64 @@ namespace Evant.Controllers
             else
             {
                 return Ok(users);
+            }
+        }
+
+        [Authorize]
+        [HttpGet("timeline/{userId}")]
+        public async Task<IActionResult> UserTimeline([FromRoute] Guid userId)
+        {
+            List<TimelineDTO> timeline = new List<TimelineDTO>();
+
+            var eventsTimeline = (await _eventRepo.UserEvents(userId)).Select(e => new TimelineDTO()
+            {
+                Header = "Create Event",
+                Body = e.Title,
+                Image = e.Photo,
+                CreateAt = e.CreatedAt,
+                CustomId = e.Id,
+                Type = "create-event"
+            }).ToList();
+            if (!eventsTimeline.IsNullOrEmpty())
+            {
+                timeline.AddRange(eventsTimeline);
+            }
+
+            var eventOperationsTimeline = (await _eventOperationRepo.UserEventOperations(userId)).Select(eo => new TimelineDTO()
+            {
+                Header = "Join Event",
+                Body = eo.Event.Title,
+                Image = eo.Event.Photo,
+                CreateAt = eo.CreatedAt,
+                CustomId = eo.Id,
+                Type = "join-event"
+            }).ToList();
+            if (!eventOperationsTimeline.IsNullOrEmpty())
+            {
+                timeline.AddRange(eventOperationsTimeline);
+            }
+
+            var friendOperationsTimeline = (await _friendOperationRepo.Followings(userId)).Select(fo => new TimelineDTO()
+            {
+                Header = "Follow Friend",
+                Body = fo.FollowingUser.FirstName + " " + fo.FollowingUser.LastName,
+                Image = fo.FollowingUser.Photo,
+                CreateAt = fo.CreatedAt,
+                CustomId = fo.FollowingUserId,
+                Type = "follow-friend"
+            }).ToList();
+            if (!friendOperationsTimeline.IsNullOrEmpty())
+            {
+                timeline.AddRange(friendOperationsTimeline);
+            }
+
+            if (timeline.IsNullOrEmpty())
+            {
+                return NotFound("Kayıt bulunamadı.");
+            }
+            else
+            {
+                return Ok(timeline);
             }
         }
 
