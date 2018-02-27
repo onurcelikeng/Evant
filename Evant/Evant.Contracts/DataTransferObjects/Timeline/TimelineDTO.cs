@@ -14,6 +14,8 @@ namespace Evant.Contracts.DataTransferObjects.Timeline
 
         public string Image { get; set; }
 
+        public string LineColor { get; set; }
+
         public DateTime CreateAt { get; set; }
     }
 }

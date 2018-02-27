@@ -29,6 +29,7 @@ namespace Evant.DAL.Repositories
         {
             return await Table
                 .Include(t => t.Event)
+                .Include(t => t.Event.Category)
                 .Where(t => t.UserId == userId && !t.IsDeleted)
                 .ToListAsync();
         }

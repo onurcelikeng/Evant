@@ -26,5 +26,14 @@ namespace Evant.DAL.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<Comment>> UserComments(Guid userId)
+        {
+            return await Table
+                .Include(t => t.Event)
+                .Include(t => t.User)
+                .Where(t => t.UserId == userId)
+                .ToListAsync();
+        }
+
     }
 }

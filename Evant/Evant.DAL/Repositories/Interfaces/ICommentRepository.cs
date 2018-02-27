@@ -9,5 +9,6 @@ namespace Evant.DAL.Repositories.Interfaces
     public interface ICommentRepository : IRepository<Comment>
     {
         Task<List<Comment>> Comments(Guid eventId);
+        Task<List<Comment>> UserComments(Guid userId);
     }
 }

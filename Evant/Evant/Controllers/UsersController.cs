@@ -8,7 +8,6 @@ using Evant.DAL.Repositories.Interfaces;
 using Evant.Helpers;
 using Evant.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
@@ -78,82 +77,107 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetUsers()
-        {
-            var users = (await _userRepo.All()).Select(u => new UserInfoDTO()
-            {
-                UserId = u.Id,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                PhotoUrl = u.Photo
-            }).ToList();
-
-            if (users.IsNullOrEmpty())
-            {
-                return NotFound("Kayıt bulunamadı.");
-            }
-            else
-            {
-                return Ok(users);
-            }
-        }
-
-        [Authorize]
+        //[Authorize]
         [HttpGet("timeline/{userId}")]
         public async Task<IActionResult> UserTimeline([FromRoute] Guid userId)
         {
-            List<TimelineDTO> timeline = new List<TimelineDTO>();
+            try
+            {
+                List<TimelineDTO> timeline = new List<TimelineDTO>();
 
-            var eventsTimeline = (await _eventRepo.UserEvents(userId)).Select(e => new TimelineDTO()
-            {
-                Header = "Create Event",
-                Body = e.Title,
-                Image = e.Photo,
-                CreateAt = e.CreatedAt,
-                CustomId = e.Id,
-                Type = "create-event"
-            }).ToList();
-            if (!eventsTimeline.IsNullOrEmpty())
-            {
-                timeline.AddRange(eventsTimeline);
-            }
+                //User Events
+                var eventsTimeline = (await _eventRepo.UserEvents(userId)).Select(e => new TimelineDTO()
+                {
+                    Header = e.Title,
+                    Body = TimelineHelper.GenerateCreateEventBody(e),
+                    Image = e.Photo,
+                    CreateAt = e.CreatedAt,
+                    CustomId = e.Id,
+                    Type = "create-event",
+                    LineColor = "#a6714e"
+                }).ToList();
+                if (!eventsTimeline.IsNullOrEmpty())
+                {
+                    timeline.AddRange(eventsTimeline);
+                }
 
-            var eventOperationsTimeline = (await _eventOperationRepo.UserEventOperations(userId)).Select(eo => new TimelineDTO()
-            {
-                Header = "Join Event",
-                Body = eo.Event.Title,
-                Image = eo.Event.Photo,
-                CreateAt = eo.CreatedAt,
-                CustomId = eo.Id,
-                Type = "join-event"
-            }).ToList();
-            if (!eventOperationsTimeline.IsNullOrEmpty())
-            {
-                timeline.AddRange(eventOperationsTimeline);
-            }
+                //Event Operations
+                var eventOperationsTimeline = (await _eventOperationRepo.UserEventOperations(userId)).Select(eo => new TimelineDTO()
+                {
+                    Header = eo.Event.Title,
+                    Body = TimelineHelper.GenerateJoinEventBody(eo.Event),
+                    Image = eo.Event.Photo,
+                    CreateAt = eo.CreatedAt,
+                    CustomId = eo.Id,
+                    Type = "join-event",
+                    LineColor = "#f78f8f"
+                }).ToList();
+                if (!eventOperationsTimeline.IsNullOrEmpty())
+                {
+                    timeline.AddRange(eventOperationsTimeline);
+                }
 
-            var friendOperationsTimeline = (await _friendOperationRepo.Followings(userId)).Select(fo => new TimelineDTO()
-            {
-                Header = "Follow Friend",
-                Body = fo.FollowingUser.FirstName + " " + fo.FollowingUser.LastName,
-                Image = fo.FollowingUser.Photo,
-                CreateAt = fo.CreatedAt,
-                CustomId = fo.FollowingUserId,
-                Type = "follow-friend"
-            }).ToList();
-            if (!friendOperationsTimeline.IsNullOrEmpty())
-            {
-                timeline.AddRange(friendOperationsTimeline);
-            }
+                //Following Friend Operations
+                var followFriendOperationsTimeline = (await _friendOperationRepo.Followings(userId)).Select(fo => new TimelineDTO()
+                {
+                    Header = fo.FollowingUser.FirstName + " " + fo.FollowingUser.LastName,
+                    Body = TimelineHelper.GenerateFollowingBody(),
+                    Image = null,
+                    CreateAt = fo.CreatedAt,
+                    CustomId = fo.FollowingUserId,
+                    Type = "following",
+                    LineColor = "#ffeea3"
+                }).ToList();
+                if (!followFriendOperationsTimeline.IsNullOrEmpty())
+                {
+                    timeline.AddRange(followFriendOperationsTimeline);
+                }
 
-            if (timeline.IsNullOrEmpty())
-            {
-                return NotFound("Kayıt bulunamadı.");
+                //Follow Friend Operations
+                var followingFriendOperationsTimeline = (await _friendOperationRepo.Followers(userId)).Select(fo => new TimelineDTO()
+                {
+                    Header = fo.FollowerUser.FirstName + " " + fo.FollowerUser.LastName,
+                    Body = TimelineHelper.GenerateFollowerBody(),
+                    Image = null,
+                    CreateAt = fo.CreatedAt,
+                    CustomId = fo.FollowerUserId,
+                    Type = "follower",
+                    LineColor = "#ffeea3"
+                }).ToList();
+                if (!followingFriendOperationsTimeline.IsNullOrEmpty())
+                {
+                    timeline.AddRange(followingFriendOperationsTimeline);
+                }
+
+                //Comments
+                var commentsTimeline = (await _commentRepo.UserComments(userId)).Select(c => new TimelineDTO()
+                {
+                    Header = c.Event.Title,
+                    Body = TimelineHelper.GenerateCommentBody(userId, c),
+                    Image = null,
+                    CreateAt = c.CreatedAt,
+                    CustomId = c.EventId,
+                    Type = "comment-event",
+                    LineColor = "#dcd5f2"
+                }).ToList();
+                if (!commentsTimeline.IsNullOrEmpty())
+                {
+                    timeline.AddRange(commentsTimeline);
+                }
+
+                if (timeline.IsNullOrEmpty())
+                {
+                    return NotFound("Kayıt bulunamadı.");
+                }
+                else
+                {
+                    return Ok(timeline.OrderByDescending(t => t.CreateAt));
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Ok(timeline);
+                _logHelper.Log("Users", 500, "UserTimeline", ex.Message);
+                return null;
             }
         }
 

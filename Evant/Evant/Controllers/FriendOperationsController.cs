@@ -102,6 +102,8 @@ namespace Evant.Controllers
             try
             {
                 Guid userId = User.GetUserId();
+                if (userId == friendId)
+                    return BadRequest("invalid");
 
                 var selectedFriendOperation = await _friendOperationRepo.First(fo => fo.FollowingUserId == friendId && fo.FollowerUserId == userId);
                 if (selectedFriendOperation == null)
@@ -127,6 +129,8 @@ namespace Evant.Controllers
             try
             {
                 Guid userId = User.GetUserId();
+                if(userId == friendId)
+                    return BadRequest("invalid");
 
                 var friendOperation = await _friendOperationRepo.First(fo => fo.FollowerUserId == userId && fo.FollowingUserId == friendId);
                 if (friendOperation != null)
@@ -168,6 +172,8 @@ namespace Evant.Controllers
             try
             {
                 Guid userId = User.GetUserId();
+                if (userId == friendId)
+                    return BadRequest("invalid");
 
                 var selectedFriendOperation = await _friendOperationRepo.First(fo => fo.FollowerUserId == userId && fo.FollowingUserId == friendId);
                 if (selectedFriendOperation == null)
