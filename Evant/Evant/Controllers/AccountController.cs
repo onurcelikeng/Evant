@@ -99,7 +99,7 @@ namespace Evant.Controllers
                 {
                     return BadRequest("Eksik bilgi girdiniz.");
                 }
-
+          
                 var selectedUser = await _userRepo.Login(user.Email, user.Password);
                 if (selectedUser != null)
                 {

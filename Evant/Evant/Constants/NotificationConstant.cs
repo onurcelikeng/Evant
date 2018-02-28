@@ -6,9 +6,8 @@ namespace Evant.Constants
         public enum NotificationType
         {
             EventAttend = 1,
-            EventUpdate = 2,
-            Comment = 3,
-            FriendOperation = 4
+            Comment = 2,
+            FriendOperation = 3
         }
     }
 }

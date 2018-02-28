@@ -55,7 +55,7 @@ namespace Evant.Helpers
             }
             else if (index % 3 == 1)
             {
-                return @event.City + "'de yeni bir etkinlik oluşturdun";
+                return @event.City + "'de yeni bir etkinlik oluşturdun.";
             }
             else
             {

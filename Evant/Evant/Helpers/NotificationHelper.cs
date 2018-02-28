@@ -13,17 +13,20 @@ namespace Evant.Helpers
     public class NotificationHelper : INotificationHelper
     {
         private readonly IUserRepository _userRepo;
+        private readonly IRepository<Notification> _notificationRepo;
         private readonly IRepository<UserDevice> _userDeviceRepo;
         private readonly IRepository<UserSetting> _userSettingRepo;
         private readonly IOneSignal _oneSignal;
 
 
         public NotificationHelper(IUserRepository userRepo,
+            IRepository<Notification> notificationRepo,
             IRepository<UserDevice> userDeviceRepo,
             IRepository<UserSetting> userSettingRepo,
             IOneSignal oneSignal)
         {
             _userRepo = userRepo;
+            _notificationRepo = notificationRepo;
             _userDeviceRepo = userDeviceRepo;
             _userSettingRepo = userSettingRepo;
             _oneSignal = oneSignal;
@@ -44,7 +47,7 @@ namespace Evant.Helpers
                     var receiverUserSetting = await _userSettingRepo.First(s => s.UserId == receiverId);
                     if (receiverUserSetting != null && receiverUserSetting.IsFriendshipNotif)
                     {
-                        string content = string.Format("{0} {1} seni takip etmeye başladı", senderUser.FirstName, senderUser.LastName);
+                        string content = string.Format("{0} {1} seni takip etmeye başladı.", senderUser.FirstName, senderUser.LastName);
                         var result = _oneSignal.SendNotification(playerIds, content);
                     }
                 }

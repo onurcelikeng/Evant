@@ -7,7 +7,10 @@ namespace Evant.DAL.EF.Tables
     [Table("Notifications")]
     public class Notification : BaseEntity
     {
-        public Guid SenderUserId { get; set; }
+        public Guid ReceiverUserId { get; set; }
+
+        [Required]
+        public Guid CustomId { get; set; }
 
         [Required, MaxLength(120)]
         public string Content { get; set; }
@@ -17,8 +20,13 @@ namespace Evant.DAL.EF.Tables
 
         [Required]
         public int NotificationType { get; set; }
-        
 
-        public virtual User SenderUser { get; set; }
+        [Required]
+        public string UserImage { get; set; }
+
+        public string EventImage { get; set; }
+
+
+        public virtual User ReceiverUser { get; set; }
     }
 }
