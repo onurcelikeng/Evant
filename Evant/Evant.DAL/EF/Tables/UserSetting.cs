@@ -9,11 +9,13 @@ namespace Evant.DAL.EF.Tables
     {
         public Guid UserId { get; set; }
 
+        
         [Required]
         public string Theme { get; set; } = "light";
 
         [Required]
         public string Language { get; set; } = "tr";
+
 
         [Required]
         public bool IsTwoFactorAuthentication { get; set; } = false;
@@ -29,6 +31,21 @@ namespace Evant.DAL.EF.Tables
 
         [Required]
         public bool IsEventUpdateNotif { get; set; } = true;
+
+        [Required]
+        public bool IsCommentVisiableTimeline { get; set; } = true;
+
+        [Required]
+        public bool IsFollowerVisiableTimeline { get; set; } = true;
+
+        [Required]
+        public bool IsFollowingVisiableTimeline { get; set; } = true;
+
+        [Required]
+        public bool IsCreateEventVisiableTimeline { get; set; } = true;
+
+        [Required]
+        public bool IsJoinEventVisiableTimeline { get; set; } = true;
 
 
         public virtual User User { get; set; }

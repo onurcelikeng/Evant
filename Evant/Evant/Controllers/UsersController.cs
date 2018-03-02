@@ -77,7 +77,7 @@ namespace Evant.Controllers
             }
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("timeline/{userId}")]
         public async Task<IActionResult> UserTimeline([FromRoute] Guid userId)
         {

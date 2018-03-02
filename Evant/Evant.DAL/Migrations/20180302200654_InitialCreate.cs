@@ -49,15 +49,18 @@ namespace Evant.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    Birthdate = table.Column<DateTime>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     Email = table.Column<string>(nullable: false),
                     FacebookId = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
+                    IsBusinessAccount = table.Column<bool>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     IsFacebook = table.Column<bool>(nullable: false),
                     LastName = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: false),
+                    Phone = table.Column<string>(nullable: true),
                     Photo = table.Column<string>(nullable: true),
                     Role = table.Column<string>(nullable: false),
                     UpdateAt = table.Column<DateTime>(nullable: false)
@@ -136,6 +139,29 @@ namespace Evant.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GameBoards",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    OperationType = table.Column<string>(nullable: false),
+                    Point = table.Column<int>(nullable: false),
+                    UpdateAt = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GameBoards", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GameBoards_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SearchHistories",
                 columns: table => new
                 {
@@ -169,7 +195,6 @@ namespace Evant.DAL.Migrations
                     IsLoggedin = table.Column<bool>(nullable: false),
                     Model = table.Column<string>(nullable: false),
                     OS = table.Column<string>(nullable: false),
-                    PlayerId = table.Column<string>(nullable: false),
                     UpdateAt = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<Guid>(nullable: false)
                 },
@@ -191,10 +216,16 @@ namespace Evant.DAL.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     IsCommentNotif = table.Column<bool>(nullable: false),
+                    IsCommentVisiableTimeline = table.Column<bool>(nullable: false),
+                    IsCreateEventVisiableTimeline = table.Column<bool>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     IsEventNewComerNotif = table.Column<bool>(nullable: false),
                     IsEventUpdateNotif = table.Column<bool>(nullable: false),
+                    IsFollowerVisiableTimeline = table.Column<bool>(nullable: false),
+                    IsFollowingVisiableTimeline = table.Column<bool>(nullable: false),
                     IsFriendshipNotif = table.Column<bool>(nullable: false),
+                    IsJoinEventVisiableTimeline = table.Column<bool>(nullable: false),
+                    IsTwoFactorAuthentication = table.Column<bool>(nullable: false),
                     Language = table.Column<string>(nullable: false),
                     Theme = table.Column<string>(nullable: false),
                     UpdateAt = table.Column<DateTime>(nullable: false),
@@ -216,7 +247,7 @@ namespace Evant.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Content = table.Column<string>(maxLength: 140, nullable: false),
+                    Content = table.Column<string>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     EventId = table.Column<Guid>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
@@ -309,6 +340,11 @@ namespace Evant.DAL.Migrations
                 column: "FollowingUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GameBoards_UserId",
+                table: "GameBoards",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SearchHistories_UserId",
                 table: "SearchHistories",
                 column: "UserId");
@@ -335,6 +371,9 @@ namespace Evant.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "FriendOperations");
+
+            migrationBuilder.DropTable(
+                name: "GameBoards");
 
             migrationBuilder.DropTable(
                 name: "Logs");

@@ -336,13 +336,23 @@ namespace Evant.DAL.Migrations
 
                     b.Property<bool>("IsCommentNotif");
 
+                    b.Property<bool>("IsCommentVisiableTimeline");
+
+                    b.Property<bool>("IsCreateEventVisiableTimeline");
+
                     b.Property<bool>("IsDeleted");
 
                     b.Property<bool>("IsEventNewComerNotif");
 
                     b.Property<bool>("IsEventUpdateNotif");
 
+                    b.Property<bool>("IsFollowerVisiableTimeline");
+
+                    b.Property<bool>("IsFollowingVisiableTimeline");
+
                     b.Property<bool>("IsFriendshipNotif");
+
+                    b.Property<bool>("IsJoinEventVisiableTimeline");
 
                     b.Property<bool>("IsTwoFactorAuthentication");
 

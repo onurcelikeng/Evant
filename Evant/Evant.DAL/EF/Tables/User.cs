@@ -72,5 +72,6 @@ namespace Evant.DAL.EF.Tables
         public virtual ICollection<UserDevice> UserDevices { get; set; }
 
         public virtual ICollection<SearchHistory> UserSearchHistories { get; set; }
+
     }
 }
