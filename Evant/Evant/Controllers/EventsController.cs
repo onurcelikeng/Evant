@@ -88,6 +88,60 @@ namespace Evant.Controllers
         }
 
         [Authorize]
+        [HttpGet]
+        [Route("{eventId}/details")]
+        public async Task<IActionResult> GetEventDetail(Guid eventId)
+        {
+            try
+            {
+                var events = (await _eventRepo.EventDetail(eventId)).Select(e => new EventDetailDTO()
+                {
+                    EventId = e.Id,
+                    Title = e.Title,
+                    Description = e.Description,
+                    Start = e.StartDate,
+                    Finish = e.FinishDate,
+                    PhotoUrl = e.Photo,
+                    TotalComments = e.EventComments.Count,
+                    TotalGoings = e.EventOperations.Count,
+                    Category = new CategoryInfoDTO()
+                    {
+                        CategoryId = e.Category.Id,
+                        Name = e.Category.Name
+                    },
+                    User = new UserInfoDTO()
+                    {
+                        UserId = e.User.Id,
+                        FirstName = e.User.FirstName,
+                        LastName = e.User.LastName,
+                        PhotoUrl = e.User.Photo
+                    },
+                    Address = new AddressInfoDTO()
+                    {
+                        City = e.City,
+                        Town = e.Town,
+                        Latitude = e.Latitude,
+                        Longitude = e.Longitude
+                    }
+                }).ToList();
+
+                if (events.IsNullOrEmpty())
+                {
+                    return NotFound("Kayıt bulunamadı.");
+                }
+                else
+                {
+                    return Ok(events);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("Events", 500, "Timeline", ex.Message);
+                return null;
+            }
+        }
+
+        [Authorize]
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetUserEvents([FromRoute] Guid userId)
         {

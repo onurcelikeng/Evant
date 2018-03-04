@@ -32,7 +32,7 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("followers/{userId}")]
+        [Route("{userId}/followers")]
         public async Task<IActionResult> GetFollowers([FromRoute] Guid userId)
         {
             try
@@ -59,7 +59,7 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("followings/{userId}")]
+        [Route("{userId}/followings")]
         public async Task<IActionResult> GetFollowings([FromRoute] Guid userId)
         {
             try

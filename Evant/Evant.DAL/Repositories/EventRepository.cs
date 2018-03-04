@@ -28,6 +28,17 @@ namespace Evant.DAL.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<Event>> EventDetail(Guid eventId)
+        {
+            return await Table
+                .Include(t => t.Category)
+                .Include(t => t.User)
+                .Include(t => t.EventComments)
+                .Include(t => t.EventOperations)
+                .Where(t => t.Id == eventId && t.IsDeleted == false)
+                .ToListAsync();
+        }
+
         public async Task<List<Event>> UserEvents(Guid userId)
         {
             return await Table

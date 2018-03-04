@@ -60,7 +60,7 @@ namespace Evant.Controllers
         }
 
         [Authorize]
-        [HttpGet("status/{eventId}")]
+        [HttpGet("{eventId}/status")]
         public async Task<IActionResult> IsJoin([FromRoute] Guid eventId)
         {
             try

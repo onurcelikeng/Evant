@@ -97,7 +97,7 @@ namespace Evant.Controllers
                 }
 
                 //User Events
-                if (userSetting.IsCreateEventVisiableTimeline)
+                if (userSetting.IsCreateEventVisibleTimeline)
                 {
                     var eventsTimeline = (await _eventRepo.UserEvents(userId)).Select(e => new TimelineDTO()
                     {
@@ -116,7 +116,7 @@ namespace Evant.Controllers
                 }
 
                 //Event Operations
-                if (userSetting.IsJoinEventVisiableTimeline)
+                if (userSetting.IsJoinEventVisibleTimeline)
                 {
                     var eventOperationsTimeline = (await _eventOperationRepo.UserEventOperations(userId)).Select(eo => new TimelineDTO()
                     {
@@ -135,7 +135,7 @@ namespace Evant.Controllers
                 }
 
                 //Following Friend Operations
-                if (userSetting.IsFollowingVisiableTimeline)
+                if (userSetting.IsFollowingVisibleTimeline)
                 {
                     var followFriendOperationsTimeline = (await _friendOperationRepo.Followings(userId)).Select(fo => new TimelineDTO()
                     {
@@ -154,7 +154,7 @@ namespace Evant.Controllers
                 }
 
                 //Follow Friend Operations
-                if (userSetting.IsFollowerVisiableTimeline)
+                if (userSetting.IsFollowerVisibleTimeline)
                 {
                     var followingFriendOperationsTimeline = (await _friendOperationRepo.Followers(userId)).Select(fo => new TimelineDTO()
                     {
@@ -173,7 +173,7 @@ namespace Evant.Controllers
                 }
 
                 //Comments
-                if (userSetting.IsCommentVisiableTimeline)
+                if (userSetting.IsCommentVisibleTimeline)
                 {
                     var commentsTimeline = (await _commentRepo.UserComments(userId)).Select(c => new TimelineDTO()
                     {

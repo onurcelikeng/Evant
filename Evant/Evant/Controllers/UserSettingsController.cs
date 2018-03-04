@@ -50,10 +50,10 @@ namespace Evant.Controllers
                         IsEventNewComerNotif = settings.IsEventNewComerNotif,
                         IsEventUpdateNotif = settings.IsEventUpdateNotif,
                         IsFriendshipNotif = settings.IsFriendshipNotif,
-                        IsCommentVisiableTimeline = settings.IsCommentVisiableTimeline,
-                        IsJoinEventVisiableTimeline = settings.IsJoinEventVisiableTimeline,
-                        IsFollowerVisiableTimeline = settings.IsFollowerVisiableTimeline,
-                        IsFollowingVisiableTimeline = settings.IsFollowingVisiableTimeline
+                        IsCommentVisibleTimeline = settings.IsCommentVisibleTimeline,
+                        IsJoinEventVisibleTimeline = settings.IsJoinEventVisibleTimeline,
+                        IsFollowerVisibleTimeline = settings.IsFollowerVisibleTimeline,
+                        IsFollowingVisibleTimeline = settings.IsFollowingVisibleTimeline
                     };
 
                     return Ok(model);
@@ -92,10 +92,10 @@ namespace Evant.Controllers
                     selectedUserSetting.IsEventNewComerNotif = model.IsEventNewComerNotif;
                     selectedUserSetting.IsEventUpdateNotif = model.IsEventUpdateNotif;
                     selectedUserSetting.IsFriendshipNotif = model.IsFriendshipNotif;
-                    selectedUserSetting.IsCommentVisiableTimeline = model.IsCommentVisiableTimeline;
-                    selectedUserSetting.IsJoinEventVisiableTimeline = model.IsJoinEventVisiableTimeline;
-                    selectedUserSetting.IsFollowingVisiableTimeline = model.IsFollowingVisiableTimeline;
-                    selectedUserSetting.IsFollowerVisiableTimeline = model.IsFollowerVisiableTimeline;
+                    selectedUserSetting.IsCommentVisibleTimeline = model.IsCommentVisibleTimeline;
+                    selectedUserSetting.IsJoinEventVisibleTimeline = model.IsJoinEventVisibleTimeline;
+                    selectedUserSetting.IsFollowingVisibleTimeline = model.IsFollowingVisibleTimeline;
+                    selectedUserSetting.IsFollowerVisibleTimeline = model.IsFollowerVisibleTimeline;
 
                     var response = await _userSettingRepo.Update(selectedUserSetting);
                     if (response)

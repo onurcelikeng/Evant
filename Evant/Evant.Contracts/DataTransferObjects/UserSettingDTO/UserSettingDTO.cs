@@ -18,12 +18,12 @@ namespace Evant.Contracts.DataTransferObjects.UserSettingDTO
 
         public bool IsEventUpdateNotif { get; set; }
 
-        public bool IsCommentVisiableTimeline { get; set; }
+        public bool IsCommentVisibleTimeline { get; set; }
 
-        public bool IsFollowerVisiableTimeline { get; set; }
+        public bool IsFollowerVisibleTimeline { get; set; }
 
-        public bool IsFollowingVisiableTimeline { get; set; }
+        public bool IsFollowingVisibleTimeline { get; set; }
 
-        public bool IsJoinEventVisiableTimeline { get; set; }
+        public bool IsJoinEventVisibleTimeline { get; set; }
     }
 }

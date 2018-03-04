@@ -33,19 +33,19 @@ namespace Evant.DAL.EF.Tables
         public bool IsEventUpdateNotif { get; set; } = true;
 
         [Required]
-        public bool IsCommentVisiableTimeline { get; set; } = true;
+        public bool IsCommentVisibleTimeline { get; set; } = true;
 
         [Required]
-        public bool IsFollowerVisiableTimeline { get; set; } = true;
+        public bool IsFollowerVisibleTimeline { get; set; } = true;
 
         [Required]
-        public bool IsFollowingVisiableTimeline { get; set; } = true;
+        public bool IsFollowingVisibleTimeline { get; set; } = true;
 
         [Required]
-        public bool IsCreateEventVisiableTimeline { get; set; } = true;
+        public bool IsCreateEventVisibleTimeline { get; set; } = true;
 
         [Required]
-        public bool IsJoinEventVisiableTimeline { get; set; } = true;
+        public bool IsJoinEventVisibleTimeline { get; set; } = true;
 
 
         public virtual User User { get; set; }
