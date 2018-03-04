@@ -13,6 +13,9 @@ using Evant.Auth;
 using Evant.DAL.Repositories.Interfaces;
 using Evant.Interfaces;
 using Evant.Contracts.DataTransferObjects.UserSettingDTO;
+using Evant.Contracts.DataTransferObjects.Timeline;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Evant.Controllers
 {
@@ -21,17 +24,29 @@ namespace Evant.Controllers
     public class AccountController : BaseController
     {
         private readonly IUserRepository _userRepo;
+        private readonly IEventRepository _eventRepo;
+        private readonly ICommentRepository _commentRepo;
+        private readonly IFriendOperationRepository _friendOperationRepo;
+        private readonly IEventOperationRepository _eventOperationRepo;
         private readonly ILogHelper _logHelper;
         private readonly IJwtFactory _jwtFactory;
         private readonly IAzureBlobStorage _blobStorage;
 
 
         public AccountController(IUserRepository userRepo,
+            IEventRepository eventRepo,
+            ICommentRepository commentRepo,
+            IFriendOperationRepository friendOperationRepo,
+            IEventOperationRepository eventOperationRepo,
             ILogHelper logHelper,
             IJwtFactory jwtFactory,
             IAzureBlobStorage blobStorage)
         {
             _userRepo = userRepo;
+            _eventRepo = eventRepo;
+            _commentRepo = commentRepo;
+            _friendOperationRepo = friendOperationRepo;
+            _eventOperationRepo = eventOperationRepo;
             _logHelper = logHelper;
             _jwtFactory = jwtFactory;
             _blobStorage = blobStorage;
@@ -180,6 +195,111 @@ namespace Evant.Controllers
             catch (Exception ex)
             {
                 _logHelper.Log("Users", 500, "GetMe", ex.Message);
+                return null;
+            }
+        }
+
+        [Authorize]
+        [HttpGet("timeline")]
+        public async Task<IActionResult> UserTimeline()
+        {
+            try
+            {
+                Guid userId = User.GetUserId();
+                List<TimelineDTO> timeline = new List<TimelineDTO>();
+
+                //User Events
+                var eventsTimeline = (await _eventRepo.UserEvents(userId)).Select(e => new TimelineDTO()
+                {
+                    Header = e.Title,
+                    Body = TimelineHelper.GenerateMyCreateEventBody(e),
+                    Image = e.Photo,
+                    CreateAt = e.CreatedAt,
+                    CustomId = e.Id,
+                    Type = "create-event",
+                    LineColor = "#a6714e"
+                }).ToList();
+                if (!eventsTimeline.IsNullOrEmpty())
+                {
+                    timeline.AddRange(eventsTimeline);
+                }
+
+                //Event Operations
+                var eventOperationsTimeline = (await _eventOperationRepo.UserEventOperations(userId)).Select(eo => new TimelineDTO()
+                {
+                    Header = eo.Event.Title,
+                    Body = TimelineHelper.GenerateMyJoinEventBody(eo.Event),
+                    Image = eo.Event.Photo,
+                    CreateAt = eo.CreatedAt,
+                    CustomId = eo.Id,
+                    Type = "join-event",
+                    LineColor = "#f78f8f"
+                }).ToList();
+                if (!eventOperationsTimeline.IsNullOrEmpty())
+                {
+                    timeline.AddRange(eventOperationsTimeline);
+                }
+
+                //Following Friend Operations
+                var followFriendOperationsTimeline = (await _friendOperationRepo.Followings(userId)).Select(fo => new TimelineDTO()
+                {
+                    Header = fo.FollowingUser.FirstName + " " + fo.FollowingUser.LastName,
+                    Body = TimelineHelper.GenerateMyFollowingBody(),
+                    Image = null,
+                    CreateAt = fo.CreatedAt,
+                    CustomId = fo.FollowingUserId,
+                    Type = "following",
+                    LineColor = "#ffeea3"
+                }).ToList();
+                if (!followFriendOperationsTimeline.IsNullOrEmpty())
+                {
+                    timeline.AddRange(followFriendOperationsTimeline);
+                }
+
+                //Follow Friend Operations
+                var followingFriendOperationsTimeline = (await _friendOperationRepo.Followers(userId)).Select(fo => new TimelineDTO()
+                {
+                    Header = fo.FollowerUser.FirstName + " " + fo.FollowerUser.LastName,
+                    Body = TimelineHelper.GenerateMyFollowerBody(),
+                    Image = null,
+                    CreateAt = fo.CreatedAt,
+                    CustomId = fo.FollowerUserId,
+                    Type = "follower",
+                    LineColor = "#ffeea3"
+                }).ToList();
+                if (!followingFriendOperationsTimeline.IsNullOrEmpty())
+                {
+                    timeline.AddRange(followingFriendOperationsTimeline);
+                }
+
+                //Comments
+                var commentsTimeline = (await _commentRepo.UserComments(userId)).Select(c => new TimelineDTO()
+                {
+                    Header = c.Event.Title,
+                    Body = TimelineHelper.GenerateMyCommentBody(userId, c),
+                    Image = null,
+                    CreateAt = c.CreatedAt,
+                    CustomId = c.EventId,
+                    Type = "comment-event",
+                    LineColor = "#dcd5f2"
+                }).ToList();
+                if (!commentsTimeline.IsNullOrEmpty())
+                {
+                    timeline.AddRange(commentsTimeline);
+                }
+
+                if (timeline.IsNullOrEmpty())
+                {
+                    return NotFound("Kayıt bulunamadı.");
+                }
+                else
+                {
+                    return Ok(timeline.OrderByDescending(t => t.CreateAt));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("Users", 500, "UserTimeline", ex.Message);
                 return null;
             }
         }

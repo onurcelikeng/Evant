@@ -89,7 +89,7 @@ namespace Evant.Controllers
                 var eventsTimeline = (await _eventRepo.UserEvents(userId)).Select(e => new TimelineDTO()
                 {
                     Header = e.Title,
-                    Body = TimelineHelper.GenerateCreateEventBody(e),
+                    Body = TimelineHelper.GenerateUserCreateEventBody(e),
                     Image = e.Photo,
                     CreateAt = e.CreatedAt,
                     CustomId = e.Id,
@@ -105,7 +105,7 @@ namespace Evant.Controllers
                 var eventOperationsTimeline = (await _eventOperationRepo.UserEventOperations(userId)).Select(eo => new TimelineDTO()
                 {
                     Header = eo.Event.Title,
-                    Body = TimelineHelper.GenerateJoinEventBody(eo.Event),
+                    Body = TimelineHelper.GenerateUserJoinEventBody(eo.Event),
                     Image = eo.Event.Photo,
                     CreateAt = eo.CreatedAt,
                     CustomId = eo.Id,
@@ -121,7 +121,7 @@ namespace Evant.Controllers
                 var followFriendOperationsTimeline = (await _friendOperationRepo.Followings(userId)).Select(fo => new TimelineDTO()
                 {
                     Header = fo.FollowingUser.FirstName + " " + fo.FollowingUser.LastName,
-                    Body = TimelineHelper.GenerateFollowingBody(),
+                    Body = TimelineHelper.GenerateUserFollowingBody(),
                     Image = null,
                     CreateAt = fo.CreatedAt,
                     CustomId = fo.FollowingUserId,
@@ -137,7 +137,7 @@ namespace Evant.Controllers
                 var followingFriendOperationsTimeline = (await _friendOperationRepo.Followers(userId)).Select(fo => new TimelineDTO()
                 {
                     Header = fo.FollowerUser.FirstName + " " + fo.FollowerUser.LastName,
-                    Body = TimelineHelper.GenerateFollowerBody(),
+                    Body = TimelineHelper.GenerateUserFollowerBody(),
                     Image = null,
                     CreateAt = fo.CreatedAt,
                     CustomId = fo.FollowerUserId,
@@ -153,7 +153,7 @@ namespace Evant.Controllers
                 var commentsTimeline = (await _commentRepo.UserComments(userId)).Select(c => new TimelineDTO()
                 {
                     Header = c.Event.Title,
-                    Body = TimelineHelper.GenerateCommentBody(userId, c),
+                    Body = TimelineHelper.GenerateUserCommentBody(userId, c),
                     Image = null,
                     CreateAt = c.CreatedAt,
                     CustomId = c.EventId,

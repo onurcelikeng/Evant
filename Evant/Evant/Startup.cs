@@ -45,7 +45,7 @@ namespace Evant
             services.AddMvc();
 
             // Add DBContext
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ProdDbConnection")));
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DevDbConnection")));
 
             // Repositories
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

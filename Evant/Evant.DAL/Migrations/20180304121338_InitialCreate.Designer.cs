@@ -11,7 +11,7 @@ using System;
 namespace Evant.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20180302200654_InitialCreate")]
+    [Migration("20180304121338_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
