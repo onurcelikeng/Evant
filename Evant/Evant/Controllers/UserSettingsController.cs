@@ -61,7 +61,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Users", 500, "Register", ex.Message);
+                _logHelper.Log("UserSettingsController", 500, "GetUserSettings", ex.Message);
                 return null;
             }
         }
@@ -70,40 +70,48 @@ namespace Evant.Controllers
         [HttpPut]
         public async Task<IActionResult> ChangeUserSetting([FromBody] UserSettingDTO model)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest("Eksik bilgi girdiniz.");
-            }
-
-            Guid userId = User.GetUserId();
-            var selectedUserSetting = await _userSettingRepo.First(us => us.UserId == userId);
-            if (selectedUserSetting == null)
-            {
-                return NotFound("Kayıt bulunamadı.");
-            }
-            else
-            {
-                selectedUserSetting.UpdateAt = DateTime.Now;
-                selectedUserSetting.Theme = model.Theme;
-                selectedUserSetting.Language = model.Language;
-                selectedUserSetting.IsCommentNotif = model.IsCommentNotif;
-                selectedUserSetting.IsEventNewComerNotif = model.IsEventNewComerNotif;
-                selectedUserSetting.IsEventUpdateNotif = model.IsEventUpdateNotif;
-                selectedUserSetting.IsFriendshipNotif = model.IsFriendshipNotif;
-                selectedUserSetting.IsCommentVisiableTimeline = model.IsCommentVisiableTimeline;
-                selectedUserSetting.IsJoinEventVisiableTimeline = model.IsJoinEventVisiableTimeline;
-                selectedUserSetting.IsFollowingVisiableTimeline = model.IsFollowingVisiableTimeline;
-                selectedUserSetting.IsFollowerVisiableTimeline = model.IsFollowerVisiableTimeline;
-
-                var response = await _userSettingRepo.Update(selectedUserSetting);
-                if (response)
+                if (!ModelState.IsValid)
                 {
-                    return Ok("Kullanıcı ayarları güncellendi.");
+                    return BadRequest("Eksik bilgi girdiniz.");
+                }
+
+                Guid userId = User.GetUserId();
+                var selectedUserSetting = await _userSettingRepo.First(us => us.UserId == userId);
+                if (selectedUserSetting == null)
+                {
+                    return NotFound("Kayıt bulunamadı.");
                 }
                 else
                 {
-                    return BadRequest("Kullanıcı ayarları güncellenemedi.");
+                    selectedUserSetting.UpdateAt = DateTime.Now;
+                    selectedUserSetting.Theme = model.Theme;
+                    selectedUserSetting.Language = model.Language;
+                    selectedUserSetting.IsCommentNotif = model.IsCommentNotif;
+                    selectedUserSetting.IsEventNewComerNotif = model.IsEventNewComerNotif;
+                    selectedUserSetting.IsEventUpdateNotif = model.IsEventUpdateNotif;
+                    selectedUserSetting.IsFriendshipNotif = model.IsFriendshipNotif;
+                    selectedUserSetting.IsCommentVisiableTimeline = model.IsCommentVisiableTimeline;
+                    selectedUserSetting.IsJoinEventVisiableTimeline = model.IsJoinEventVisiableTimeline;
+                    selectedUserSetting.IsFollowingVisiableTimeline = model.IsFollowingVisiableTimeline;
+                    selectedUserSetting.IsFollowerVisiableTimeline = model.IsFollowerVisiableTimeline;
+
+                    var response = await _userSettingRepo.Update(selectedUserSetting);
+                    if (response)
+                    {
+                        return Ok("Ayarlarınızı güncellendiniz.");
+                    }
+                    else
+                    {
+                        return BadRequest("Ayarlarınızı güncelleyemediniz.");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("UserSettingsController", 500, "ChangeUserSetting", ex.Message);
+                return null;
             }
         }
 

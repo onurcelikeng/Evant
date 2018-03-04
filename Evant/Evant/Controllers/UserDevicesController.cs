@@ -50,11 +50,11 @@ namespace Evant.Controllers
                     var response = await _userDevicesRepo.Update(selectedDevice);
                     if (response)
                     {
-                        return Ok("Cihaz güncellendi.");
+                        return Ok("Cihazınız güncellendi.");
                     }
                     else
                     {
-                        return BadRequest("Cihaz güncellenemedi.");
+                        return BadRequest("Cihazınız güncellenemedi.");
                     }
                 }
                 else
@@ -78,13 +78,13 @@ namespace Evant.Controllers
                     }
                     else
                     {
-                        return BadRequest("Cihaz eklenemedi.");
+                        return BadRequest("Cihazınız eklenemedi.");
                     }
                 }
             }
             catch (Exception ex)
             {
-                _logHelper.Log("UserDevices", 500, "SaveDevice", ex.Message);
+                _logHelper.Log("UserDevicesController", 500, "SaveDevice", ex.Message);
                 return null;
             }
         }
@@ -109,17 +109,17 @@ namespace Evant.Controllers
                     var response = await _userDevicesRepo.Update(selectedDevice);
                     if (response)
                     {
-                        return Ok("Cihazda oturum kapatıldı.");
+                        return Ok("Cihazınızda oturum kapatıldı.");
                     }
                     else
                     {
-                        return BadRequest("Cihazda oturum kapatılamadı.");
+                        return BadRequest("Cihazınızda oturum kapatılamadı.");
                     }
                 }
             }
             catch (Exception ex)
             {
-                _logHelper.Log("UserDevices", 500, "CloseDevice", ex.Message);
+                _logHelper.Log("UserDevicesController", 500, "CloseDevice", ex.Message);
                 return null;
             }
         }

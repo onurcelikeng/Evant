@@ -39,17 +39,13 @@ namespace Evant.Controllers
                 }).ToList();
 
                 if (categories.IsNullOrEmpty())
-                {
                     return NotFound("Kayıt bulunamadı.");
-                }
-                else
-                {
-                    return Ok(categories);
-                }
+
+                return Ok(categories);
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Categories", 500, "GetCategories", ex.Message);
+                _logHelper.Log("CategoriesController", 500, "GetCategories", ex.Message);
                 return null;
             }
         }

@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Evant.Constants;
 using Evant.Contracts.DataTransferObjects.User;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Repositories.Interfaces;
 using Evant.Helpers;
 using Evant.Interfaces;
-using Evant.NotificationCenter.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static Evant.Constants.NotificationConstant;
 
 namespace Evant.Controllers
 {
@@ -49,17 +46,13 @@ namespace Evant.Controllers
                 }).ToList();
 
                 if (followers.IsNullOrEmpty())
-                {
                     return NotFound("Kayıt bulunamadı.");
-                }
-                else
-                {
-                    return Ok(followers);
-                }
+
+                return Ok(followers);
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Logs", 500, "GetFollowers", ex.Message);
+                _logHelper.Log("FriendOperationsController", 500, "GetFollowers", ex.Message);
                 return null;
             }
         }
@@ -80,17 +73,13 @@ namespace Evant.Controllers
                 }).ToList();
 
                 if (followings.IsNullOrEmpty())
-                {
                     return NotFound("Kayıt bulunamadı.");
-                }
-                else
-                {
-                    return Ok(followings);
-                }
+
+                return Ok(followings);
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Logs", 500, "GetFollowings", ex.Message);
+                _logHelper.Log("FriendOperationsController", 500, "GetFollowings", ex.Message);
                 return null;
             }
         }
@@ -102,22 +91,18 @@ namespace Evant.Controllers
             try
             {
                 Guid userId = User.GetUserId();
-                if (userId == friendId)
+                if (userId.Equals(friendId))
                     return BadRequest("invalid");
 
                 var selectedFriendOperation = await _friendOperationRepo.First(fo => fo.FollowingUserId == friendId && fo.FollowerUserId == userId);
                 if (selectedFriendOperation == null)
-                {
                     return BadRequest("Takip etmiyorsun.");
-                }
-                else
-                {
-                    return Ok("Takip ediyorsun.");
-                }
+
+                return Ok("Takip ediyorsun.");
             }
             catch (Exception ex)
             {
-                _logHelper.Log("FriendOperations", 500, "IsFollow", ex.Message);
+                _logHelper.Log("FriendOperationsController", 500, "IsFollow", ex.Message);
                 return null;
             }
         }
@@ -129,7 +114,7 @@ namespace Evant.Controllers
             try
             {
                 Guid userId = User.GetUserId();
-                if(userId == friendId)
+                if (userId.Equals(friendId))
                     return BadRequest("invalid");
 
                 var friendOperation = await _friendOperationRepo.First(fo => fo.FollowerUserId == userId && fo.FollowingUserId == friendId);
@@ -160,7 +145,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Logs", 500, "Follow", ex.Message);
+                _logHelper.Log("FriendOperationsController", 500, "Follow", ex.Message);
                 return null;
             }
         }
@@ -172,7 +157,7 @@ namespace Evant.Controllers
             try
             {
                 Guid userId = User.GetUserId();
-                if (userId == friendId)
+                if (userId.Equals(friendId))
                     return BadRequest("invalid");
 
                 var selectedFriendOperation = await _friendOperationRepo.First(fo => fo.FollowerUserId == userId && fo.FollowingUserId == friendId);
@@ -193,7 +178,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Logs", 500, "UnFollow", ex.Message);
+                _logHelper.Log("FriendOperationsController", 500, "UnFollow", ex.Message);
                 return null;
             }
         }

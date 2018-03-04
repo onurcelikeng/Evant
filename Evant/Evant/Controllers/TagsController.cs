@@ -12,5 +12,6 @@ namespace Evant.Controllers
     [Route("api/tags")]
     public class TagsController : BaseController
     {
+
     }
 }

@@ -114,7 +114,7 @@ namespace Evant.Controllers
                 {
                     return BadRequest("Eksik bilgi girdiniz.");
                 }
-          
+
                 var selectedUser = await _userRepo.Login(user.Email, user.Password);
                 if (selectedUser != null)
                 {
@@ -125,8 +125,10 @@ namespace Evant.Controllers
                         await _userRepo.Update(selectedUser);
                     }
 
-                    var token = _jwtFactory.GenerateJwtToken(selectedUser);
-                    return Ok(token);
+                    return Ok(new TokenDTO()
+                    {
+                        Token = _jwtFactory.GenerateJwtToken(selectedUser)
+                    });
                 }
                 else
                 {

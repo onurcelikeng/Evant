@@ -65,7 +65,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Comments", 500, "GetComments", ex.Message);
+                _logHelper.Log("CommentsController", 500, "GetComments", ex.Message);
                 return null;
             }
         }
@@ -94,23 +94,23 @@ namespace Evant.Controllers
                 var response = await _commentRepo.Add(entity);
                 if (response)
                 {
-                    var searchedEvent = await _eventRepo.First(e => e.Id == model.EventId);
-                    if (searchedEvent != null)
+                    var @event = await _eventRepo.First(e => e.Id == model.EventId);
+                    if (@event != null)
                     {
-                        Guid receiverId = searchedEvent.UserId;
+                        Guid receiverId = @event.UserId;
                         await _notificationHelper.SendCommentNotification(userId, receiverId);
                     }
 
-                    return Ok("Yorum eklendi.");
+                    return Ok("Yorumunuz eklendi.");
                 }
                 else
                 {
-                    return BadRequest("Yorum eklenemedi.");
+                    return BadRequest("Yorumunuz eklenemedi.");
                 }
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Comments", 500, "AddComment", ex.Message);
+                _logHelper.Log("CommentsController", 500, "AddComment", ex.Message);
                 return null;
             }
         }
@@ -132,16 +132,16 @@ namespace Evant.Controllers
                 var response = await _commentRepo.Delete(comment);
                 if (response)
                 {
-                    return Ok("yorum silindi.");
+                    return Ok("Yorumunuz silindi.");
                 }
                 else
                 {
-                    return BadRequest("Yorum silinemedi.");
+                    return BadRequest("Yorumunuz silinemedi.");
                 }
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Comments", 500, "DeleteComment", ex.Message);
+                _logHelper.Log("CommentsController", 500, "DeleteComment", ex.Message);
                 return null;
             }
         }

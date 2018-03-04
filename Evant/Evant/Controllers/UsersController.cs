@@ -77,7 +77,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Users", 500, "GetUser", ex.Message);
+                _logHelper.Log("UsersController", 500, "GetUser", ex.Message);
                 return null;
             }
         }
@@ -202,7 +202,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Users", 500, "UserTimeline", ex.Message);
+                _logHelper.Log("UsersController", 500, "UserTimeline", ex.Message);
                 return null;
             }
         }
@@ -236,7 +236,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Users", 500, "SearcUsers", ex.Message);
+                _logHelper.Log("UsersController", 500, "SearcUsers", ex.Message);
                 return null;
             }
         }

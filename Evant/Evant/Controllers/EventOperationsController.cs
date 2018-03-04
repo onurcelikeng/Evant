@@ -48,17 +48,13 @@ namespace Evant.Controllers
                 }).ToList();
 
                 if (users.IsNullOrEmpty())
-                {
                     return NotFound("Kayıt bulunamadı.");
-                }
-                else
-                {
-                    return Ok(users);
-                }
+
+                return Ok(users);
             }
             catch (Exception ex)
             {
-                _logHelper.Log("EventOperations", 500, "GetEventUsers", ex.Message);
+                _logHelper.Log("EventOperationsController", 500, "GetEventUsers", ex.Message);
                 return null;
             }
         }
@@ -71,22 +67,17 @@ namespace Evant.Controllers
             {
                 Guid userId = User.GetUserId();
 
-                var selectedEventOperation = await _eventOperationRepo.First(eo => eo.EventId == eventId && eo.UserId == userId);
-                if (selectedEventOperation == null)
-                {
-                    return BadRequest("Katılmamışsın.");
-                }
-                else
-                {
-                    return Ok("Katılmışsın.");
-                }
+                var eventOperation = await _eventOperationRepo.First(eo => eo.EventId == eventId && eo.UserId == userId);
+                if (eventOperation == null)
+                    return BadRequest("Etkinliğe daha önce katılmamışsın.");
+
+                return Ok("Etkinliği katılmışsın.");
             }
             catch (Exception ex)
             {
-                _logHelper.Log("EventOperations", 500, "IsFollow", ex.Message);
+                _logHelper.Log("EventOperationsController", 500, "IsJoin", ex.Message);
                 return null;
             }
-
         }
 
         [Authorize]
@@ -97,8 +88,8 @@ namespace Evant.Controllers
             {
                 Guid userId = User.GetUserId();
 
-                var selectedEventOperation = await _eventOperationRepo.First(eo => eo.UserId == userId && eo.EventId == eventId);
-                if (selectedEventOperation != null)
+                var eventOperation = await _eventOperationRepo.First(eo => eo.UserId == userId && eo.EventId == eventId);
+                if (eventOperation != null)
                 {
                     return BadRequest("Etkinliğe daha önce katıldınız.");
                 }
@@ -114,10 +105,10 @@ namespace Evant.Controllers
                     var response = await _eventOperationRepo.Add(entity);
                     if (response)
                     {
-                        var searchedEvent = await _eventRepo.First(e => e.Id == eventId);
-                        if(searchedEvent != null)
+                        var @event = await _eventRepo.First(e => e.Id == eventId);
+                        if (@event != null)
                         {
-                            Guid receiverId = searchedEvent.UserId;
+                            Guid receiverId = @event.UserId;
                             await _notificationHelper.SendEventAttendNotification(userId, receiverId);
                         }
 
@@ -131,7 +122,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("EventOperations", 500, "JoinEvent", ex.Message);
+                _logHelper.Log("EventOperationsController", 500, "JoinEvent", ex.Message);
                 return null;
             }
         }
@@ -144,14 +135,14 @@ namespace Evant.Controllers
             {
                 Guid userId = User.GetUserId();
 
-                var selectedEventOperation = await _eventOperationRepo.First(eo => eo.EventId == eventId && eo.UserId == userId);
-                if (selectedEventOperation == null)
+                var eventOperation = await _eventOperationRepo.First(eo => eo.EventId == eventId && eo.UserId == userId);
+                if (eventOperation == null)
                 {
                     return NotFound("Kayıt bulunamadı.");
                 }
                 else
                 {
-                    var response = await _eventOperationRepo.Delete(selectedEventOperation);
+                    var response = await _eventOperationRepo.Delete(eventOperation);
                     if (response)
                     {
                         return Ok("Etkinlikten ayrıldınız.");
@@ -164,7 +155,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("EventOperations", 500, "LeaveEvent", ex.Message);
+                _logHelper.Log("EventOperationsController", 500, "LeaveEvent", ex.Message);
                 return null;
             }
         }
