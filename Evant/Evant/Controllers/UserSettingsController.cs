@@ -49,7 +49,11 @@ namespace Evant.Controllers
                         IsCommentNotif = settings.IsCommentNotif,
                         IsEventNewComerNotif = settings.IsEventNewComerNotif,
                         IsEventUpdateNotif = settings.IsEventUpdateNotif,
-                        IsFriendshipNotif = settings.IsFriendshipNotif
+                        IsFriendshipNotif = settings.IsFriendshipNotif,
+                        IsCommentVisiableTimeline = settings.IsCommentVisiableTimeline,
+                        IsJoinEventVisiableTimeline = settings.IsJoinEventVisiableTimeline,
+                        IsFollowerVisiableTimeline = settings.IsFollowerVisiableTimeline,
+                        IsFollowingVisiableTimeline = settings.IsFollowingVisiableTimeline
                     };
 
                     return Ok(model);
@@ -86,6 +90,10 @@ namespace Evant.Controllers
                 selectedUserSetting.IsEventNewComerNotif = model.IsEventNewComerNotif;
                 selectedUserSetting.IsEventUpdateNotif = model.IsEventUpdateNotif;
                 selectedUserSetting.IsFriendshipNotif = model.IsFriendshipNotif;
+                selectedUserSetting.IsCommentVisiableTimeline = model.IsCommentVisiableTimeline;
+                selectedUserSetting.IsJoinEventVisiableTimeline = model.IsJoinEventVisiableTimeline;
+                selectedUserSetting.IsFollowingVisiableTimeline = model.IsFollowingVisiableTimeline;
+                selectedUserSetting.IsFollowerVisiableTimeline = model.IsFollowerVisiableTimeline;
 
                 var response = await _userSettingRepo.Update(selectedUserSetting);
                 if (response)

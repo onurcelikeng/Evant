@@ -99,7 +99,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Users", 500, "Register", ex.Message);
+                _logHelper.Log("AccountController", 500, "Register", ex.Message);
                 return null;
             }
         }
@@ -143,7 +143,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Users", 500, "Login", ex.Message);
+                _logHelper.Log("AccountController", 500, "Login", ex.Message);
                 return null;
             }
         }
@@ -194,7 +194,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Users", 500, "GetMe", ex.Message);
+                _logHelper.Log("AccountController", 500, "GetMe", ex.Message);
                 return null;
             }
         }
@@ -299,7 +299,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Users", 500, "UserTimeline", ex.Message);
+                _logHelper.Log("AccountController", 500, "Timeline", ex.Message);
                 return null;
             }
         }
@@ -341,7 +341,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Users", 500, "UploadPhoto", ex.Message);
+                _logHelper.Log("AccountController", 500, "UploadPhoto", ex.Message);
                 return null;
             }
         }
@@ -395,7 +395,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Users", 500, "UpdateProfile", ex.Message);
+                _logHelper.Log("AccountController", 500, "UpdateProfile", ex.Message);
                 return null;
             }
         }
@@ -438,7 +438,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Users", 500, "ChangePassword", ex.Message);
+                _logHelper.Log("AccountController", 500, "ChangePassword", ex.Message);
                 return null;
             }
         }
@@ -475,7 +475,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Users", 500, "SwitchtoBusinessAccount", ex.Message);
+                _logHelper.Log("AccountController", 500, "SwitchtoBusinessAccount", ex.Message);
                 return null;
             }
         }
@@ -512,7 +512,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Users", 500, "SwitchtoNormalAccount", ex.Message);
+                _logHelper.Log("AccountController", 500, "SwitchtoNormalAccount", ex.Message);
                 return null;
             }
         }
@@ -556,7 +556,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Users", 500, "DeActiveAccount", ex.Message);
+                _logHelper.Log("AccountController", 500, "DeActiveAccount", ex.Message);
                 return null;
             }
         }
