@@ -20,12 +20,12 @@ namespace Evant.Helpers
         }
 
 
-        public async void Log(string table, int statusCode, string action, string ex = null, string message = null)
+        public async void Log(string controller, int statusCode, string action, string ex = null, string message = null)
         {
             if(statusCode == 500)
             {
                 SlackHelper slackHelper = new SlackHelper();
-                string content = "Entity: " + table + ", Status: " + statusCode + " Action: " + action + " ex: " + ex;
+                string content = "Controller: " + controller + ", Status: " + statusCode + " Action: " + action + " ex: " + ex;
                 slackHelper.PostMessage(content);
             }
 
@@ -33,7 +33,7 @@ namespace Evant.Helpers
             {
                 Id = new Guid(),
                 Ip = _accessor.HttpContext.Connection.RemoteIpAddress.ToString(),
-                Table = table,
+                Controller = controller,
                 StatusCode = statusCode,
                 Action = action,
                 Exception = ex,

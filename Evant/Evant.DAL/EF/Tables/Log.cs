@@ -9,7 +9,7 @@ namespace Evant.DAL.EF.Tables
         public string Ip { get; set; }
 
         [Required]
-        public string Table { get; set; }
+        public string Controller { get; set; }
 
         public string Message { get; set; }
 

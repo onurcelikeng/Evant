@@ -201,7 +201,7 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpGet("timeline")]
-        public async Task<IActionResult> UserTimeline()
+        public async Task<IActionResult> Timeline()
         {
             try
             {
