@@ -25,7 +25,7 @@ namespace Evant.DAL.Repositories
                 .Include(t => t.EventComments)
                 .Include(t => t.EventOperations)
                 .Include(t => t.User.Followers)
-                .Where(t => t.UserId == userId || t.User.Followers.FirstOrDefault(f => f.FollowerUserId == userId) != null)
+                .Where(t => (t.User.IsActive && !t.IsDeleted) && (t.UserId == userId || t.User.Followers.FirstOrDefault(f => f.FollowerUserId == userId) != null))
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
         }
@@ -37,7 +37,7 @@ namespace Evant.DAL.Repositories
                 .Include(t => t.User)
                 .Include(t => t.EventComments)
                 .Include(t => t.EventOperations)
-                .FirstOrDefaultAsync(t => t.Id == eventId && t.IsDeleted == false);
+                .FirstOrDefaultAsync(t => t.Id == eventId && !t.IsDeleted && t.User.IsActive);
         }
 
         public async Task<List<Event>> UserEvents(Guid userId)
@@ -45,7 +45,8 @@ namespace Evant.DAL.Repositories
             return await Table
                 .Include(t => t.Category)
                 .Include(t => t.User)
-                .Where(t => t.UserId == userId && t.IsDeleted == false)
+                .Where(t => t.UserId == userId && !t.IsDeleted)
+                .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
         }
 
@@ -54,7 +55,8 @@ namespace Evant.DAL.Repositories
             return await Table
                 .Include(t => t.Category)
                 .Include(t => t.User)
-                .Where(t => t.CategoryId == categoryId && t.IsDeleted == false)
+                .Where(t => t.CategoryId == categoryId && !t.IsDeleted && t.User.IsActive)
+                .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
         }
 
@@ -65,7 +67,8 @@ namespace Evant.DAL.Repositories
                 .Include(t => t.User)
                 .Include(t => t.EventComments)
                 .Include(t => t.EventOperations)
-                .Where(t => t.IsDeleted == false && (t.Description.ToLower().Contains(query.ToLower()) || t.Title.ToLower().Contains(query.ToLower())))
+                .Where(t => !t.IsDeleted && (t.Description.ToLower().Contains(query.ToLower()) || t.Title.ToLower().Contains(query.ToLower())))
+                .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
         }
 
@@ -79,5 +82,6 @@ namespace Evant.DAL.Repositories
             }
             return false;
         }
+
     }
 }

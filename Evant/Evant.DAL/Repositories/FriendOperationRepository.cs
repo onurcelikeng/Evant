@@ -23,7 +23,8 @@ namespace Evant.DAL.Repositories
             return await Table
                 .Include(t => t.FollowerUser)
                 .Include(t => t.FollowingUser)
-                .Where(t => t.FollowingUserId == userId)
+                .Where(t => t.FollowingUserId == userId && t.FollowerUser.IsActive)
+                .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
         }
 
@@ -32,7 +33,8 @@ namespace Evant.DAL.Repositories
             return await Table
                 .Include(t => t.FollowerUser)
                 .Include(t => t.FollowingUser)
-                .Where(t => t.FollowerUserId == userId)
+                .Where(t => t.FollowerUserId == userId && t.FollowingUser.IsActive)
+                .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
         }
 
