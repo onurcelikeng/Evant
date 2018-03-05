@@ -109,7 +109,7 @@ namespace Evant.Controllers
                         if (@event != null)
                         {
                             Guid receiverId = @event.UserId;
-                            await _notificationHelper.SendEventAttendNotification(userId, receiverId);
+                            await _notificationHelper.SendEventAttendNotification(userId, receiverId, @event.Id);
                         }
 
                         return Ok("Etkinliğe katıldınız.");

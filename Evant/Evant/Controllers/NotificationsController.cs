@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Evant.Contracts.DataTransferObjects.Event;
+using Evant.Contracts.DataTransferObjects.Notification;
+using Evant.Contracts.DataTransferObjects.User;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
+using Evant.DAL.Repositories.Interfaces;
 using Evant.Helpers;
 using Evant.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -14,11 +18,11 @@ namespace Evant.Controllers
     [Route("api/notifications")]
     public class NotificationsController : Controller
     {
-        private readonly IRepository<Notification> _notificationRepo;
+        private readonly INotificationRepository _notificationRepo;
         private ILogHelper _logHelper;
 
 
-        public NotificationsController(IRepository<Notification> notificationRepo,
+        public NotificationsController(INotificationRepository notificationRepo,
             ILogHelper logHelper)
         {
             _notificationRepo = notificationRepo;
@@ -33,13 +37,34 @@ namespace Evant.Controllers
             try
             {
                 Guid userId = User.GetUserId();
-                var notifications = (await _notificationRepo.Where(n => n.ReceiverUserId == userId)).ToList();
+                var notifications = (await _notificationRepo.Notifications(userId)).Select(n => new NotificationDTO()
+                {
+                    NotificationId = n.Id,
+                    Content = n.Content,
+                    IsRead = n.IsRead,
+                    CreatedAt = n.CreatedAt,
+                    NotificationType = n.NotificationType,
+                    User = new UserInfoDTO()
+                    {
+                        UserId = (Guid)n.SenderUserId,
+                        FirstName = n.SenderUser.FirstName,
+                        LastName = n.SenderUser.LastName,
+                        PhotoUrl = n.SenderUser.Photo
+                    },
+                    Event = (n.Event == null) ? null : new EventShortDTO()
+                    {
+                        EventId = (Guid)n.EventId,
+                        PhotoUrl = n.Event.Photo
+                    }
+                }).ToList();
+                if(notifications.IsNullOrEmpty())
+                    return NotFound("Kayıt bulunamadı.");
 
                 return Ok(notifications);
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Notifications", 500, "GetNotifications", ex.Message);
+                _logHelper.Log("NotificationsController", 500, "GetNotifications", ex.Message);
                 return null;
             }
         }
@@ -69,7 +94,7 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("Notifications", 500, "ReadAllNotifications", ex.Message);
+                _logHelper.Log("NotificationsController", 500, "ReadAllNotifications", ex.Message);
                 return null;
             }
         }

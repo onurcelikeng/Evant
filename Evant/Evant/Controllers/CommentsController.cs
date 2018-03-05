@@ -98,7 +98,7 @@ namespace Evant.Controllers
                     if (@event != null)
                     {
                         Guid receiverId = @event.UserId;
-                        await _notificationHelper.SendCommentNotification(userId, receiverId);
+                        await _notificationHelper.SendCommentNotification(userId, receiverId, @event.Id, model.Content);
                     }
 
                     return Ok("Yorumunuz eklendi.");

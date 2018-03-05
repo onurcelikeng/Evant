@@ -1,12 +1,11 @@
-﻿
-namespace Evant.Constants
+﻿namespace Evant.Constants
 {
     public sealed class NotificationConstant
     {
-        public enum NotificationType
+        public enum NotificationType : int
         {
-            EventAttend = 1,
-            Comment = 2,
+            Comment = 1,
+            EventAttend = 2,
             FriendOperation = 3
         }
     }

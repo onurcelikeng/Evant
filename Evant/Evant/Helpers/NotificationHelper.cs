@@ -35,6 +35,15 @@ namespace Evant.Helpers
 
         public async Task SendFollowNotification(Guid senderId, Guid receiverId)
         {
+            await _notificationRepo.Add(new Notification()
+            {
+                Id = new Guid(),
+                ReceiverUserId = receiverId,
+                SenderUserId = senderId,
+                NotificationType = (int)NotificationType.FriendOperation,
+                Content = "seni takip etmeye başladı.",
+            });
+
             var playerIds = (await _userDeviceRepo.Where(d => d.UserId == receiverId && d.IsLoggedin))
                 .Select(t => t.DeviceId)
                 .ToList();
@@ -54,8 +63,18 @@ namespace Evant.Helpers
             }
         }
 
-        public async Task SendEventAttendNotification(Guid senderId, Guid receiverId)
+        public async Task SendEventAttendNotification(Guid senderId, Guid receiverId, Guid eventId)
         {
+            await _notificationRepo.Add(new Notification()
+            {
+                Id = new Guid(),
+                ReceiverUserId = receiverId,
+                SenderUserId = senderId,
+                EventId = eventId,
+                NotificationType = (int)NotificationType.EventAttend,
+                Content = "etkinliğine katıldı.",
+            });
+
             var playerIds = (await _userDeviceRepo.Where(d => d.UserId == receiverId && d.IsLoggedin))
                 .Select(t => t.DeviceId)
                 .ToList();
@@ -75,8 +94,18 @@ namespace Evant.Helpers
             }
         }
 
-        public async Task SendCommentNotification(Guid senderId, Guid receiverId)
+        public async Task SendCommentNotification(Guid senderId, Guid receiverId, Guid eventId, string message)
         {
+            await _notificationRepo.Add(new Notification()
+            {
+                Id = new Guid(),
+                ReceiverUserId = receiverId,
+                SenderUserId = senderId,
+                EventId = eventId,
+                NotificationType = (int)NotificationType.FriendOperation,
+                Content = "etkinliğine yorum yaptı: " + message,
+            });
+
             var playerIds = (await _userDeviceRepo.Where(d => d.UserId == receiverId && d.IsLoggedin))
                 .Select(t => t.DeviceId)
                 .ToList();

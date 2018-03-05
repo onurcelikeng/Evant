@@ -54,6 +54,7 @@ namespace Evant
             services.AddScoped<IEventOperationRepository, EventOperationRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
 
             // Scoped
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

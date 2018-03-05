@@ -9,11 +9,11 @@ namespace Evant.DAL.EF.Tables
     {
         public Guid ReceiverUserId { get; set; }
 
-        public Guid SenderUserId { get; set; }
+        public Guid? SenderUserId { get; set; }
 
-        public Guid EventId { get; set; }
+        public Guid? EventId { get; set; }
 
-        public Guid CommentId { get; set; }
+        public Guid? CommentId { get; set; }
 
         [Required, MaxLength(120)]
         public string Content { get; set; }
