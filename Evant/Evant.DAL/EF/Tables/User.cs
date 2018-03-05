@@ -18,6 +18,7 @@ namespace Evant.DAL.EF.Tables
             EventOperations = new List<EventOperation>();
             UserDevices = new List<UserDevice>();
             UserSearchHistories = new List<SearchHistory>();
+            User_Notifications = new List<Notification>();
         }
 
 
@@ -72,6 +73,8 @@ namespace Evant.DAL.EF.Tables
         public virtual ICollection<UserDevice> UserDevices { get; set; }
 
         public virtual ICollection<SearchHistory> UserSearchHistories { get; set; }
+
+        public virtual ICollection<Notification> User_Notifications { get; set; }
 
     }
 }

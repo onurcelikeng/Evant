@@ -13,6 +13,7 @@ namespace Evant.DAL.EF.Tables
         {
             EventComments = new List<Comment>();
             EventOperations = new List<EventOperation>();
+            Event_Notifications = new List<Notification>();
         }
 
 
@@ -64,5 +65,7 @@ namespace Evant.DAL.EF.Tables
         public virtual ICollection<Comment> EventComments { get; set; }
 
         public virtual ICollection<EventOperation> EventOperations { get; set; }
+
+        public virtual ICollection<Notification> Event_Notifications { get; set; }
     }
 }

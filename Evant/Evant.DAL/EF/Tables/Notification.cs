@@ -11,7 +11,7 @@ namespace Evant.DAL.EF.Tables
 
         public Guid SenderUserId { get; set; }
 
-        public Guid EvetnId { get; set; }
+        public Guid EventId { get; set; }
 
         public Guid CommentId { get; set; }
 
@@ -24,8 +24,6 @@ namespace Evant.DAL.EF.Tables
         [Required]
         public int NotificationType { get; set; }
 
-
-        public virtual User ReceiverUser { get; set; }
 
         public virtual User SenderUser { get; set; }
 

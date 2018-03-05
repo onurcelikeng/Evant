@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Evant.DAL.EF.Tables;
@@ -7,7 +6,6 @@ using Evant.DAL.Interfaces.Repositories;
 using Evant.Helpers;
 using Evant.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
