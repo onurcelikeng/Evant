@@ -24,19 +24,20 @@ namespace Evant.DAL.Repositories
                 .Include(t => t.User)
                 .Include(t => t.EventComments)
                 .Include(t => t.EventOperations)
-                .Where(t => t.IsDeleted == false)
+                .Include(t => t.User.Followers)
+                .Where(t => t.UserId == userId || t.User.Followers.FirstOrDefault(f => f.FollowerUserId == userId) != null)
+                .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
         }
 
-        public async Task<List<Event>> EventDetail(Guid eventId)
+        public async Task<Event> EventDetail(Guid eventId)
         {
             return await Table
                 .Include(t => t.Category)
                 .Include(t => t.User)
                 .Include(t => t.EventComments)
                 .Include(t => t.EventOperations)
-                .Where(t => t.Id == eventId && t.IsDeleted == false)
-                .ToListAsync();
+                .FirstOrDefaultAsync(t => t.Id == eventId && t.IsDeleted == false);
         }
 
         public async Task<List<Event>> UserEvents(Guid userId)

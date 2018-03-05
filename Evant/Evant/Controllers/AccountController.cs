@@ -233,7 +233,7 @@ namespace Evant.Controllers
                     Body = TimelineHelper.GenerateMyJoinEventBody(eo.Event),
                     Image = eo.Event.Photo,
                     CreateAt = eo.CreatedAt,
-                    CustomId = eo.Id,
+                    CustomId = eo.EventId,
                     Type = "join-event",
                     LineColor = "#f78f8f"
                 }).ToList();

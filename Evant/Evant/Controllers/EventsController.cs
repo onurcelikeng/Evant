@@ -94,44 +94,45 @@ namespace Evant.Controllers
         {
             try
             {
-                var events = (await _eventRepo.EventDetail(eventId)).Select(e => new EventDetailDTO()
-                {
-                    EventId = e.Id,
-                    Title = e.Title,
-                    Description = e.Description,
-                    Start = e.StartDate,
-                    Finish = e.FinishDate,
-                    PhotoUrl = e.Photo,
-                    TotalComments = e.EventComments.Count,
-                    TotalGoings = e.EventOperations.Count,
-                    Category = new CategoryInfoDTO()
-                    {
-                        CategoryId = e.Category.Id,
-                        Name = e.Category.Name
-                    },
-                    User = new UserInfoDTO()
-                    {
-                        UserId = e.User.Id,
-                        FirstName = e.User.FirstName,
-                        LastName = e.User.LastName,
-                        PhotoUrl = e.User.Photo
-                    },
-                    Address = new AddressInfoDTO()
-                    {
-                        City = e.City,
-                        Town = e.Town,
-                        Latitude = e.Latitude,
-                        Longitude = e.Longitude
-                    }
-                }).ToList();
-
-                if (events.IsNullOrEmpty())
+                var @event = await _eventRepo.EventDetail(eventId);
+                if(@event == null)
                 {
                     return NotFound("Kayıt bulunamadı.");
                 }
                 else
                 {
-                    return Ok(events);
+                    var model = new EventDetailDTO()
+                    {
+                        EventId = @event.Id,
+                        Title = @event.Title,
+                        Description = @event.Description,
+                        Start = @event.StartDate,
+                        Finish = @event.FinishDate,
+                        PhotoUrl = @event.Photo,
+                        TotalComments = @event.EventComments.Count,
+                        TotalGoings = @event.EventOperations.Count,
+                        Category = new CategoryInfoDTO()
+                        {
+                            CategoryId = @event.Category.Id,
+                            Name = @event.Category.Name
+                        },
+                        User = new UserInfoDTO()
+                        {
+                            UserId = @event.User.Id,
+                            FirstName = @event.User.FirstName,
+                            LastName = @event.User.LastName,
+                            PhotoUrl = @event.User.Photo
+                        },
+                        Address = new AddressInfoDTO()
+                        {
+                            City = @event.City,
+                            Town = @event.Town,
+                            Latitude = @event.Latitude,
+                            Longitude = @event.Longitude
+                        }
+                    };
+
+                    return Ok(model);
                 }
             }
             catch (Exception ex)
