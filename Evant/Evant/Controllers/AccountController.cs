@@ -150,14 +150,6 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("fblogin")]
-        public IActionResult FacebookLogin()
-        {
-            //...
-            return Ok();
-        }
-
         [Authorize]
         [HttpGet]
         [Route("me")]

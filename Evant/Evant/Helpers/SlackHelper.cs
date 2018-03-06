@@ -44,5 +44,6 @@ namespace Evant.Helpers
                 string responseText = _encoding.GetString(response);
             }
         }
+
     }
 }

@@ -158,7 +158,7 @@ namespace Evant.Controllers
             {
                 Guid userId = User.GetUserId();
                 if (userId.Equals(friendId))
-                    return BadRequest("invalid");
+                    return BadRequest("Geçersiz kullanıcı Id");
 
                 var selectedFriendOperation = await _friendOperationRepo.First(fo => fo.FollowerUserId == userId && fo.FollowingUserId == friendId);
                 if (selectedFriendOperation == null)
@@ -169,6 +169,7 @@ namespace Evant.Controllers
                 var response = await _friendOperationRepo.Delete(selectedFriendOperation);
                 if (response)
                 {
+                    await _notificationHelper.DeleteFollowNotification(userId, friendId);
                     return Ok("Takip etmeyi bıraktın.");
                 }
                 else

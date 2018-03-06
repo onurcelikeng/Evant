@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Evant.DAL.Repositories
@@ -24,7 +23,7 @@ namespace Evant.DAL.Repositories
                 .Include(t => t.SenderUser)
                 .Include(t => t.Comment)
                 .Include(t => t.Event)
-                .Where(t => t.ReceiverUserId == userId)
+                .Where(t => t.ReceiverUserId == userId && t.SenderUser.IsActive)
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
         }

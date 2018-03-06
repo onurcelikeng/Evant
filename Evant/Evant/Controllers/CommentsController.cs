@@ -55,13 +55,9 @@ namespace Evant.Controllers
                 }).ToList();
 
                 if (commnets.IsNullOrEmpty())
-                {
                     return NotFound("Kayıt bulunamadı.");
-                }
-                else
-                {
-                    return Ok(commnets);
-                }
+
+                return Ok(commnets);
             }
             catch (Exception ex)
             {
@@ -86,8 +82,8 @@ namespace Evant.Controllers
                 var entity = new Comment()
                 {
                     Id = new Guid(),
-                    EventId = model.EventId,
                     UserId = userId,
+                    EventId = model.EventId,
                     Content = model.Content
                 };
 
@@ -98,7 +94,8 @@ namespace Evant.Controllers
                     if (@event != null)
                     {
                         Guid receiverId = @event.UserId;
-                        await _notificationHelper.SendCommentNotification(userId, receiverId, @event.Id, model.Content);
+                        if (!receiverId.Equals(userId))
+                            await _notificationHelper.SendCommentNotification(userId, receiverId, @event.Id, model.Content);
                     }
 
                     return Ok("Yorumunuz eklendi.");

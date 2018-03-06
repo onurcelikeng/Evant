@@ -102,7 +102,7 @@ namespace Evant.Helpers
                 ReceiverUserId = receiverId,
                 SenderUserId = senderId,
                 EventId = eventId,
-                NotificationType = (int)NotificationType.FriendOperation,
+                NotificationType = (int)NotificationType.Comment,
                 Content = "etkinliğine yorum yaptı: " + message,
             });
 
@@ -139,6 +139,48 @@ namespace Evant.Helpers
                     string content = string.Format("Katıldığız bir etkinlik güncellendi.");
                     var result = _oneSignal.SendNotification(playerIds, content);
                 }
+            }
+        }
+
+
+        public async Task DeleteFollowNotification(Guid senderId, Guid receiverId)
+        {
+            var notification = await _notificationRepo
+                .First(n =>
+                   n.SenderUserId == senderId &&
+                   n.ReceiverUserId == receiverId &&
+                   n.NotificationType == (int)NotificationType.FriendOperation);
+            if (notification != null)
+            {
+                var response = await _notificationRepo.Delete(notification);
+            }
+        }
+
+        public async Task DeleteEventAttendNotification(Guid senderId, Guid receiverId, Guid eventId)
+        {
+            var notification = await _notificationRepo
+                .First(n =>
+                   n.SenderUserId == senderId &&
+                   n.ReceiverUserId == receiverId &&
+                   n.EventId == eventId &&
+                   n.NotificationType == (int)NotificationType.EventAttend);
+            if (notification != null)
+            {
+                var response = await _notificationRepo.Delete(notification);
+            }
+        }
+
+        public async Task DeleteCommentNotification(Guid senderId, Guid receiverId, Guid eventId)
+        {
+            var notification = await _notificationRepo
+                .First(n =>
+                   n.SenderUserId == senderId &&
+                   n.ReceiverUserId == receiverId &&
+                   n.EventId == eventId &&
+                   n.NotificationType == (int)NotificationType.Comment);
+            if (notification != null)
+            {
+                var response = await _notificationRepo.Delete(notification);
             }
         }
 

@@ -9,5 +9,9 @@ namespace Evant.Interfaces
         Task SendEventAttendNotification(Guid senderId, Guid receiverId, Guid eventId);
         Task SendCommentNotification(Guid senderId, Guid receiverId, Guid eventId, string message);
         Task SendEventUpdateNotification(Guid receiverId);
+
+        Task DeleteFollowNotification(Guid senderId, Guid receiverId);
+        Task DeleteEventAttendNotification(Guid senderId, Guid receiverId, Guid eventId);
+        Task DeleteCommentNotification(Guid senderId, Guid receiverId, Guid eventId);
     }
 }

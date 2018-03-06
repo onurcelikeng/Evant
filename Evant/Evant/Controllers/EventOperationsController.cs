@@ -109,7 +109,8 @@ namespace Evant.Controllers
                         if (@event != null)
                         {
                             Guid receiverId = @event.UserId;
-                            await _notificationHelper.SendEventAttendNotification(userId, receiverId, @event.Id);
+                            if (!receiverId.Equals(userId))
+                                await _notificationHelper.SendEventAttendNotification(userId, receiverId, @event.Id);
                         }
 
                         return Ok("Etkinliğe katıldınız.");
@@ -145,6 +146,7 @@ namespace Evant.Controllers
                     var response = await _eventOperationRepo.Delete(eventOperation);
                     if (response)
                     {
+                        await _notificationHelper.DeleteEventAttendNotification(userId, eventOperation.UserId, eventOperation.EventId);
                         return Ok("Etkinlikten ayrıldınız.");
                     }
                     else

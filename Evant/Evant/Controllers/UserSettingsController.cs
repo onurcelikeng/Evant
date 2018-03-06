@@ -35,29 +35,24 @@ namespace Evant.Controllers
                 Guid userId = User.GetUserId();
 
                 var settings = await _userSettingRepo.First(s => s.UserId == userId);
-                if(settings == null)
-                {
+                if (settings == null)
                     return NotFound("Kayıt bulunamadı.");
-                }
-                else
-                {
-                    var model = new UserSettingDTO()
-                    {
-                        UserSettingId = settings.Id,
-                        Theme = settings.Theme,
-                        Language = settings.Language,
-                        IsCommentNotif = settings.IsCommentNotif,
-                        IsEventNewComerNotif = settings.IsEventNewComerNotif,
-                        IsEventUpdateNotif = settings.IsEventUpdateNotif,
-                        IsFriendshipNotif = settings.IsFriendshipNotif,
-                        IsCommentVisibleTimeline = settings.IsCommentVisibleTimeline,
-                        IsJoinEventVisibleTimeline = settings.IsJoinEventVisibleTimeline,
-                        IsFollowerVisibleTimeline = settings.IsFollowerVisibleTimeline,
-                        IsFollowingVisibleTimeline = settings.IsFollowingVisibleTimeline
-                    };
 
-                    return Ok(model);
-                }
+                var model = new UserSettingDTO()
+                {
+                    UserSettingId = settings.Id,
+                    Theme = settings.Theme,
+                    Language = settings.Language,
+                    IsCommentNotif = settings.IsCommentNotif,
+                    IsEventNewComerNotif = settings.IsEventNewComerNotif,
+                    IsEventUpdateNotif = settings.IsEventUpdateNotif,
+                    IsFriendshipNotif = settings.IsFriendshipNotif,
+                    IsCommentVisibleTimeline = settings.IsCommentVisibleTimeline,
+                    IsJoinEventVisibleTimeline = settings.IsJoinEventVisibleTimeline,
+                    IsFollowerVisibleTimeline = settings.IsFollowerVisibleTimeline,
+                    IsFollowingVisibleTimeline = settings.IsFollowingVisibleTimeline
+                };
+                return Ok(model);
             }
             catch (Exception ex)
             {
@@ -73,39 +68,34 @@ namespace Evant.Controllers
             try
             {
                 if (!ModelState.IsValid)
-                {
                     return BadRequest("Eksik bilgi girdiniz.");
-                }
 
                 Guid userId = User.GetUserId();
+
                 var selectedUserSetting = await _userSettingRepo.First(us => us.UserId == userId);
                 if (selectedUserSetting == null)
-                {
                     return NotFound("Kayıt bulunamadı.");
+
+                selectedUserSetting.UpdateAt = DateTime.Now;
+                selectedUserSetting.Theme = model.Theme;
+                selectedUserSetting.Language = model.Language;
+                selectedUserSetting.IsCommentNotif = model.IsCommentNotif;
+                selectedUserSetting.IsEventNewComerNotif = model.IsEventNewComerNotif;
+                selectedUserSetting.IsEventUpdateNotif = model.IsEventUpdateNotif;
+                selectedUserSetting.IsFriendshipNotif = model.IsFriendshipNotif;
+                selectedUserSetting.IsCommentVisibleTimeline = model.IsCommentVisibleTimeline;
+                selectedUserSetting.IsJoinEventVisibleTimeline = model.IsJoinEventVisibleTimeline;
+                selectedUserSetting.IsFollowingVisibleTimeline = model.IsFollowingVisibleTimeline;
+                selectedUserSetting.IsFollowerVisibleTimeline = model.IsFollowerVisibleTimeline;
+
+                var response = await _userSettingRepo.Update(selectedUserSetting);
+                if (response)
+                {
+                    return Ok("Ayarlarınızı güncellendiniz.");
                 }
                 else
                 {
-                    selectedUserSetting.UpdateAt = DateTime.Now;
-                    selectedUserSetting.Theme = model.Theme;
-                    selectedUserSetting.Language = model.Language;
-                    selectedUserSetting.IsCommentNotif = model.IsCommentNotif;
-                    selectedUserSetting.IsEventNewComerNotif = model.IsEventNewComerNotif;
-                    selectedUserSetting.IsEventUpdateNotif = model.IsEventUpdateNotif;
-                    selectedUserSetting.IsFriendshipNotif = model.IsFriendshipNotif;
-                    selectedUserSetting.IsCommentVisibleTimeline = model.IsCommentVisibleTimeline;
-                    selectedUserSetting.IsJoinEventVisibleTimeline = model.IsJoinEventVisibleTimeline;
-                    selectedUserSetting.IsFollowingVisibleTimeline = model.IsFollowingVisibleTimeline;
-                    selectedUserSetting.IsFollowerVisibleTimeline = model.IsFollowerVisibleTimeline;
-
-                    var response = await _userSettingRepo.Update(selectedUserSetting);
-                    if (response)
-                    {
-                        return Ok("Ayarlarınızı güncellendiniz.");
-                    }
-                    else
-                    {
-                        return BadRequest("Ayarlarınızı güncelleyemediniz.");
-                    }
+                    return BadRequest("Ayarlarınızı güncelleyemediniz.");
                 }
             }
             catch (Exception ex)

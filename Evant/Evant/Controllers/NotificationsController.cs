@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using Evant.Contracts.DataTransferObjects.Event;
 using Evant.Contracts.DataTransferObjects.Notification;
 using Evant.Contracts.DataTransferObjects.User;
-using Evant.DAL.EF.Tables;
-using Evant.DAL.Interfaces.Repositories;
 using Evant.DAL.Repositories.Interfaces;
 using Evant.Helpers;
 using Evant.Interfaces;
@@ -16,7 +14,7 @@ namespace Evant.Controllers
 {
     [Produces("application/json")]
     [Route("api/notifications")]
-    public class NotificationsController : Controller
+    public class NotificationsController : BaseController
     {
         private readonly INotificationRepository _notificationRepo;
         private ILogHelper _logHelper;
@@ -57,7 +55,7 @@ namespace Evant.Controllers
                         PhotoUrl = n.Event.Photo
                     }
                 }).ToList();
-                if(notifications.IsNullOrEmpty())
+                if (notifications.IsNullOrEmpty())
                     return NotFound("Kayıt bulunamadı.");
 
                 return Ok(notifications);
@@ -95,6 +93,30 @@ namespace Evant.Controllers
             catch (Exception ex)
             {
                 _logHelper.Log("NotificationsController", 500, "ReadAllNotifications", ex.Message);
+                return null;
+            }
+        }
+
+        [Authorize]
+        [HttpDelete("{notificationId}")]
+        public async Task<IActionResult> DeleteNotification([FromRoute] Guid notificationId)
+        {
+            try
+            {
+                var notification = await _notificationRepo.First(n => n.Id == notificationId);
+                if (notification == null)
+                    return NotFound("Kayıt bulunamadı.");
+
+                var response = await _notificationRepo.Delete(notification);
+                if (response)
+                    return Ok("Bildirim silindi");
+
+                else
+                    return BadRequest("Bildirim silinemedi");
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("NotificationsController", 500, "DeleteNotification", ex.Message);
                 return null;
             }
         }

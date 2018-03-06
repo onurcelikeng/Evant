@@ -56,24 +56,19 @@ namespace Evant.Controllers
             {
                 var user = await _userRepo.GetUser(userId);
                 if (user == null)
-                {
                     return BadRequest("Kayıt bulunamadı.");
-                }
-                else
-                {
-                    var model = new BaseUserDetailDTO()
-                    {
-                        UserId = user.Id,
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                        Email = user.Email,
-                        PhotoUrl = user.Photo,
-                        FollowersCount = user.Followers.Count,
-                        FollowingsCount = user.Followings.Count
-                    };
 
-                    return Ok(model);
-                }
+                var model = new BaseUserDetailDTO()
+                {
+                    UserId = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    PhotoUrl = user.Photo,
+                    FollowersCount = user.Followers.Count,
+                    FollowingsCount = user.Followings.Count
+                };
+                return Ok(model);
             }
             catch (Exception ex)
             {
@@ -217,22 +212,18 @@ namespace Evant.Controllers
                 Guid userId = User.GetUserId();
                 await _searchHelper.Add(userId, query);
 
-                var users = (await _userRepo.Search(query)).Select(u => new UserInfoDTO()
+                var users = (await _userRepo.Search(query)).Select(row => new UserInfoDTO()
                 {
-                    UserId = u.Id,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    PhotoUrl = u.Photo
+                    UserId = row.Id,
+                    FirstName = row.FirstName,
+                    LastName = row.LastName,
+                    PhotoUrl = row.Photo
                 }).ToList();
 
                 if (users.IsNullOrEmpty())
-                {
                     return NotFound("Kayıt bulunamadı.");
-                }
-                else
-                {
-                    return Ok(users);
-                }
+
+                return Ok(users);
             }
             catch (Exception ex)
             {
