@@ -21,18 +21,24 @@ namespace Evant.Helpers
 
         public async Task<bool> Add(Guid userId, string keyword)
         {
-            var response = await _searchHistoryRepo.First(s => s.Keyword == keyword);
-            if(response == null)
+            var searchHistory = await _searchHistoryRepo.First(s => s.Keyword == keyword);
+            if(searchHistory == null)
             {
                 var entity = new SearchHistory()
                 {
                     Id = new Guid(),
                     UserId = userId,
-                    Keyword = keyword
+                    Keyword = keyword,
+                    SearchCount = 1
                 };
                 return await _searchHistoryRepo.Add(entity);
             }
-
+            else
+            {
+                searchHistory.SearchCount += 1;
+                var response = await _searchHistoryRepo.Update(searchHistory);
+            }
+            
             return false;
         }
     }

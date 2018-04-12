@@ -12,6 +12,9 @@ namespace Evant.DAL.EF.Tables
         [Required]
         public string Keyword { get; set; }
 
+        [Required]
+        public int SearchCount { get; set; }
+
 
         public virtual User User { get; set; }
     }
