@@ -17,7 +17,7 @@ namespace Evant.Controllers
     public class NotificationsController : BaseController
     {
         private readonly INotificationRepository _notificationRepo;
-        private ILogHelper _logHelper;
+        private readonly ILogHelper _logHelper;
 
 
         public NotificationsController(INotificationRepository notificationRepo,
