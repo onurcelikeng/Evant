@@ -301,7 +301,7 @@ namespace Evant.Controllers
         [Authorize]
         [HttpPost]
         [Route("photo")]
-        public async Task<IActionResult> UploadPhoto([FromBody] FileInputModel inputModel)
+        public async Task<IActionResult> UploadPhoto([FromForm] FileInputModel inputModel)
         {
             try
             {
