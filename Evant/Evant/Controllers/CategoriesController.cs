@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Evant.Cognitive;
 using Evant.Contracts.DataTransferObjects.Category;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
@@ -48,6 +49,15 @@ namespace Evant.Controllers
                 _logHelper.Log("CategoriesController", 500, "GetCategories", ex.Message);
                 return null;
             }
+        }
+
+
+        [HttpGet("test")]
+        public Task<IActionResult> test()
+        {
+            TextAnalytics ta = new TextAnalytics();
+            ta.GetSentiment();
+            return null;
         }
 
     }

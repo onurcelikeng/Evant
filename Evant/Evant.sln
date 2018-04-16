@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evant.Storage", "Evant.Stor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evant.NotificationCenter", "Evant.NotificationCenter\Evant.NotificationCenter.csproj", "{62870690-7FB4-4450-826A-16A1DB27937C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evant.Cognitive", "Evant.Cognitive\Evant.Cognitive.csproj", "{27A9A24F-60B7-4C87-8E36-63B22975D139}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{62870690-7FB4-4450-826A-16A1DB27937C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62870690-7FB4-4450-826A-16A1DB27937C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62870690-7FB4-4450-826A-16A1DB27937C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27A9A24F-60B7-4C87-8E36-63B22975D139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27A9A24F-60B7-4C87-8E36-63B22975D139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27A9A24F-60B7-4C87-8E36-63B22975D139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27A9A24F-60B7-4C87-8E36-63B22975D139}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

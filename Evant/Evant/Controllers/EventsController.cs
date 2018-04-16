@@ -9,6 +9,9 @@ using Evant.DAL.EF.Tables;
 using Evant.DAL.Repositories.Interfaces;
 using Evant.Helpers;
 using Evant.Interfaces;
+using Evant.Storage.Extensions;
+using Evant.Storage.Interfaces;
+using Evant.Storage.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,15 +24,18 @@ namespace Evant.Controllers
         private readonly IEventRepository _eventRepo;
         private readonly ISearchHelper _searchHelper;
         private readonly ILogHelper _logHelper;
+        private readonly IAzureBlobStorage _blobStorage;
 
 
         public EventsController(IEventRepository eventRepo,
             ISearchHelper searchHelper,
-            ILogHelper logHelper)
+            ILogHelper logHelper,
+            IAzureBlobStorage blobStorage)
         {
             _eventRepo = eventRepo;
             _searchHelper = searchHelper;
             _logHelper = logHelper;
+            _blobStorage = blobStorage;
         }
 
 
@@ -316,6 +322,50 @@ namespace Evant.Controllers
             catch (Exception ex)
             {
                 _logHelper.Log("Events", 500, "AddEvent", ex.Message);
+                return null;
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("photo")]
+        public async Task<IActionResult> UploadPhoto([FromForm] FileInputModel inputModel)
+        {
+            var eventId = Guid.Empty;
+
+            try
+            {
+                if (inputModel == null)
+                    return BadRequest("Argument null");
+
+                if (inputModel.File == null || inputModel.File.Length == 0)
+                    return BadRequest("file not selected");
+
+                Guid userId = User.GetUserId();
+                var blobName = userId + "_" + inputModel.File.GetFilename();
+                var fileStream = await inputModel.File.GetFileStream();
+
+                var isUploaded = await _blobStorage.UploadAsync("event", blobName, fileStream);
+                if (isUploaded)
+                {
+                    var @event = await _eventRepo.EventDetail(eventId);
+                    @event.UpdateAt = DateTime.Now;
+                    @event.Photo = "https://evantstorage.blob.core.windows.net/events/" + blobName;
+
+                    var response = await _eventRepo.Update(@event);
+                    if (response)
+                        return Ok("photo uploaded.");
+                    else
+                        return BadRequest("photo not uploaded.");
+                }
+                else
+                {
+                    return Ok("photo uploaded.");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("AccountController", 500, "UploadPhoto", ex.Message);
                 return null;
             }
         }

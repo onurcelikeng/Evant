@@ -1,5 +1,4 @@
-﻿
-namespace Evant.Constants
+﻿namespace Evant.Constants
 {
     public sealed class GameConstant
     {

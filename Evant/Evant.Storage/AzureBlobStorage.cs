@@ -20,12 +20,12 @@ namespace Evant.Storage
         }
 
 
-        public async Task<bool> UploadAsync(string blobName, Stream stream)
+        public async Task<bool> UploadAsync(string container, string blobName, Stream stream)
         {
             try
             {
                 //Blob
-                CloudBlockBlob blockBlob = await GetBlockBlobAsync(blobName);
+                CloudBlockBlob blockBlob = await GetBlockBlobAsync(container, blobName);
 
                 //Upload
                 stream.Position = 0;
@@ -39,10 +39,10 @@ namespace Evant.Storage
             }
         }
 
-        private async Task<CloudBlockBlob> GetBlockBlobAsync(string blobName)
+        private async Task<CloudBlockBlob> GetBlockBlobAsync(string container, string blobName)
         {
             //Container
-            CloudBlobContainer blobContainer = await GetContainerAsync();
+            CloudBlobContainer blobContainer = await GetContainerAsync(container);
 
             //Blob
             CloudBlockBlob blockBlob = blobContainer.GetBlockBlobReference(blobName);
@@ -50,7 +50,7 @@ namespace Evant.Storage
             return blockBlob;
         }
 
-        private async Task<CloudBlobContainer> GetContainerAsync()
+        private async Task<CloudBlobContainer> GetContainerAsync(string container)
         {
             //Account
             CloudStorageAccount storageAccount = new CloudStorageAccount(
@@ -63,11 +63,22 @@ namespace Evant.Storage
             //Client
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
 
-            //Container
-            CloudBlobContainer blobContainer = blobClient.GetContainerReference(_settings.UserContainer);
-            await blobContainer.CreateIfNotExistsAsync();
+            //Containers
+            if(container == "event")
+            {
+                CloudBlobContainer blobContainer = blobClient.GetContainerReference(_settings.EventContainer);
+                await blobContainer.CreateIfNotExistsAsync();
+                return blobContainer;
+            }
 
-            return blobContainer;
+            else if(container == "user")
+            {
+                CloudBlobContainer blobContainer = blobClient.GetContainerReference(_settings.UserContainer);
+                await blobContainer.CreateIfNotExistsAsync();
+                return blobContainer;
+            }
+
+            return null;
         }
 
     }

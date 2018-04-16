@@ -5,6 +5,6 @@ namespace Evant.Storage.Interfaces
 {
     public interface IAzureBlobStorage
     {
-        Task<bool> UploadAsync(string blobName, Stream stream);
+        Task<bool> UploadAsync(string container, string blobName, Stream stream);
     }
 }

@@ -315,7 +315,7 @@ namespace Evant.Controllers
                 var blobName = userId + "_" + inputModel.File.GetFilename();
                 var fileStream = await inputModel.File.GetFileStream();
 
-                var isUploaded = await _blobStorage.UploadAsync(blobName, fileStream);
+                var isUploaded = await _blobStorage.UploadAsync("user", blobName, fileStream);
                 if (isUploaded)
                 {
                     var selectedUser = await _userRepo.GetUser(userId);
@@ -439,74 +439,33 @@ namespace Evant.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("business")]
-        public async Task<IActionResult> SwitchtoBusinessAccount()
+        [Route("switch")]
+        public async Task<IActionResult> SwitchAccount()
         {
             try
             {
                 Guid userId = User.GetUserId();
 
-                var selectedUser = await _userRepo.First(u => u.Id == userId);
-                if (selectedUser == null)
-                {
+                var user = await _userRepo.First(u => u.Id == userId);
+                if (user == null)
                     return BadRequest("Kayıt bulunamadı.");
+
+                user.IsBusinessAccount = !user.IsBusinessAccount;
+                user.UpdateAt = DateTime.Now;
+
+                var response = await _userRepo.Update(user);
+                if (response)
+                {
+                    return Ok("Hesap değiştirildi.");
                 }
                 else
                 {
-                    selectedUser.IsBusinessAccount = true;
-                    selectedUser.UpdateAt = DateTime.Now;
-
-                    var response = await _userRepo.Update(selectedUser);
-                    if (response)
-                    {
-                        return Ok("Business hesabına geçildi.");
-                    }
-                    else
-                    {
-                        return BadRequest("Business hesabına geçilemedi.");
-                    }
+                    return BadRequest("Hesap değiştirilemedi.");
                 }
             }
             catch (Exception ex)
             {
-                _logHelper.Log("AccountController", 500, "SwitchtoBusinessAccount", ex.Message);
-                return null;
-            }
-        }
-
-        [Authorize]
-        [HttpGet]
-        [Route("normal")]
-        public async Task<IActionResult> SwitchtoNormalAccount()
-        {
-            try
-            {
-                Guid userId = User.GetUserId();
-
-                var selectedUser = await _userRepo.First(u => u.Id == userId);
-                if (selectedUser == null)
-                {
-                    return BadRequest("Kayıt bulunamadı.");
-                }
-                else
-                {
-                    selectedUser.IsBusinessAccount = false;
-                    selectedUser.UpdateAt = DateTime.Now;
-
-                    var response = await _userRepo.Update(selectedUser);
-                    if (response)
-                    {
-                        return Ok("Normal hesabına geçildi.");
-                    }
-                    else
-                    {
-                        return BadRequest("Normal hesabına geçilemedi.");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                _logHelper.Log("AccountController", 500, "SwitchtoNormalAccount", ex.Message);
+                _logHelper.Log("AccountController", 500, "SwitchAccount", ex.Message);
                 return null;
             }
         }
