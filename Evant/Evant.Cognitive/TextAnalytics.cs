@@ -16,7 +16,7 @@ namespace Evant.Cognitive
             _client = new TextAnalyticsAPI()
             {
                 AzureRegion = AzureRegions.Westus,
-                SubscriptionKey = "fa398908b0e641109be0dfb770e15312"
+                SubscriptionKey = "094adce6de9f4237875c0103f846c468"
             };
         }
 
