@@ -230,9 +230,6 @@ namespace Evant.Controllers
         {
             try
             {
-                Guid userId = User.GetUserId();
-                await _searchHelper.Add(userId, query);
-
                 var events = (await _eventRepo.Search(query)).Select(e => new EventDetailDTO()
                 {
                     EventId = e.Id,

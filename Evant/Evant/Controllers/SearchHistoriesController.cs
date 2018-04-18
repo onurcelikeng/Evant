@@ -55,6 +55,48 @@ namespace Evant.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        [Route("{keyword}")]
+        public async Task<IActionResult> AddHistory(string keyword)
+        {
+            try
+            {
+                Guid userId = User.GetUserId();
+
+                var searchHistory = await _searchHistoryRepo.First(s => s.Keyword == keyword && s.UserId == userId);
+                if (searchHistory == null)
+                {
+                    var entity = new SearchHistory()
+                    {
+                        Id = new Guid(),
+                        UserId = userId,
+                        Keyword = keyword,
+                        SearchCount = 1
+                    };
+                    var response = await _searchHistoryRepo.Add(entity);
+                    if (response)
+                        return Ok("Arama kaydı eklendi.");
+                    else
+                        return BadRequest("Arama kaydı eklenemedi.");
+                }
+                else
+                {
+                    searchHistory.SearchCount += 1;
+                    var response = await _searchHistoryRepo.Update(searchHistory);
+                    if (response)
+                        return Ok("Arama kaydı güncellendi.");
+                    else
+                        return BadRequest("Arama kaydı güncellenemedi.");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("SearchHistoriesController", 500, "GetHistories", ex.Message);
+                return null;
+            }
+        }
+
+        [Authorize]
         [HttpDelete("{historyId}")]
         public async Task<IActionResult> DeleteHistory(Guid historyId)
         {

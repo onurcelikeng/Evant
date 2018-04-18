@@ -51,14 +51,5 @@ namespace Evant.Controllers
             }
         }
 
-
-        [HttpGet("test")]
-        public Task<IActionResult> test()
-        {
-            TextAnalytics ta = new TextAnalytics();
-            ta.GetSentiment();
-            return null;
-        }
-
     }
 }

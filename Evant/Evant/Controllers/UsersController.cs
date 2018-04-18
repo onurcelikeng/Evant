@@ -209,9 +209,6 @@ namespace Evant.Controllers
         {
             try
             {
-                Guid userId = User.GetUserId();
-                await _searchHelper.Add(userId, query);
-
                 var users = (await _userRepo.Search(query)).Select(row => new UserInfoDTO()
                 {
                     UserId = row.Id,
