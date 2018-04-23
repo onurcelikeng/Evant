@@ -50,6 +50,17 @@ namespace Evant.DAL.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<Event>> SimilarEvents()
+        {
+            return await Table
+                .Include(t => t.Category)
+                .Include(t => t.User)
+                .Where(t => !t.IsDeleted)
+                .OrderByDescending(t => t.CreatedAt)
+                .ToListAsync();
+        }
+
+
         public async Task<List<Event>> EventsByCategory(Guid categoryId)
         {
             return await Table

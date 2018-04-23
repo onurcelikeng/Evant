@@ -16,10 +16,6 @@ namespace Evant.DAL.EF.Tables
         [Required]
         public string Language { get; set; } = "tr";
 
-
-        [Required]
-        public bool IsTwoFactorAuthentication { get; set; } = false;
-
         [Required]
         public bool IsFriendshipNotif { get; set; } = true;
 

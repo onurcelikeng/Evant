@@ -170,17 +170,46 @@ namespace Evant.Controllers
                 }).ToList();
 
                 if (events.IsNullOrEmpty())
-                {
                     return NotFound("Kayıt bulunamadı.");
-                }
-                else
-                {
-                    return Ok(events);
-                }
+
+                return Ok(events);
             }
             catch (Exception ex)
             {
                 _logHelper.Log("Events", 500, "GetUserEvents", ex.Message);
+                return null;
+            }
+        }
+
+        [Authorize]
+        [HttpGet("{eventId}/similar")]
+        public async Task<IActionResult> GetSimilarEvents([FromRoute] Guid eventId)
+        {
+            try
+            {
+                var events = (await _eventRepo.SimilarEvents()).Select(e => new EventInfoDTO()
+                {
+                    EventId = e.Id,
+                    Title = e.Title,
+                    Start = e.StartDate,
+                    PhotoUrl = e.Photo,
+                    User = new UserInfoDTO()
+                    {
+                        UserId = e.User.Id,
+                        FirstName = e.User.FirstName,
+                        LastName = e.User.LastName,
+                        PhotoUrl = e.User.Photo
+                    }
+                }).ToList();
+
+                if (events.IsNullOrEmpty())
+                    return NotFound("Kayıt bulunamadı.");
+
+                return Ok(events);
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("Events", 500, "GetSimilarEvents", ex.Message);
                 return null;
             }
         }
