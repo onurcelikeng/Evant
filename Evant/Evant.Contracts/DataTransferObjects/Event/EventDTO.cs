@@ -4,7 +4,7 @@ namespace Evant.Contracts.DataTransferObjects.Event
 {
     public sealed class EventDTO
     {
-        public Guid? EventId { get; set; }
+        public Guid EventId { get; set; }
 
         public Guid CategoryId { get; set; }
 

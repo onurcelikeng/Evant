@@ -21,30 +21,19 @@ namespace Evant.Cognitive
         }
 
 
-        public void GetKeyPhrases()
+        public LanguageBatchResult DetectLanguage(List<Input> data)
         {
-            KeyPhraseBatchResult keyPhrases = _client.KeyPhrases(
-               new MultiLanguageBatchInput(
-                   new List<MultiLanguageInput>()
-                   {
-                          new MultiLanguageInput("ja", "1", "猫は幸せ"),
-                          new MultiLanguageInput("de", "2", "Fahrt nach Stuttgart und dann zum Hotel zu Fu."),
-                          new MultiLanguageInput("en", "3", "My cat is stiff as a rock."),
-                          new MultiLanguageInput("es", "4", "A mi me encanta el fútbol!")
-                   }));
+            return _client.DetectLanguage(new BatchInput(data));
         }
 
-        public void GetSentiment()
+        public KeyPhraseBatchResult GetKeyPhrases(List<MultiLanguageInput> data)
         {
-            SentimentBatchResult sentiments = _client.Sentiment(
-                new MultiLanguageBatchInput(
-                    new List<MultiLanguageInput>()
-                    {
-                        new MultiLanguageInput("en", "0", "I had the best day of my life."),
-                        new MultiLanguageInput("en", "1", "This was a waste of my time. The speaker put me to sleep."),
-                        new MultiLanguageInput("es", "2", "No tengo dinero ni nada que dar..."),
-                        new MultiLanguageInput("it", "3", "L'hotel veneziano era meraviglioso. È un bellissimo pezzo di architettura."),
-                    }));
+            return _client.KeyPhrases(new MultiLanguageBatchInput(data));
+        }
+
+        public SentimentBatchResult GetSentiment(List<MultiLanguageInput> data)
+        {
+            return _client.Sentiment(new MultiLanguageBatchInput(data));
         }
 
     }

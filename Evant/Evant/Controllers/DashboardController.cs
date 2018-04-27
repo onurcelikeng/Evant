@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Evant.Cognitive;
 using Evant.Contracts.DataTransferObjects.Dashboard;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
@@ -10,6 +11,7 @@ using Evant.Helpers;
 using Evant.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models;
 
 namespace Evant.Controllers
 {
@@ -18,13 +20,13 @@ namespace Evant.Controllers
     public class DashboardController : BaseController
     {
         private readonly IRepository<User> _userRepo;
-        private readonly IRepository<Comment> _commentRepo;
+        private readonly ICommentRepository _commentRepo;
         private readonly IEventOperationRepository _eventOperationRepo;
         private readonly ILogHelper _logHelper;
 
 
         public DashboardController(IRepository<User> userRepo,
-            IRepository<Comment> commentRepo,
+            ICommentRepository commentRepo,
             IEventOperationRepository eventOperationRepo,
             ILogHelper logHelper)
         {
@@ -101,8 +103,84 @@ namespace Evant.Controllers
         [Route("{eventId}/comments")]
         public async Task<IActionResult> GetComments([FromRoute] Guid eventId)
         {
-            //var comments = await _commentRepo.Where(c => c.EventId == eventId)
-            return null;
+            var model = new List<CommentAnalyticsDTO>();
+
+            var comments = await _commentRepo.Comments(eventId);
+            if (!comments.IsNullOrEmpty())
+            {
+                var inputs = new List<Input>();
+                foreach (var comment in comments)
+                {
+                    inputs.Add(new Input()
+                    {
+                        Id = comment.Id.ToString(),
+                        Text = comment.Content
+                    });
+                    model.Add(new CommentAnalyticsDTO()
+                    {
+                        CommentId = comment.Id,
+                        Content = comment.Content
+                    });
+                }
+
+                TextAnalytics _textAnalytics = new TextAnalytics();
+
+                var multiLanguageInputs = new List<MultiLanguageInput>();
+                var languageResult = _textAnalytics.DetectLanguage(inputs);
+                if (languageResult != null)
+                {
+                    for (int i = 0; i < languageResult.Documents.Count; i++)
+                    {
+                        foreach (var item in model)
+                        {
+                            if (item.CommentId.ToString() == languageResult.Documents[i].Id)
+                            {
+                                item.Language = languageResult.Documents[i].DetectedLanguages[0].Name;
+                                item.LanguageCode = languageResult.Documents[i].DetectedLanguages[0].Iso6391Name;
+                            }
+                        }
+
+                        multiLanguageInputs.Add(new MultiLanguageInput()
+                        {
+                            Id = model[i].CommentId.ToString(),
+                            Language = model[i].LanguageCode,
+                            Text = model[i].Content
+                        });
+                    }
+
+                    var keyPhrases = _textAnalytics.GetKeyPhrases(multiLanguageInputs);
+                    if(keyPhrases != null)
+                    {
+                        for(int i = 0; i < keyPhrases.Documents.Count; i++)
+                        {
+                            foreach (var item in model)
+                            {
+                                if(item.CommentId.ToString() == keyPhrases.Documents[i].Id)
+                                {
+                                    item.KeyPhrases = keyPhrases.Documents[i].KeyPhrases.ToList();
+                                }
+                            }
+                        }
+                    }
+
+                    var sentimentResult = _textAnalytics.GetSentiment(multiLanguageInputs);
+                    if (sentimentResult != null)
+                    {
+                        for (int i = 0; i < sentimentResult.Documents.Count; i++)
+                        {
+                            foreach (var item in model)
+                            {
+                                if (item.CommentId.ToString() == sentimentResult.Documents[i].Id)
+                                {
+                                    item.Sentiment = sentimentResult.Documents[i].Score.ToString();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return Ok(model);
         }
 
     }
