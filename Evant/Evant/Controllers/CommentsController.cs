@@ -73,9 +73,7 @@ namespace Evant.Controllers
             try
             {
                 if (!ModelState.IsValid)
-                {
                     return BadRequest("Eksik bilgi girdiniz.");
-                }
 
                 Guid userId = User.GetUserId();
 
@@ -122,19 +120,13 @@ namespace Evant.Controllers
 
                 var comment = await _commentRepo.First(c => c.Id == commentId && c.UserId == userId);
                 if (comment == null)
-                {
                     return NotFound("Kayıt bulunamadı.");
-                }
 
                 var response = await _commentRepo.Delete(comment);
                 if (response)
-                {
                     return Ok("Yorumunuz silindi.");
-                }
                 else
-                {
                     return BadRequest("Yorumunuz silinemedi.");
-                }
             }
             catch (Exception ex)
             {
