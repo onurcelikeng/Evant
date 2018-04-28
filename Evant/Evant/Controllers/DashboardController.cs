@@ -183,5 +183,21 @@ namespace Evant.Controllers
             return Ok(model);
         }
 
+        [HttpGet]
+        [Route("{eventId}/date")]
+        public async Task<IActionResult> GetDayDetails([FromRoute] Guid eventId)
+        {
+            var users = await _eventOperationRepo.Participants(eventId);
+            if (!users.IsNullOrEmpty())
+            {
+                foreach (var user in users)
+                {
+                    
+                }
+            }
+
+            return null;
+        }
+
     }
 }
