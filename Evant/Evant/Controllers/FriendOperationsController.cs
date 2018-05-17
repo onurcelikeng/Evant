@@ -8,6 +8,7 @@ using Evant.Helpers;
 using Evant.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Evant.Constants.GameConstant;
 
 namespace Evant.Controllers
 {
@@ -17,15 +18,18 @@ namespace Evant.Controllers
     {
         private readonly IFriendOperationRepository _friendOperationRepo;
         private readonly INotificationHelper _notificationHelper;
+        private readonly IGameHelper _gameHelper;
         private readonly ILogHelper _logHelper;
 
 
         public FriendOperationsController(IFriendOperationRepository friendOperationRepo,
             INotificationHelper notificationHelper,
+            IGameHelper gameHelper,
             ILogHelper logHelper)
         {
             _friendOperationRepo = friendOperationRepo;
             _notificationHelper = notificationHelper;
+            _gameHelper = gameHelper;
             _logHelper = logHelper;
         }
 
@@ -135,6 +139,8 @@ namespace Evant.Controllers
                     if (response)
                     {
                         await _notificationHelper.SendFollowNotification(userId, friendId);
+                        await _gameHelper.Point(userId, GameType.Follow);
+                        await _gameHelper.Point(friendId, GameType.Following);
                         return Ok("Takip etmeye başladın.");
                     }
                     else

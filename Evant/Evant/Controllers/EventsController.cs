@@ -14,6 +14,7 @@ using Evant.Storage.Interfaces;
 using Evant.Storage.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Evant.Constants.GameConstant;
 
 namespace Evant.Controllers
 {
@@ -23,17 +24,20 @@ namespace Evant.Controllers
     {
         private readonly IEventRepository _eventRepo;
         private readonly ISearchHelper _searchHelper;
+        private readonly IGameHelper _gameHelper;
         private readonly ILogHelper _logHelper;
         private readonly IAzureBlobStorage _blobStorage;
 
 
         public EventsController(IEventRepository eventRepo,
             ISearchHelper searchHelper,
+            IGameHelper gameHelper,
             ILogHelper logHelper,
             IAzureBlobStorage blobStorage)
         {
             _eventRepo = eventRepo;
             _searchHelper = searchHelper;
+            _gameHelper = gameHelper;
             _logHelper = logHelper;
             _blobStorage = blobStorage;
         }
@@ -336,6 +340,7 @@ namespace Evant.Controllers
                 var response = await _eventRepo.Add(entity);
                 if (response)
                 {
+                    await _gameHelper.Point(userId, GameType.CreateEvent);
                     return Ok("Etkinlik oluşturuldu.");
                 }
                 else

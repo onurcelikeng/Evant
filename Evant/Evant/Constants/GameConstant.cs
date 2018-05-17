@@ -4,12 +4,11 @@
     {
         public enum GameType
         {
-            Follow,
-            Following,
-            CreateEvent,
-            AttendEvent,
-            CommentEvent,
-            JoinEvent
+            Follow = 25,
+            Following = 50,
+            CreateEvent = 100,
+            AttendEvent = 10,
+            CommentEvent = 40
         }
     }
 }

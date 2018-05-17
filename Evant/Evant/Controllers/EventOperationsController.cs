@@ -8,6 +8,7 @@ using Evant.Helpers;
 using Evant.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Evant.Constants.GameConstant;
 
 namespace Evant.Controllers
 {
@@ -16,19 +17,22 @@ namespace Evant.Controllers
     public class EventOperationsController : BaseController
     {
         private readonly IEventOperationRepository _eventOperationRepo;
-        private readonly IEventRepository _eventRepo;
         private readonly INotificationHelper _notificationHelper;
+        private readonly IEventRepository _eventRepo;
+        private readonly IGameHelper _gameHelper;
         private ILogHelper _logHelper;
 
 
         public EventOperationsController(IEventOperationRepository eventOperationRepo,
-            IEventRepository eventRepo,
             INotificationHelper notificationHelper,
+            IEventRepository eventRepo,
+            IGameHelper gameHelper,
             ILogHelper logHelper)
         {
             _eventOperationRepo = eventOperationRepo;
-            _eventRepo = eventRepo;
             _notificationHelper = notificationHelper;
+            _eventRepo = eventRepo;
+            _gameHelper = gameHelper;
             _logHelper = logHelper;
         }
 
@@ -105,6 +109,8 @@ namespace Evant.Controllers
                     var response = await _eventOperationRepo.Add(entity);
                     if (response)
                     {
+                        await _gameHelper.Point(userId, GameType.AttendEvent);
+
                         var @event = await _eventRepo.First(e => e.Id == eventId);
                         if (@event != null)
                         {

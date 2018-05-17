@@ -9,6 +9,7 @@ using Evant.Helpers;
 using Evant.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Evant.Constants.GameConstant;
 
 namespace Evant.Controllers
 {
@@ -16,20 +17,23 @@ namespace Evant.Controllers
     [Route("api/comments")]
     public class CommentsController : BaseController
     {
+        private readonly INotificationHelper _notificationHelper;
         private readonly ICommentRepository _commentRepo;
         private readonly IEventRepository _eventRepo;
-        private readonly INotificationHelper _notificationHelper;
+        private readonly IGameHelper _gameHelper;
         private readonly ILogHelper _logHelper;
 
 
         public CommentsController(ICommentRepository commentRepo,
             IEventRepository eventRepo,
             INotificationHelper notificationHelper,
+            IGameHelper gameHelper,
             ILogHelper logHelper)
         {
             _commentRepo = commentRepo;
             _eventRepo = eventRepo;
             _notificationHelper = notificationHelper;
+            _gameHelper = gameHelper;
             _logHelper = logHelper;
         }
 
@@ -88,6 +92,8 @@ namespace Evant.Controllers
                 var response = await _commentRepo.Add(entity);
                 if (response)
                 {
+                    await _gameHelper.Point(userId, GameType.CommentEvent);
+
                     var @event = await _eventRepo.First(e => e.Id == model.EventId);
                     if (@event != null)
                     {
