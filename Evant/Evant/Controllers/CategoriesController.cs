@@ -7,6 +7,7 @@ using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
 using Evant.Helpers;
 using Evant.Interfaces;
+using Evant.Pay;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
@@ -30,6 +31,9 @@ namespace Evant.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
+            var pay = new Iyzico();
+            pay.test();
+
             try
             {
                 var categories = (await _categoryRepo.All()).Select(c => new CategoryDetailDTO()

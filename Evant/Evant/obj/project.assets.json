@@ -2,6 +2,18 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.0": {
+      "Armut.Iyzipay/2.2.2": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "10.0.3"
+        },
+        "compile": {
+          "lib/netstandard2.0/Armut.Iyzipay.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Armut.Iyzipay.dll": {}
+        }
+      },
       "Libuv/1.10.0": {
         "type": "package",
         "dependencies": {
@@ -5278,6 +5290,19 @@
           "bin/placeholder/Evant.NotificationCenter.dll": {}
         }
       },
+      "Evant.Pay/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "dependencies": {
+          "Armut.Iyzipay": "2.2.2"
+        },
+        "compile": {
+          "bin/placeholder/Evant.Pay.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Evant.Pay.dll": {}
+        }
+      },
       "Evant.Storage/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.0",
@@ -5295,6 +5320,18 @@
     }
   },
   "libraries": {
+    "Armut.Iyzipay/2.2.2": {
+      "sha512": "j4mBi8pysmx5GqtKclWiyfEuiiCGYsqEp0SBV79JgGloRcoAFJX/9wRZtofGRyEuzPQR7MojOPQMsjiCsdzZ3w==",
+      "type": "package",
+      "path": "armut.iyzipay/2.2.2",
+      "files": [
+        "armut.iyzipay.2.2.2.nupkg.sha512",
+        "armut.iyzipay.nuspec",
+        "lib/net45/Armut.Iyzipay.dll",
+        "lib/netstandard1.3/Armut.Iyzipay.dll",
+        "lib/netstandard2.0/Armut.Iyzipay.dll"
+      ]
+    },
     "Libuv/1.10.0": {
       "sha512": "GsCf4q+eyaI49rCPlgYxdxa1SQCysXFFdSJWdstrwxytg4+VPYLYrXD4AT2rjHVJ+UF7SSWX9CapWEYaU4ejVQ==",
       "type": "package",
@@ -13677,6 +13714,11 @@
       "path": "../Evant.NotificationCenter/Evant.NotificationCenter.csproj",
       "msbuildProject": "../Evant.NotificationCenter/Evant.NotificationCenter.csproj"
     },
+    "Evant.Pay/1.0.0": {
+      "type": "project",
+      "path": "../Evant.Pay/Evant.Pay.csproj",
+      "msbuildProject": "../Evant.Pay/Evant.Pay.csproj"
+    },
     "Evant.Storage/1.0.0": {
       "type": "project",
       "path": "../Evant.Storage/Evant.Storage.csproj",
@@ -13689,6 +13731,7 @@
       "Evant.Contracts >= 1.0.0",
       "Evant.DAL >= 1.0.0",
       "Evant.NotificationCenter >= 1.0.0",
+      "Evant.Pay >= 1.0.0",
       "Evant.Storage >= 1.0.0",
       "Microsoft.ApplicationInsights.AspNetCore >= 2.2.1",
       "Microsoft.AspNetCore.All >= 2.0.5",
@@ -13740,6 +13783,9 @@
             },
             "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant\\Evant.NotificationCenter\\Evant.NotificationCenter.csproj": {
               "projectPath": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant\\Evant.NotificationCenter\\Evant.NotificationCenter.csproj"
+            },
+            "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant\\Evant.Pay\\Evant.Pay.csproj": {
+              "projectPath": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant\\Evant.Pay\\Evant.Pay.csproj"
             },
             "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant\\Evant.Storage\\Evant.Storage.csproj": {
               "projectPath": "C:\\Users\\onurcelikeng\\Documents\\Visual Studio 2017\\Projects\\Evant\\Evant\\Evant\\Evant.Storage\\Evant.Storage.csproj"
