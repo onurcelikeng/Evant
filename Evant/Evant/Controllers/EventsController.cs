@@ -101,7 +101,7 @@ namespace Evant.Controllers
             try
             {
                 var @event = await _eventRepo.EventDetail(eventId);
-                if(@event == null)
+                if (@event == null)
                 {
                     return NotFound("Kayıt bulunamadı.");
                 }
@@ -313,22 +313,20 @@ namespace Evant.Controllers
             try
             {
                 if (!ModelState.IsValid)
-                {
                     return BadRequest("Eksik bilgi girdiniz.");
-                }
 
                 Guid userId = User.GetUserId();
                 var entity = new Event()
                 {
-                    Id = new Guid(),
+                    Id = model.EventId,
                     UserId = userId,
                     CategoryId = model.CategoryId,
                     Title = model.Title,
                     Description = model.Description,
-                    IsPrivate = model.IsPrivate,
+                    IsPrivate = model.IsPrivate, 
                     StartDate = model.StartAt,
                     FinishDate = model.FinishAt,
-                    Photo = "test_photo",
+                    Photo = "https://evantstorage.blob.core.windows.net/events/" + model.EventId,
                     City = model.City,
                     Town = model.Town,
                     Latitude = model.Latitude,
@@ -352,13 +350,10 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost]
         [Route("photo")]
         public async Task<IActionResult> UploadPhoto([FromForm] FileInputModel inputModel)
         {
-            var eventId = Guid.Empty;
-
             try
             {
                 if (inputModel == null)
@@ -367,31 +362,22 @@ namespace Evant.Controllers
                 if (inputModel.File == null || inputModel.File.Length == 0)
                     return BadRequest("file not selected");
 
-                Guid userId = User.GetUserId();
-                var blobName = userId + "_" + inputModel.File.GetFilename();
+                var blobName = Guid.NewGuid().ToString();
                 var fileStream = await inputModel.File.GetFileStream();
 
                 var isUploaded = await _blobStorage.UploadAsync("event", blobName, fileStream);
                 if (isUploaded)
                 {
-                    var @event = await _eventRepo.EventDetail(eventId);
-                    @event.UpdateAt = DateTime.Now;
-                    @event.Photo = "https://evantstorage.blob.core.windows.net/events/" + blobName;
-
-                    var response = await _eventRepo.Update(@event);
-                    if (response)
-                        return Ok("photo uploaded.");
-                    else
-                        return BadRequest("photo not uploaded.");
+                    return Ok(blobName);
                 }
                 else
                 {
-                    return Ok("photo uploaded.");
+                    return BadRequest("photo not uploaded.");
                 }
             }
             catch (Exception ex)
             {
-                _logHelper.Log("AccountController", 500, "UploadPhoto", ex.Message);
+                _logHelper.Log("EventsController", 500, "UploadPhoto", ex.Message);
                 return null;
             }
         }
@@ -409,19 +395,17 @@ namespace Evant.Controllers
                 }
                 else
                 {
-                    Guid userId = User.GetUserId();
-
                     var entity = new Event()
                     {
-                        Id = (Guid)model.EventId,
-                        UserId = userId,
+                        Id = model.EventId,
+                        UserId = User.GetUserId(),
                         CategoryId = model.CategoryId,
                         Title = model.Title,
                         Description = model.Description,
                         IsPrivate = model.IsPrivate,
                         StartDate = model.StartAt,
                         FinishDate = model.FinishAt,
-                        Photo = "test_photo",
+                        Photo = "https://evantstorage.blob.core.windows.net/events/" + model.EventId,
                         City = model.City,
                         Town = model.Town,
                         Latitude = model.Latitude,
