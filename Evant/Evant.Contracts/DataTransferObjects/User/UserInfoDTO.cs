@@ -2,7 +2,7 @@
 
 namespace Evant.Contracts.DataTransferObjects.User
 {
-    public sealed class UserInfoDTO
+    public class UserInfoDTO
     {
         public Guid UserId { get; set; }
 
