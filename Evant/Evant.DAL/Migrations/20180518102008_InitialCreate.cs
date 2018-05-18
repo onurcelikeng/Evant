@@ -30,13 +30,13 @@ namespace Evant.DAL.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Action = table.Column<string>(nullable: true),
+                    Controller = table.Column<string>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     Exception = table.Column<string>(nullable: true),
                     Ip = table.Column<string>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     Message = table.Column<string>(nullable: true),
                     StatusCode = table.Column<int>(nullable: false),
-                    Table = table.Column<string>(nullable: false),
                     UpdateAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -68,6 +68,34 @@ namespace Evant.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Business",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    BusinessType = table.Column<string>(nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    ExpireDate = table.Column<DateTime>(nullable: false),
+                    IsAgeAnalysis = table.Column<bool>(nullable: false),
+                    IsAttendedUserAnalysis = table.Column<bool>(nullable: false),
+                    IsChatBotSupport = table.Column<bool>(nullable: false),
+                    IsCommentAnalysis = table.Column<bool>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    IsSendNotificationUsers = table.Column<bool>(nullable: false),
+                    UpdateAt = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Business", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Business_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -169,6 +197,7 @@ namespace Evant.DAL.Migrations
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     Keyword = table.Column<string>(nullable: false),
+                    SearchCount = table.Column<int>(nullable: false),
                     UpdateAt = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<Guid>(nullable: false)
                 },
@@ -216,16 +245,15 @@ namespace Evant.DAL.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     IsCommentNotif = table.Column<bool>(nullable: false),
-                    IsCommentVisiableTimeline = table.Column<bool>(nullable: false),
-                    IsCreateEventVisiableTimeline = table.Column<bool>(nullable: false),
+                    IsCommentVisibleTimeline = table.Column<bool>(nullable: false),
+                    IsCreateEventVisibleTimeline = table.Column<bool>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     IsEventNewComerNotif = table.Column<bool>(nullable: false),
                     IsEventUpdateNotif = table.Column<bool>(nullable: false),
-                    IsFollowerVisiableTimeline = table.Column<bool>(nullable: false),
-                    IsFollowingVisiableTimeline = table.Column<bool>(nullable: false),
+                    IsFollowerVisibleTimeline = table.Column<bool>(nullable: false),
+                    IsFollowingVisibleTimeline = table.Column<bool>(nullable: false),
                     IsFriendshipNotif = table.Column<bool>(nullable: false),
-                    IsJoinEventVisiableTimeline = table.Column<bool>(nullable: false),
-                    IsTwoFactorAuthentication = table.Column<bool>(nullable: false),
+                    IsJoinEventVisibleTimeline = table.Column<bool>(nullable: false),
                     Language = table.Column<string>(nullable: false),
                     Theme = table.Column<string>(nullable: false),
                     UpdateAt = table.Column<DateTime>(nullable: false),
@@ -299,6 +327,51 @@ namespace Evant.DAL.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CommentId = table.Column<Guid>(nullable: true),
+                    Content = table.Column<string>(maxLength: 120, nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    EventId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    IsRead = table.Column<bool>(nullable: false),
+                    NotificationType = table.Column<int>(nullable: false),
+                    ReceiverUserId = table.Column<Guid>(nullable: false),
+                    SenderUserId = table.Column<Guid>(nullable: true),
+                    UpdateAt = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notifications_Comments_CommentId",
+                        column: x => x.CommentId,
+                        principalTable: "Comments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Notifications_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Notifications_Users_SenderUserId",
+                        column: x => x.SenderUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Business_UserId",
+                table: "Business",
+                column: "UserId",
+                unique: true);
+
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_EventId",
                 table: "Comments",
@@ -345,6 +418,21 @@ namespace Evant.DAL.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Notifications_CommentId",
+                table: "Notifications",
+                column: "CommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_EventId",
+                table: "Notifications",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_SenderUserId",
+                table: "Notifications",
+                column: "SenderUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SearchHistories_UserId",
                 table: "SearchHistories",
                 column: "UserId");
@@ -364,7 +452,7 @@ namespace Evant.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Comments");
+                name: "Business");
 
             migrationBuilder.DropTable(
                 name: "EventOperations");
@@ -379,6 +467,9 @@ namespace Evant.DAL.Migrations
                 name: "Logs");
 
             migrationBuilder.DropTable(
+                name: "Notifications");
+
+            migrationBuilder.DropTable(
                 name: "SearchHistories");
 
             migrationBuilder.DropTable(
@@ -386,6 +477,9 @@ namespace Evant.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserSettings");
+
+            migrationBuilder.DropTable(
+                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "Events");

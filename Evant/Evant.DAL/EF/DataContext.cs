@@ -6,6 +6,7 @@ namespace Evant.DAL.EF
     public class DataContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<Business> Business { get; set; }
         public DbSet<UserDevice> UserDevices { get; set; }
         public DbSet<SearchHistory> UserSearchHistories { get; set; }
         public DbSet<Category> Categories { get; set; }

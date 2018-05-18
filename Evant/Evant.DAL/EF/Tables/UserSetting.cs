@@ -8,8 +8,7 @@ namespace Evant.DAL.EF.Tables
     public class UserSetting : BaseEntity
     {
         public Guid UserId { get; set; }
-
-        
+ 
         [Required]
         public string Theme { get; set; } = "light";
 

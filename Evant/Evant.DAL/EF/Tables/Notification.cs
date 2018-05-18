@@ -15,7 +15,7 @@ namespace Evant.DAL.EF.Tables
 
         public Guid? CommentId { get; set; }
 
-        [Required, MaxLength(120)]
+        [Required]
         public string Content { get; set; }
 
         [Required]

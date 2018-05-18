@@ -11,8 +11,8 @@ using System;
 namespace Evant.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20180305164526_NotificationEntityCreate")]
-    partial class NotificationEntityCreate
+    [Migration("20180518125058_Notification Entity Edit")]
+    partial class NotificationEntityEdit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,41 @@ namespace Evant.DAL.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Evant.DAL.EF.Tables.Business", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("BusinessType");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<DateTime>("ExpireDate");
+
+                    b.Property<bool>("IsAgeAnalysis");
+
+                    b.Property<bool>("IsAttendedUserAnalysis");
+
+                    b.Property<bool>("IsChatBotSupport");
+
+                    b.Property<bool>("IsCommentAnalysis");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsSendNotificationUsers");
+
+                    b.Property<DateTime>("UpdateAt");
+
+                    b.Property<Guid>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Business");
+                });
 
             modelBuilder.Entity("Evant.DAL.EF.Tables.Category", b =>
                 {
@@ -231,15 +266,14 @@ namespace Evant.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("CommentId");
+                    b.Property<Guid?>("CommentId");
 
                     b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(120);
+                        .IsRequired();
 
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<Guid>("EventId");
+                    b.Property<Guid?>("EventId");
 
                     b.Property<bool>("IsDeleted");
 
@@ -249,7 +283,7 @@ namespace Evant.DAL.Migrations
 
                     b.Property<Guid>("ReceiverUserId");
 
-                    b.Property<Guid>("SenderUserId");
+                    b.Property<Guid?>("SenderUserId");
 
                     b.Property<DateTime>("UpdateAt");
 
@@ -275,6 +309,8 @@ namespace Evant.DAL.Migrations
 
                     b.Property<string>("Keyword")
                         .IsRequired();
+
+                    b.Property<int>("SearchCount");
 
                     b.Property<DateTime>("UpdateAt");
 
@@ -393,8 +429,6 @@ namespace Evant.DAL.Migrations
 
                     b.Property<bool>("IsJoinEventVisibleTimeline");
 
-                    b.Property<bool>("IsTwoFactorAuthentication");
-
                     b.Property<string>("Language")
                         .IsRequired();
 
@@ -411,6 +445,14 @@ namespace Evant.DAL.Migrations
                         .IsUnique();
 
                     b.ToTable("UserSettings");
+                });
+
+            modelBuilder.Entity("Evant.DAL.EF.Tables.Business", b =>
+                {
+                    b.HasOne("Evant.DAL.EF.Tables.User", "User")
+                        .WithOne("Business")
+                        .HasForeignKey("Evant.DAL.EF.Tables.Business", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Evant.DAL.EF.Tables.Comment", b =>

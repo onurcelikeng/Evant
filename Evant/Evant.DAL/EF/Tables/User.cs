@@ -58,6 +58,8 @@ namespace Evant.DAL.EF.Tables
 
         public virtual UserSetting Setting { get; set; }
 
+        public virtual Business Business { get; set; }
+
         public virtual ICollection<GameBoard> GameBoard { get; set; }
 
         public virtual ICollection<FriendOperation> Followers { get; set; }

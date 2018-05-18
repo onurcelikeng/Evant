@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Evant.Cognitive;
 using Evant.Contracts.DataTransferObjects.Dashboard;
+using Evant.Contracts.DataTransferObjects.User;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
 using Evant.DAL.Repositories.Interfaces;
 using Evant.Helpers;
 using Evant.Interfaces;
+using Evant.NotificationCenter.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models;
@@ -20,19 +22,25 @@ namespace Evant.Controllers
     public class DashboardController : BaseController
     {
         private readonly IRepository<User> _userRepo;
+        private readonly IRepository<UserDevice> _userDeviceRepo;
         private readonly ICommentRepository _commentRepo;
         private readonly IEventOperationRepository _eventOperationRepo;
+        private readonly IOneSignal _oneSignal;
         private readonly ILogHelper _logHelper;
 
 
         public DashboardController(IRepository<User> userRepo,
+            IRepository<UserDevice> userDeviceRepo,
             ICommentRepository commentRepo,
             IEventOperationRepository eventOperationRepo,
+            IOneSignal oneSignal,
             ILogHelper logHelper)
         {
             _userRepo = userRepo;
             _commentRepo = commentRepo;
+            _userDeviceRepo = userDeviceRepo;
             _eventOperationRepo = eventOperationRepo;
+            _oneSignal = oneSignal;
             _logHelper = logHelper;
         }
 
@@ -100,8 +108,36 @@ namespace Evant.Controllers
         }
 
         [HttpGet]
+        [Route("{eventId}/announcement")]
+        public async Task<IActionResult> SendAnnouncement([FromRoute] Guid eventId)
+        {
+            try
+            {
+                var userIds = (await _eventOperationRepo.Participants(eventId)).Select(u => u.UserId).ToList();
+                if (userIds.IsNullOrEmpty())
+                    return NotFound("Kayıt bulunamadı.");
+
+                foreach (var id in userIds)
+                {
+                    var playerIds = (await _userDeviceRepo.Where(d => d.UserId == id && d.IsLoggedin))
+                        .Select(t => t.DeviceId)
+                        .ToList();
+
+                    _oneSignal.SendNotification(playerIds, "test");
+                }
+
+                return Ok("Duyuru gönderilmiştir.");
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("DashboardController", 500, "SendAnnouncement", ex.Message);
+                return null;
+            }
+        }
+
+        [HttpGet]
         [Route("{eventId}/comments")]
-        public async Task<IActionResult> GetComments([FromRoute] Guid eventId)
+        public async Task<IActionResult> GetCommentsAnalyse([FromRoute] Guid eventId)
         {
             var model = new List<CommentAnalyticsDTO>();
 
@@ -149,13 +185,13 @@ namespace Evant.Controllers
                     }
 
                     var keyPhrases = _textAnalytics.GetKeyPhrases(multiLanguageInputs);
-                    if(keyPhrases != null)
+                    if (keyPhrases != null)
                     {
-                        for(int i = 0; i < keyPhrases.Documents.Count; i++)
+                        for (int i = 0; i < keyPhrases.Documents.Count; i++)
                         {
                             foreach (var item in model)
                             {
-                                if(item.CommentId.ToString() == keyPhrases.Documents[i].Id)
+                                if (item.CommentId.ToString() == keyPhrases.Documents[i].Id)
                                 {
                                     item.KeyPhrases = keyPhrases.Documents[i].KeyPhrases.ToList();
                                 }
@@ -192,7 +228,7 @@ namespace Evant.Controllers
             {
                 foreach (var user in users)
                 {
-                    
+
                 }
             }
 

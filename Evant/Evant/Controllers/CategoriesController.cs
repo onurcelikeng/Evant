@@ -31,9 +31,6 @@ namespace Evant.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
-            var pay = new Iyzico();
-            pay.test();
-
             try
             {
                 var categories = (await _categoryRepo.All()).Select(c => new CategoryDetailDTO()

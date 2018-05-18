@@ -16,6 +16,7 @@ using Evant.Contracts.DataTransferObjects.UserSettingDTO;
 using Evant.Contracts.DataTransferObjects.Timeline;
 using System.Collections.Generic;
 using System.Linq;
+using Evant.Contracts.DataTransferObjects.Business;
 
 namespace Evant.Controllers
 {
@@ -26,11 +27,11 @@ namespace Evant.Controllers
         private readonly IUserRepository _userRepo;
         private readonly IEventRepository _eventRepo;
         private readonly ICommentRepository _commentRepo;
-        private readonly IFriendOperationRepository _friendOperationRepo;
         private readonly IEventOperationRepository _eventOperationRepo;
+        private readonly IFriendOperationRepository _friendOperationRepo;
+        private readonly IAzureBlobStorage _blobStorage;
         private readonly ILogHelper _logHelper;
         private readonly IJwtFactory _jwtFactory;
-        private readonly IAzureBlobStorage _blobStorage;
 
 
         public AccountController(IUserRepository userRepo,
@@ -83,7 +84,8 @@ namespace Evant.Controllers
                         IsFacebook = false,
                         Photo = "https://evantstorage.blob.core.windows.net/users/default.jpeg",
                         FacebookId = null,
-                        Setting = new UserSetting()
+                        Setting = new UserSetting(),
+                        Business = new Business()
                     };
 
                     var response = await _userRepo.Add(entity);
@@ -153,7 +155,7 @@ namespace Evant.Controllers
         [Authorize]
         [HttpGet]
         [Route("me")]
-        public async Task<IActionResult> GetMe()
+        public async Task<IActionResult> Me()
         {
             try
             {
@@ -180,7 +182,17 @@ namespace Evant.Controllers
                         {
                             Language = user.Setting.Language,
                             Theme = user.Setting.Theme
-                        }
+                        },
+                        Business = new BusinessInfoDTO()
+                        {
+                            Type = user.Business.BusinessType,
+                            ExpireAt = user.Business.ExpireDate,
+                            IsAgeAnalysis = user.Business.IsAgeAnalysis,
+                            IsAttendedUserAnalysis = user.Business.IsAttendedUserAnalysis,
+                            IsChatBotSupport = user.Business.IsChatBotSupport,
+                            IsCommentAnalysis = user.Business.IsCommentAnalysis,
+                            IsSendNotificationUsers = user.Business.IsSendNotificationUsers
+                        }               
                     };
 
                     return Ok(model);
@@ -433,39 +445,6 @@ namespace Evant.Controllers
             catch (Exception ex)
             {
                 _logHelper.Log("AccountController", 500, "ChangePassword", ex.Message);
-                return null;
-            }
-        }
-
-        [Authorize]
-        [HttpGet]
-        [Route("switch")]
-        public async Task<IActionResult> SwitchAccount()
-        {
-            try
-            {
-                Guid userId = User.GetUserId();
-
-                var user = await _userRepo.First(u => u.Id == userId);
-                if (user == null)
-                    return BadRequest("Kayıt bulunamadı.");
-
-                user.IsBusinessAccount = !user.IsBusinessAccount;
-                user.UpdateAt = DateTime.Now;
-
-                var response = await _userRepo.Update(user);
-                if (response)
-                {
-                    return Ok("Hesap değiştirildi.");
-                }
-                else
-                {
-                    return BadRequest("Hesap değiştirilemedi.");
-                }
-            }
-            catch (Exception ex)
-            {
-                _logHelper.Log("AccountController", 500, "SwitchAccount", ex.Message);
                 return null;
             }
         }
