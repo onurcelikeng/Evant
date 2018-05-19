@@ -30,7 +30,8 @@ namespace Evant.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GameBorads()
+        [Route("{type}")]
+        public async Task<IActionResult> GameBorads([FromRoute] string type)
         {
             try
             {
@@ -38,7 +39,29 @@ namespace Evant.Controllers
                 if (boards.IsNullOrEmpty())
                     return NotFound("Kayıt bulunamadı.");
 
-                var users = boards.GroupBy(u => u.UserId).Select(g => g.ToList()).ToList();
+                var users = new List<List<GameBoard>>();
+                if (type == "0")
+                {
+                    users = boards.Where(t => t.CreatedAt.ToShortDateString() == DateTime.Now.ToShortDateString())
+                       .GroupBy(u => u.UserId)
+                       .Select(g => g.ToList()).ToList();
+                }
+                else if (type == "1")
+                {
+                    var firstDayOfWeek = DateTimeExtensions.FirstDayOfWeek(DateTime.Now);
+                    var lastDayOfWeek = DateTimeExtensions.LastDayOfWeek(firstDayOfWeek);
+                    users = boards.Where(t => firstDayOfWeek <= t.CreatedAt && t.CreatedAt <= lastDayOfWeek)
+                       .GroupBy(u => u.UserId)
+                       .Select(g => g.ToList()).ToList();
+                }
+                else if (type == "2")
+                {
+                    var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                    var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+                    users = boards.Where(t => firstDayOfMonth <= t.CreatedAt && t.CreatedAt <= lastDayOfMonth)
+                       .GroupBy(u => u.UserId)
+                       .Select(g => g.ToList()).ToList();
+                }
 
                 var list = new List<GameBoardDTO>();
                 foreach (var user in users)
