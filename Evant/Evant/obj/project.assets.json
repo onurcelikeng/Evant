@@ -2617,6 +2617,33 @@
           "lib/netstandard1.0/_._": {}
         }
       },
+      "Microsoft.ProjectOxford.Common/2.0.25": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "Newtonsoft.Json": "10.0.2"
+        },
+        "compile": {
+          "lib/netstandard1.1/Microsoft.ProjectOxford.Common.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/Microsoft.ProjectOxford.Common.dll": {}
+        }
+      },
+      "Microsoft.ProjectOxford.Emotion/2.0.40": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.ProjectOxford.Common": "2.0.25",
+          "NETStandard.Library": "1.6.1",
+          "Newtonsoft.Json": "10.0.2"
+        },
+        "compile": {
+          "lib/netstandard1.1/Microsoft.ProjectOxford.Emotion.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/Microsoft.ProjectOxford.Emotion.dll": {}
+        }
+      },
       "Microsoft.Rest.ClientRuntime/2.3.10": {
         "type": "package",
         "dependencies": {
@@ -5242,7 +5269,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.0",
         "dependencies": {
-          "Microsoft.Azure.CognitiveServices.Language": "1.0.0-preview"
+          "Microsoft.Azure.CognitiveServices.Language": "1.0.0-preview",
+          "Microsoft.ProjectOxford.Emotion": "2.0.40"
         },
         "compile": {
           "bin/placeholder/Evant.Cognitive.dll": {}
@@ -7796,6 +7824,26 @@
         "microsoft.netcore.targets.1.1.0.nupkg.sha512",
         "microsoft.netcore.targets.nuspec",
         "runtime.json"
+      ]
+    },
+    "Microsoft.ProjectOxford.Common/2.0.25": {
+      "sha512": "fp4Xt11gZzhqDgUfVTm6P1afT2Amj6o8TvaI6+Fkp6cWxu+zlrvbmjYzPTsliFn5bUJikT71/KmdOiVmqho7pQ==",
+      "type": "package",
+      "path": "microsoft.projectoxford.common/2.0.25",
+      "files": [
+        "lib/netstandard1.1/Microsoft.ProjectOxford.Common.dll",
+        "microsoft.projectoxford.common.2.0.25.nupkg.sha512",
+        "microsoft.projectoxford.common.nuspec"
+      ]
+    },
+    "Microsoft.ProjectOxford.Emotion/2.0.40": {
+      "sha512": "VdLG544QYBZATH2+l3xioMjAU49eX5WuA84ycbxb90keIPWNAaMMbxq9KjLhp5m1vGZT8A+hxkeJzg2XtB0+oA==",
+      "type": "package",
+      "path": "microsoft.projectoxford.emotion/2.0.40",
+      "files": [
+        "lib/netstandard1.1/Microsoft.ProjectOxford.Emotion.dll",
+        "microsoft.projectoxford.emotion.2.0.40.nupkg.sha512",
+        "microsoft.projectoxford.emotion.nuspec"
       ]
     },
     "Microsoft.Rest.ClientRuntime/2.3.10": {

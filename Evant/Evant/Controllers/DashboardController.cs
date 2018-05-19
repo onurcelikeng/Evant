@@ -106,7 +106,7 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("announcement")]
         public async Task<IActionResult> SendAnnouncement([FromBody] AnnouncementDTO model)
         {
@@ -154,7 +154,8 @@ namespace Evant.Controllers
                     model.Add(new CommentAnalyticsDTO()
                     {
                         CommentId = comment.Id,
-                        Content = comment.Content
+                        Content = comment.Content,
+                        CreatedAt = comment.CreatedAt
                     });
                 }
 
