@@ -70,10 +70,13 @@ namespace Evant.Controllers
         {
             try
             {
-                Iyzico iyzico = new Iyzico();
-                var iyzicoResponse = await iyzico.Operation(model.Payment);
-                if (!iyzicoResponse)
-                    return BadRequest("Ödeme işleminde bir hata oluştu.");
+                if(model.Payment != null)
+                {
+                    Iyzico iyzico = new Iyzico();
+                    var iyzicoResponse = await iyzico.Operation(model.Payment);
+                    if (!iyzicoResponse)
+                        return BadRequest("Ödeme işleminde bir hata oluştu.");
+                }
 
                 Guid userId = User.GetUserId();
                 var user = await _userRepo.First(u => u.Id == userId);
