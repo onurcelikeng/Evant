@@ -1,31 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace Evant.Pay.Models
 {
     public class PaymentModel
     {
-        public string CardHolderName { get; set; } = "Elif Seray Dönmez";
+        public string CardHolderName { get; set; }
 
-        public string CardNumber { get; set; } = "5170410000000004";
+        public string CardNumber { get; set; }
 
-        public string ExpireMonth { get; set; } = "09";
+        public string ExpireMonth { get; set; }
 
-        public string ExpireYear { get; set; } = "2020";
+        public string ExpireYear { get; set; }
 
-        public string Cvc { get; set; } = "797";
+        public string Cvc { get; set; }
 
-        public string FirstName { get; set; } = "Elif Seray";
+        public string FirstName { get; set; }
 
-        public string LastName { get; set; } = "Dönmez";
+        public string LastName { get; set; }
 
-        public string Email { get; set; } = "elifseraydonmez@gmail.com";
+        public string Email { get; set; }
 
-        public string Phone { get; set; } = "05074406251";
+        public string Phone { get; set; }
 
-        public string ProductName { get; set; } = "Gold Business Üyelik";
+        public string ProductName { get; set; }
 
-        public string Price { get; set; } = "70";
+        public string Price { get; set; }
     }
 }

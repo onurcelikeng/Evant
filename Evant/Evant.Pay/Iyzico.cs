@@ -24,82 +24,94 @@ namespace Evant.Pay
         }
 
 
-        public async void Operation(PaymentModel model)
+        public async Task<bool> Operation(PaymentModel model)
         {
-            var request = new CreatePaymentRequest
+            try
             {
-                Price = model.Price,
-                PaidPrice = model.Price,
-                Currency = Currency.TRY.ToString(),
-                Installment = 1
-            };
+                var request = new CreatePaymentRequest
+                {
+                    Price = model.Price,
+                    PaidPrice = model.Price,
+                    Currency = Currency.TRY.ToString(),
+                    Installment = 1
+                };
 
-            var paymentCard = new PaymentCard
-            {
-                CardHolderName = model.CardHolderName,
-                CardNumber = model.CardNumber,
-                ExpireMonth = model.ExpireMonth,
-                ExpireYear = model.ExpireYear,
-                Cvc = model.Cvc
-            };
+                var paymentCard = new PaymentCard
+                {
+                    CardHolderName = model.CardHolderName,
+                    CardNumber = model.CardNumber,
+                    ExpireMonth = model.ExpireMonth,
+                    ExpireYear = model.ExpireYear,
+                    Cvc = model.Cvc
+                };
 
-            request.PaymentCard = paymentCard;
+                request.PaymentCard = paymentCard;
 
-            var buyer = new Buyer
-            {
-                Id = "BY789",
-                Name = "Onur",
-                Surname = "Celik",
-                GsmNumber = "+905074406251",
-                Email = "onrcelik@outlook.com",
-                IdentityNumber = "74300864791",
-                LastLoginDate = "2015-10-05 12:43:35",
-                RegistrationDate = "2013-04-21 15:12:09",
-                RegistrationAddress = "Kuruçeşme Mahallesi No:196 Buca",
-                Ip = "85.34.78.112",
-                City = "Izmir",
-                Country = "Turkey"
-            };
+                var buyer = new Buyer
+                {
+                    Id = "BY789",
+                    Name = "Onur",
+                    Surname = "Celik",
+                    GsmNumber = "+905074406251",
+                    Email = "onrcelik@outlook.com",
+                    IdentityNumber = "74300864791",
+                    LastLoginDate = "2015-10-05 12:43:35",
+                    RegistrationDate = "2013-04-21 15:12:09",
+                    RegistrationAddress = "Kuruçeşme Mahallesi No:196 Buca",
+                    Ip = "85.34.78.112",
+                    City = "Izmir",
+                    Country = "Turkey"
+                };
 
-            request.Buyer = buyer;
+                request.Buyer = buyer;
 
-            var shippingAddress = new Address
-            {
-                ContactName = model.CardHolderName,
-                City = "Izmir",
-                Country = "Turkey",
-                Description = "Online ürün alımı"
-            };
+                var shippingAddress = new Address
+                {
+                    ContactName = model.CardHolderName,
+                    City = "Izmir",
+                    Country = "Turkey",
+                    Description = model.ProductName + " - Online Alışveriş"
+                };
 
-            request.ShippingAddress = shippingAddress;
+                request.ShippingAddress = shippingAddress;
 
-            var billingAddress = new Address
-            {
-                ContactName = model.CardHolderName,
-                City = "Izmir",
-                Country = "Turkey",
-                Description = "Kuruçeşme Mahallesi No:196 Buca",
-            };
+                var billingAddress = new Address
+                {
+                    ContactName = model.CardHolderName,
+                    City = "Izmir",
+                    Country = "Turkey",
+                    Description = "Kuruçeşme Mahallesi No:196 Buca",
+                };
 
-            request.BillingAddress = billingAddress;
+                request.BillingAddress = billingAddress;
 
-            var firstBasketItem = new BasketItem
-            {
-                Id = "BI101",
-                Name = model.ProductName,
-                Category1 = "Collectibles",
-                ItemType = BasketItemType.PHYSICAL.ToString(),
-                Price = model.Price
-            };
+                var firstBasketItem = new BasketItem
+                {
+                    Id = "BI101",
+                    Name = model.ProductName,
+                    Category1 = "Collectibles",
+                    ItemType = BasketItemType.PHYSICAL.ToString(),
+                    Price = model.Price
+                };
 
-            var basketItems = new List<BasketItem>
+                var basketItems = new List<BasketItem>
             {
                 firstBasketItem
             };
 
-            request.BasketItems = basketItems;
-            Payment payment = await Payment.CreateAsync(request, options);
+                request.BasketItems = basketItems;
+                Payment payment = await Payment.CreateAsync(request, options);
+                if (payment.Status == "success")
+                {
+                    return true;
+                }
 
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
     }

@@ -6,6 +6,8 @@ using Evant.DAL.Interfaces.Repositories;
 using Evant.DAL.Repositories.Interfaces;
 using Evant.Helpers;
 using Evant.Interfaces;
+using Evant.Pay;
+using Evant.Pay.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -68,6 +70,11 @@ namespace Evant.Controllers
         {
             try
             {
+                Iyzico iyzico = new Iyzico();
+                var iyzicoResponse = await iyzico.Operation(model.Payment);
+                if (!iyzicoResponse)
+                    return BadRequest("Ödeme işleminde bir hata oluştu.");
+
                 Guid userId = User.GetUserId();
                 var user = await _userRepo.First(u => u.Id == userId);
                 if (user == null)
