@@ -140,5 +140,29 @@ namespace Evant.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> IsExistBusinessAccount()
+        {
+            try
+            {
+                Guid userId = User.GetUserId();
+                var business = await _businessRepo.First(s => s.UserId == userId);
+                if (business == null)
+                    return NotFound("Kayıt bulunamadı.");
+
+                return Ok(new BusinessDetailDTO()
+                {
+                    BusinessType = business.BusinessType,
+                    ExpireAt = business.ExpireDate
+                });
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("BusinessController", 500, "IsExistBusinessAccount", ex.Message);
+                return null;
+            }
+        }
+
     }
 }
