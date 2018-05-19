@@ -4,14 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Evant.Cognitive;
 using Evant.Contracts.DataTransferObjects.Dashboard;
-using Evant.Contracts.DataTransferObjects.User;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
 using Evant.DAL.Repositories.Interfaces;
 using Evant.Helpers;
 using Evant.Interfaces;
 using Evant.NotificationCenter.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models;
 
@@ -221,18 +219,33 @@ namespace Evant.Controllers
 
         [HttpGet]
         [Route("{eventId}/date")]
-        public async Task<IActionResult> GetDayDetails([FromRoute] Guid eventId)
+        public async Task<IActionResult> GetDayAnalyse([FromRoute] Guid eventId)
         {
-            var users = await _eventOperationRepo.Participants(eventId);
-            if (!users.IsNullOrEmpty())
+            try
             {
-                foreach (var user in users)
+                var users = await _eventOperationRepo.Participants(eventId);
+                if (users.IsNullOrEmpty())
+                    return BadRequest("Kayıt bulunamadı.");
+
+                var dayGroups = users.GroupBy(u => u.CreatedAt.ToShortDateString()).Select(g => g.ToList()).ToList();
+
+                var list = new List<DateAnalyticsDTO>();
+                foreach (var day in dayGroups)
                 {
-
+                    list.Add(new DateAnalyticsDTO()
+                    {
+                        Date = day[0].CreatedAt.ToShortDateString(),
+                        UserCount = day.Count
+                    });
                 }
-            }
 
-            return null;
+                return Ok(list);
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("DashboardController", 500, "GetDayAnalyse", ex.Message);
+                return null;
+            }
         }
 
     }
