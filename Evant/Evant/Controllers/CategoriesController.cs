@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Evant.Cognitive;
 using Evant.Contracts.DataTransferObjects.Category;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
 using Evant.Helpers;
 using Evant.Interfaces;
-using Evant.Pay;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers

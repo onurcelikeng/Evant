@@ -63,15 +63,13 @@ namespace Evant.Controllers
             {
                 Guid userId = User.GetUserId();
 
-                var searchHistory = await _searchHistoryRepo.First(s => s.Keyword == keyword && s.UserId == userId);
+                var searchHistory = await _searchHistoryRepo.First(s => s.Keyword.ToLower() == keyword.ToLower() && s.UserId == userId);
                 if (searchHistory == null)
                 {
                     var entity = new SearchHistory()
                     {
-                        Id = new Guid(),
                         UserId = userId,
-                        Keyword = keyword,
-                        SearchCount = 1
+                        Keyword = keyword
                     };
                     var response = await _searchHistoryRepo.Add(entity);
                     if (response)

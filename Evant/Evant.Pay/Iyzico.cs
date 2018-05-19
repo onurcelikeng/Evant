@@ -33,78 +33,60 @@ namespace Evant.Pay
                     Price = model.Price,
                     PaidPrice = model.Price,
                     Currency = Currency.TRY.ToString(),
-                    Installment = 1
+                    Installment = 1,
+                    PaymentCard = new PaymentCard
+                    {
+                        CardHolderName = model.CardHolderName,
+                        CardNumber = model.CardNumber,
+                        ExpireMonth = model.ExpireMonth,
+                        ExpireYear = model.ExpireYear,
+                        Cvc = model.Cvc
+                    },
+                    Buyer = new Buyer
+                    {
+                        Id = "BY789",
+                        Name = "Onur",
+                        Surname = "Celik",
+                        GsmNumber = "+905074406251",
+                        Email = "onrcelik@outlook.com",
+                        IdentityNumber = "74300864791",
+                        LastLoginDate = "2015-10-05 12:43:35",
+                        RegistrationDate = "2013-04-21 15:12:09",
+                        RegistrationAddress = "Kuruçeşme Mahallesi No:196 Buca",
+                        Ip = "85.34.78.112",
+                        City = "Izmir",
+                        Country = "Turkey"
+                    },
+                    ShippingAddress = new Address
+                    {
+                        ContactName = model.CardHolderName,
+                        City = "Izmir",
+                        Country = "Turkey",
+                        Description = model.ProductName + " - Online Alışveriş"
+                    },
+                    BillingAddress = new Address
+                    {
+                        ContactName = model.CardHolderName,
+                        City = "Izmir",
+                        Country = "Turkey",
+                        Description = "Kuruçeşme Mahallesi No:196 Buca",
+                    },
+                    BasketItems = new List<BasketItem>
+                    {
+                        new BasketItem
+                        {
+                            Id = "BI101",
+                            Name = model.ProductName,
+                            Category1 = "Collectibles",
+                            ItemType = BasketItemType.PHYSICAL.ToString(),
+                            Price = model.Price
+                        }
+                    }
                 };
 
-                var paymentCard = new PaymentCard
-                {
-                    CardHolderName = model.CardHolderName,
-                    CardNumber = model.CardNumber,
-                    ExpireMonth = model.ExpireMonth,
-                    ExpireYear = model.ExpireYear,
-                    Cvc = model.Cvc
-                };
-
-                request.PaymentCard = paymentCard;
-
-                var buyer = new Buyer
-                {
-                    Id = "BY789",
-                    Name = "Onur",
-                    Surname = "Celik",
-                    GsmNumber = "+905074406251",
-                    Email = "onrcelik@outlook.com",
-                    IdentityNumber = "74300864791",
-                    LastLoginDate = "2015-10-05 12:43:35",
-                    RegistrationDate = "2013-04-21 15:12:09",
-                    RegistrationAddress = "Kuruçeşme Mahallesi No:196 Buca",
-                    Ip = "85.34.78.112",
-                    City = "Izmir",
-                    Country = "Turkey"
-                };
-
-                request.Buyer = buyer;
-
-                var shippingAddress = new Address
-                {
-                    ContactName = model.CardHolderName,
-                    City = "Izmir",
-                    Country = "Turkey",
-                    Description = model.ProductName + " - Online Alışveriş"
-                };
-
-                request.ShippingAddress = shippingAddress;
-
-                var billingAddress = new Address
-                {
-                    ContactName = model.CardHolderName,
-                    City = "Izmir",
-                    Country = "Turkey",
-                    Description = "Kuruçeşme Mahallesi No:196 Buca",
-                };
-
-                request.BillingAddress = billingAddress;
-
-                var firstBasketItem = new BasketItem
-                {
-                    Id = "BI101",
-                    Name = model.ProductName,
-                    Category1 = "Collectibles",
-                    ItemType = BasketItemType.PHYSICAL.ToString(),
-                    Price = model.Price
-                };
-
-                var basketItems = new List<BasketItem>
-            {
-                firstBasketItem
-            };
-
-                request.BasketItems = basketItems;
                 Payment payment = await Payment.CreateAsync(request, options);
                 if (payment.Status == "success")
-                {
                     return true;
-                }
 
                 return false;
             }

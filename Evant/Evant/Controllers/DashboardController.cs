@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Evant.Cognitive;
+using Evant.Contracts.DataTransferObjects.Business;
 using Evant.Contracts.DataTransferObjects.Dashboard;
 using Evant.DAL.EF.Tables;
 using Evant.DAL.Interfaces.Repositories;
@@ -106,12 +107,12 @@ namespace Evant.Controllers
         }
 
         [HttpGet]
-        [Route("{eventId}/announcement")]
-        public async Task<IActionResult> SendAnnouncement([FromRoute] Guid eventId)
+        [Route("announcement")]
+        public async Task<IActionResult> SendAnnouncement([FromBody] AnnouncementDTO model)
         {
             try
             {
-                var userIds = (await _eventOperationRepo.Participants(eventId)).Select(u => u.UserId).ToList();
+                var userIds = (await _eventOperationRepo.Participants(model.EventId)).Select(u => u.UserId).ToList();
                 if (userIds.IsNullOrEmpty())
                     return NotFound("Kayıt bulunamadı.");
 
@@ -120,8 +121,8 @@ namespace Evant.Controllers
                     var playerIds = (await _userDeviceRepo.Where(d => d.UserId == id && d.IsLoggedin))
                         .Select(t => t.DeviceId)
                         .ToList();
-
-                    _oneSignal.SendNotification(playerIds, "test");
+                    
+                    _oneSignal.SendNotification(playerIds, model.Message);
                 }
 
                 return Ok("Duyuru gönderilmiştir.");
@@ -228,7 +229,7 @@ namespace Evant.Controllers
                     return BadRequest("Kayıt bulunamadı.");
 
                 var dayGroups = users.GroupBy(u => u.CreatedAt.ToShortDateString()).Select(g => g.ToList()).ToList();
-
+                
                 var list = new List<DateAnalyticsDTO>();
                 foreach (var day in dayGroups)
                 {

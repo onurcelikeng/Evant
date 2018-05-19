@@ -7,7 +7,6 @@ using Evant.DAL.Repositories.Interfaces;
 using Evant.Helpers;
 using Evant.Interfaces;
 using Evant.Pay;
-using Evant.Pay.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
