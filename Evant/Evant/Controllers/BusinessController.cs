@@ -9,6 +9,7 @@ using Evant.Interfaces;
 using Evant.Pay;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Evant.Constants.BusinessConstant;
 
 namespace Evant.Controllers
 {
@@ -69,7 +70,7 @@ namespace Evant.Controllers
         {
             try
             {
-                if(model.Payment != null)
+                if (model.Payment != null)
                 {
                     Iyzico iyzico = new Iyzico();
                     var iyzicoResponse = await iyzico.Operation(model.Payment);
@@ -94,8 +95,9 @@ namespace Evant.Controllers
                     return NotFound("Kayıt bulunamadı.");
 
                 business.BusinessType = model.BusinessType;
-                business.UpdateAt = DateTime.Now;      
-                if (model.BusinessType == "Free")
+                business.UpdateAt = DateTime.Now;
+
+                if (model.BusinessType == BusinessType.Free.ToString())
                 {
                     business.IsAgeAnalysis = true;
                     business.IsSendNotificationUsers = false;
@@ -104,7 +106,7 @@ namespace Evant.Controllers
                     business.IsChatBotSupport = false;
                     business.ExpireDate = DateTime.Now.AddYears(10);
                 }
-                else if (model.BusinessType == "Basic")
+                else if (model.BusinessType == BusinessType.Basic.ToString())
                 {
                     business.IsAgeAnalysis = true;
                     business.IsSendNotificationUsers = true;
@@ -113,7 +115,7 @@ namespace Evant.Controllers
                     business.IsChatBotSupport = false;
                     business.ExpireDate = DateTime.Now.AddYears(1);
                 }
-                else if (model.BusinessType == "Gold")
+                else if (model.BusinessType == BusinessType.Gold.ToString())
                 {
                     business.IsAgeAnalysis = true;
                     business.IsSendNotificationUsers = true;
@@ -122,7 +124,7 @@ namespace Evant.Controllers
                     business.IsChatBotSupport = false;
                     business.ExpireDate = DateTime.Now.AddYears(1);
                 }
-                else if (model.BusinessType == "Platinum")
+                else if (model.BusinessType == BusinessType.Platinum.ToString())
                 {
                     business.IsAgeAnalysis = true;
                     business.IsSendNotificationUsers = true;

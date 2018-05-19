@@ -5,9 +5,9 @@
         public enum BusinessType
         {
             Free,
-            Starter,
+            Basic,
             Gold,
-            Platinium
+            Platinum
         }
     }
 }

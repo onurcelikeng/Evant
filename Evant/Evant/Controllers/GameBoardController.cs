@@ -48,17 +48,15 @@ namespace Evant.Controllers
                 }
                 else if (type == "1")
                 {
-                    var firstDayOfWeek = DateTimeExtensions.FirstDayOfWeek(DateTime.Now);
-                    var lastDayOfWeek = DateTimeExtensions.LastDayOfWeek(firstDayOfWeek);
-                    users = boards.Where(t => firstDayOfWeek <= t.CreatedAt && t.CreatedAt <= lastDayOfWeek)
+                    var week = DateTimeExtensions.Week();
+                    users = boards.Where(t => week.Item1 <= t.CreatedAt && t.CreatedAt <= week.Item2)
                        .GroupBy(u => u.UserId)
                        .Select(g => g.ToList()).ToList();
                 }
                 else if (type == "2")
                 {
-                    var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-                    var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
-                    users = boards.Where(t => firstDayOfMonth <= t.CreatedAt && t.CreatedAt <= lastDayOfMonth)
+                    var month = DateTimeExtensions.Month();
+                    users = boards.Where(t => month.Item1 <= t.CreatedAt && t.CreatedAt <= month.Item2)
                        .GroupBy(u => u.UserId)
                        .Select(g => g.ToList()).ToList();
                 }

@@ -1,25 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Evant.Helpers
 {
     public static class DateTimeExtensions
     {
-        public static DateTime FirstDayOfWeek(DateTime date)
+        public static Tuple<DateTime, DateTime> Week()
         {
+            var date = DateTime.Now;
+
             DayOfWeek fdow = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
             int offset = fdow - date.DayOfWeek;
             DateTime fdowDate = date.AddDays(offset);
-            return fdowDate;
+            DateTime ldowDate = fdowDate.AddDays(6);
+
+            return Tuple.Create(fdowDate, ldowDate);
         }
 
-        public static DateTime LastDayOfWeek(DateTime date)
+        public static Tuple<DateTime, DateTime> Month()
         {
-            DateTime ldowDate = FirstDayOfWeek(date).AddDays(6);
-            return ldowDate;
+            var date = DateTime.Now;
+
+            DateTime fdomDate = new DateTime(date.Year, date.Month, 1);
+            DateTime ldomDate = fdomDate.AddMonths(1).AddDays(-1);
+
+            return Tuple.Create(fdomDate, ldomDate);
         }
+
     }
 }
