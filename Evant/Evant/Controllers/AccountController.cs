@@ -109,7 +109,7 @@ namespace Evant.Controllers
                     if (!selectedUser.IsActive)
                     {
                         selectedUser.IsActive = true;
-                        selectedUser.UpdateAt = DateTime.Now;
+                        selectedUser.UpdateAt = DateTime.UtcNow;
                         await _userRepo.Update(selectedUser);
                     }
 
@@ -307,7 +307,7 @@ namespace Evant.Controllers
                 if (isUploaded)
                 {
                     var selectedUser = await _userRepo.GetUser(userId);
-                    selectedUser.UpdateAt = DateTime.Now;
+                    selectedUser.UpdateAt = DateTime.UtcNow;
                     selectedUser.Photo = "https://evantstorage.blob.core.windows.net/users/" + blobName;
 
                     var response = await _userRepo.Update(selectedUser);
@@ -357,7 +357,7 @@ namespace Evant.Controllers
 
                 selectedUser.FirstName = user.FirstName;
                 selectedUser.LastName = user.LastName;
-                selectedUser.UpdateAt = DateTime.Now;
+                selectedUser.UpdateAt = DateTime.UtcNow;
 
                 var response = await _userRepo.Update(selectedUser);
                 if (response)
@@ -395,7 +395,7 @@ namespace Evant.Controllers
                     if (user.Password == password.OldPassword)
                     {
                         user.Password = password.NewPassword;
-                        user.UpdateAt = DateTime.Now;
+                        user.UpdateAt = DateTime.UtcNow;
 
                         var response = await _userRepo.Update(user);
                         if (response)
@@ -431,7 +431,7 @@ namespace Evant.Controllers
                     if (user.IsActive)
                     {
                         user.IsActive = false;
-                        user.UpdateAt = DateTime.Now;
+                        user.UpdateAt = DateTime.UtcNow;
 
                         var response = await _userRepo.Update(user);
                         if (response)

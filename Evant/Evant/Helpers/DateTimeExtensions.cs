@@ -7,7 +7,7 @@ namespace Evant.Helpers
     {
         public static Tuple<DateTime, DateTime> Week()
         {
-            var date = DateTime.Now;
+            var date = DateTime.UtcNow;
 
             DayOfWeek fdow = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
             int offset = fdow - date.DayOfWeek;
@@ -19,7 +19,7 @@ namespace Evant.Helpers
 
         public static Tuple<DateTime, DateTime> Month()
         {
-            var date = DateTime.Now;
+            var date = DateTime.UtcNow;
 
             DateTime fdomDate = new DateTime(date.Year, date.Month, 1);
             DateTime ldomDate = fdomDate.AddMonths(1).AddDays(-1);

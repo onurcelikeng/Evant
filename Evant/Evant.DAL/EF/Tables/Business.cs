@@ -20,7 +20,7 @@ namespace Evant.DAL.EF.Tables
 
         public bool IsChatBotSupport { get; set; } = false;
 
-        public DateTime ExpireDate { get; set; } = DateTime.Now;
+        public DateTime ExpireDate { get; set; } = DateTime.UtcNow;
 
 
         public virtual User User { get; set; }

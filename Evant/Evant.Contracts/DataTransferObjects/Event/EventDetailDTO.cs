@@ -25,6 +25,8 @@ namespace Evant.Contracts.DataTransferObjects.Event
 
         public int TotalComments { get; set; }
 
+        public bool IsPrivate { get; set; }
+
         public CategoryInfoDTO Category { get; set; }
 
         public UserInfoDTO User { get; set; }

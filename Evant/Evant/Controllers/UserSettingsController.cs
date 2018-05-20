@@ -69,7 +69,7 @@ namespace Evant.Controllers
                 if (selectedUserSetting == null)
                     return NotFound("Kayıt bulunamadı.");
 
-                selectedUserSetting.UpdateAt = DateTime.Now;
+                selectedUserSetting.UpdateAt = DateTime.UtcNow;
                 selectedUserSetting.Theme = model.Theme;
                 selectedUserSetting.Language = model.Language;
                 selectedUserSetting.IsCommentNotif = model.IsCommentNotif;

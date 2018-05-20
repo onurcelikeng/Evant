@@ -41,7 +41,7 @@ namespace Evant.Controllers
                 var users = new List<List<GameBoard>>();
                 if (type == "0")
                 {
-                    users = boards.Where(t => t.CreatedAt.ToShortDateString() == DateTime.Now.ToShortDateString())
+                    users = boards.Where(t => t.CreatedAt.ToShortDateString() == DateTime.UtcNow.ToShortDateString())
                        .GroupBy(u => u.UserId)
                        .Select(g => g.ToList()).ToList();
                 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Evant.Contracts.DataTransferObjects.UserDevice;
 using Evant.DAL.EF.Tables;
@@ -30,6 +31,32 @@ namespace Evant.Controllers
         }
 
 
+        [HttpGet]
+        public async Task<IActionResult> Devices()
+        {
+            try
+            {
+                var devices = (await _userDevicesRepo.Where(u => !u.IsDeleted && u.IsLoggedin && u.UserId == User.GetUserId())).Select(d => new UserDeviceDTO()
+                {
+                    DeviceId = d.DeviceId,
+                    Brand = d.Brand,
+                    Model = d.Model,
+                    OS = d.OS
+                }).ToList();
+
+                if (devices.IsNullOrEmpty())
+                    return NotFound("Kayıt bulunamadı.");
+
+                return Ok(devices);
+            }
+            catch (Exception ex)
+            {
+                _logHelper.Log("UserDevicesController", 500, "Devices", ex.Message);
+                return null;
+            }
+        }
+
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> SaveDevice([FromBody] UserDeviceDTO device)
         {
@@ -42,7 +69,7 @@ namespace Evant.Controllers
                 if (selectedDevice != null)
                 {
                     selectedDevice.IsLoggedin = true;
-                    selectedDevice.UpdateAt = DateTime.Now;
+                    selectedDevice.UpdateAt = DateTime.UtcNow;
 
                     var response = await _userDevicesRepo.Update(selectedDevice);
                     if (response)
@@ -94,7 +121,7 @@ namespace Evant.Controllers
                     return BadRequest("Kayıt bulunamadı.");
 
                 selectedDevice.IsLoggedin = false;
-                selectedDevice.UpdateAt = DateTime.Now;
+                selectedDevice.UpdateAt = DateTime.UtcNow;
                 var response = await _userDevicesRepo.Update(selectedDevice);
                 if (response)
                 {

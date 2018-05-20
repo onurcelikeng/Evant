@@ -119,6 +119,7 @@ namespace Evant.Controllers
                         PhotoUrl = @event.Photo,
                         TotalComments = @event.EventComments.Count,
                         TotalGoings = @event.EventOperations.Count,
+                        IsPrivate = @event.IsPrivate,
                         Category = new CategoryInfoDTO()
                         {
                             CategoryId = @event.Category.Id,

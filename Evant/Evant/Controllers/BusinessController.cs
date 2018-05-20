@@ -44,7 +44,7 @@ namespace Evant.Controllers
                     return BadRequest("Kayıt bulunamadı.");
 
                 user.IsBusinessAccount = false;
-                user.UpdateAt = DateTime.Now;
+                user.UpdateAt = DateTime.UtcNow;
 
                 var response = await _userRepo.Update(user);
                 if (response)
@@ -82,7 +82,7 @@ namespace Evant.Controllers
                     return BadRequest("Kayıt bulunamadı.");
 
                 user.IsBusinessAccount = true;
-                user.UpdateAt = DateTime.Now;
+                user.UpdateAt = DateTime.UtcNow;
 
                 var userResponse = await _userRepo.Update(user);
                 if (!userResponse)
@@ -93,7 +93,7 @@ namespace Evant.Controllers
                     return NotFound("Kayıt bulunamadı.");
 
                 business.BusinessType = model.BusinessType;
-                business.UpdateAt = DateTime.Now;
+                business.UpdateAt = DateTime.UtcNow;
 
                 if (model.BusinessType == BusinessType.Free.ToString())
                 {
@@ -102,7 +102,7 @@ namespace Evant.Controllers
                     business.IsCommentAnalysis = false;
                     business.IsAttendedUserAnalysis = false;
                     business.IsChatBotSupport = false;
-                    business.ExpireDate = DateTime.Now.AddYears(10);
+                    business.ExpireDate = DateTime.UtcNow.AddYears(10);
                 }
                 else if (model.BusinessType == BusinessType.Basic.ToString())
                 {
@@ -111,7 +111,7 @@ namespace Evant.Controllers
                     business.IsCommentAnalysis = false;
                     business.IsAttendedUserAnalysis = false;
                     business.IsChatBotSupport = false;
-                    business.ExpireDate = DateTime.Now.AddYears(1);
+                    business.ExpireDate = DateTime.UtcNow.AddYears(1);
                 }
                 else if (model.BusinessType == BusinessType.Gold.ToString())
                 {
@@ -120,7 +120,7 @@ namespace Evant.Controllers
                     business.IsCommentAnalysis = true;
                     business.IsAttendedUserAnalysis = true;
                     business.IsChatBotSupport = false;
-                    business.ExpireDate = DateTime.Now.AddYears(1);
+                    business.ExpireDate = DateTime.UtcNow.AddYears(1);
                 }
                 else if (model.BusinessType == BusinessType.Platinum.ToString())
                 {
@@ -129,7 +129,7 @@ namespace Evant.Controllers
                     business.IsCommentAnalysis = true;
                     business.IsAttendedUserAnalysis = true;
                     business.IsChatBotSupport = true;
-                    business.ExpireDate = DateTime.Now.AddYears(1);
+                    business.ExpireDate = DateTime.UtcNow.AddYears(1);
                 }
 
                 var result = await _businessRepo.Update(business);

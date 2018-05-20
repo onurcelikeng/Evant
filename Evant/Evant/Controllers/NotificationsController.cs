@@ -76,7 +76,7 @@ namespace Evant.Controllers
                     foreach (var notification in unreads)
                     {
                         notification.IsRead = true;
-                        notification.UpdateAt = DateTime.Now;
+                        notification.UpdateAt = DateTime.UtcNow;
 
                         var response = await _notificationRepo.Update(notification);
                     }
