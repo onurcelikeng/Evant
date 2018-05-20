@@ -37,7 +37,8 @@ namespace Evant.Controllers
         }
 
 
-        [HttpGet("{eventId}")]
+        [HttpGet()]
+        [Route("{eventId}")]
         public async Task<IActionResult> GetEventUsers([FromRoute] Guid eventId)
         {
             try
@@ -62,7 +63,8 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpGet("{eventId}/status")]
+        [HttpGet()]
+        [Route("{eventId}/status")]
         public async Task<IActionResult> IsJoin([FromRoute] Guid eventId)
         {
             try
@@ -82,7 +84,8 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpPost("{eventId}")]
+        [HttpPost()]
+        [Route("{eventId}")]
         public async Task<IActionResult> JoinEvent([FromRoute] Guid eventId)
         {
             try
@@ -131,7 +134,8 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpDelete("{eventId}")]
+        [HttpDelete()]
+        [Route("{eventId}")]
         public async Task<IActionResult> LeaveEvent([FromRoute] Guid eventId)
         {
             try
