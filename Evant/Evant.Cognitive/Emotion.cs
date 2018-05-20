@@ -1,10 +1,12 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.ProjectOxford.Emotion;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Evant.Cognitive
 {
@@ -14,7 +16,6 @@ namespace Evant.Cognitive
         public Emotion()
         {
             string imageFilePath = "https://pbs.twimg.com/profile_images/931852700194607104/oW7NOEs5_400x400.jpg";
-            MakeRequest(imageFilePath);
         }
 
 
@@ -67,6 +68,27 @@ namespace Evant.Cognitive
             foreach (var score in scoreList)
             {
                 Console.WriteLine(score);
+            }
+        }
+
+        public async Task test()
+        {
+            EmotionServiceClient emotionServiceClient = new EmotionServiceClient("c5c9783aa1bd4a50993b251a3764f6dd");
+
+            try
+            {
+                
+                using (Stream imageFileStream = File.OpenRead("https://pbs.twimg.com/profile_images/931852700194607104/oW7NOEs5_400x400.jp"))
+                {
+                    //
+                    // Detect the emotions in the URL
+                    //
+                    var emotionResult = await emotionServiceClient.RecognizeAsync(imageFileStream);
+                }
+            }
+            catch (Exception e)
+            {
+
             }
         }
 

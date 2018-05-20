@@ -50,16 +50,15 @@ namespace Evant.DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<Event>> SimilarEvents()
+        public async Task<List<Event>> SimilarEvents(Event @event)
         {
             return await Table
                 .Include(t => t.Category)
                 .Include(t => t.User)
-                .Where(t => !t.IsDeleted)
+                .Where(t => (t.CategoryId == @event.CategoryId || t.UserId == @event.UserId) && t.Id != @event.Id && !t.IsDeleted)
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
         }
-
 
         public async Task<List<Event>> EventsByCategory(Guid categoryId)
         {
@@ -78,7 +77,7 @@ namespace Evant.DAL.Repositories
                 .Include(t => t.User)
                 .Include(t => t.EventComments)
                 .Include(t => t.EventOperations)
-                .Where(t => !t.IsDeleted && (t.Description.ToLower().Contains(query.ToLower()) || t.Title.ToLower().Contains(query.ToLower())))
+                .Where(t => !t.IsDeleted && (t.Town.ToLower().Contains(query.ToLower()) || t.City.ToLower().Contains(query.ToLower()) || t.Description.ToLower().Contains(query.ToLower()) || t.Title.ToLower().Contains(query.ToLower())))
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
         }

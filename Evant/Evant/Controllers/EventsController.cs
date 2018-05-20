@@ -124,7 +124,8 @@ namespace Evant.Controllers
                         Category = new CategoryInfoDTO()
                         {
                             CategoryId = @event.Category.Id,
-                            Name = @event.Category.Name
+                            Name = @event.Category.Name,
+                            IconUrl = @event.Category.Icon
                         },
                         User = new UserInfoDTO()
                         {
@@ -191,7 +192,11 @@ namespace Evant.Controllers
         {
             try
             {
-                var events = (await _eventRepo.SimilarEvents()).Select(e => new EventInfoDTO()
+                var @event = await _eventRepo.EventDetail(eventId);
+                if (@event == null)
+                    return NotFound("Kayıt bulunamadı.");
+
+                var events = (await _eventRepo.SimilarEvents(@event)).Select(e => new EventInfoDTO()
                 {
                     EventId = e.Id,
                     Title = e.Title,
@@ -327,7 +332,7 @@ namespace Evant.Controllers
                     CategoryId = model.CategoryId,
                     Title = model.Title,
                     Description = model.Description,
-                    IsPrivate = model.IsPrivate, 
+                    IsPrivate = model.IsPrivate,
                     StartDate = model.StartAt,
                     FinishDate = model.FinishAt,
                     Photo = "https://evantstorage.blob.core.windows.net/events/" + model.EventId,

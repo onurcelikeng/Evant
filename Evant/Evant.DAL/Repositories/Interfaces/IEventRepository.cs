@@ -11,7 +11,7 @@ namespace Evant.DAL.Repositories.Interfaces
         Task<List<Event>> Timeline(Guid userId);
         Task<Event> EventDetail(Guid eventId);
         Task<List<Event>> UserEvents(Guid userId);
-        Task<List<Event>> SimilarEvents();
+        Task<List<Event>> SimilarEvents(Event @event);
         Task<List<Event>> EventsByCategory(Guid categoryId);
         Task<List<Event>> Search(string query);
         Task<bool> SoftDelete(Guid eventId);

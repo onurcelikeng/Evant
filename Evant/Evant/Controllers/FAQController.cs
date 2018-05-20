@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Evant.Controllers
 {
     [Produces("application/json")]
-    [Route("api/faq")]
+    [Route("api/faqs")]
     public class FAQController : BaseController
     {
         private readonly IRepository<FAQ> _faqRepo;
