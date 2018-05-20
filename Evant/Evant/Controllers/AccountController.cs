@@ -54,8 +54,7 @@ namespace Evant.Controllers
         }
 
 
-        [HttpPost]
-        [Route("register")]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDTO user)
         {
             try
@@ -95,8 +94,7 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("token")]
+        [HttpPost("token")]
         public async Task<IActionResult> Login([FromBody] LoginDTO user)
         {
             try
@@ -287,8 +285,7 @@ namespace Evant.Controllers
         }
 
         [Authorize]
-        [HttpPost]
-        [Route("photo")]
+        [HttpPost("photo")]
         public async Task<IActionResult> UploadPhoto([FromForm] FileInputModel inputModel)
         {
             try
@@ -329,8 +326,7 @@ namespace Evant.Controllers
         }
 
         [Authorize]
-        [HttpPost]
-        [Route("profile")]
+        [HttpPost("profile")]
         public async Task<IActionResult> UpdateProfile([FromBody] UserUpdateDTO user)
         {
             try
@@ -377,8 +373,7 @@ namespace Evant.Controllers
         }
 
         [Authorize]
-        [HttpPut]
-        [Route("password")]
+        [HttpPut("password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO password)
         {
             try

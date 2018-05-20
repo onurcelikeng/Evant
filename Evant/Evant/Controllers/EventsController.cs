@@ -261,8 +261,7 @@ namespace Evant.Controllers
         }
 
         [Authorize]
-        [HttpGet]
-        [Route("search/{query}")]
+        [HttpGet("search/{query}")]
         public async Task<IActionResult> SearchEvents(string query)
         {
             try

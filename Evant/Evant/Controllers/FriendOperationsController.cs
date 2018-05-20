@@ -110,8 +110,7 @@ namespace Evant.Controllers
         }
 
         [Authorize]
-        [HttpPost]
-        [Route("{friendId}")]
+        [HttpPost("{friendId}")]
         public async Task<IActionResult> Follow([FromRoute] Guid friendId)
         {
             try
