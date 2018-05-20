@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
 {
+    [Produces("application/json")]
     [Route("api/gameboard")]
     public class GameBoardController : BaseController
     {
@@ -28,8 +29,7 @@ namespace Evant.Controllers
         }
 
 
-        [HttpGet]
-        [Route("{type}")]
+        [HttpGet("{type}")]
         public async Task<IActionResult> GameBorads([FromRoute] string type)
         {
             try

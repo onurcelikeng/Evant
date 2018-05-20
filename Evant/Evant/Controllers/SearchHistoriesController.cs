@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
 {
-    [Authorize]
+    [Produces("application/json")]
     [Route("api/histories")]
     public class SearchHistoriesController : BaseController
     {
@@ -27,6 +27,7 @@ namespace Evant.Controllers
         }
 
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Histories()
         {
@@ -51,9 +52,9 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("{keyword}")]
-        public async Task<IActionResult> AddHistory(string keyword)
+        [Authorize]
+        [HttpPost("{keyword}")]
+        public async Task<IActionResult> AddHistory([FromRoute] string keyword)
         {
             try
             {
@@ -90,6 +91,7 @@ namespace Evant.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{historyId}")]
         public async Task<IActionResult> DeleteHistory(Guid historyId)
         {
@@ -114,6 +116,7 @@ namespace Evant.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete]
         public async Task<IActionResult> DeleteHistories()
         {

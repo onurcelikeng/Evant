@@ -1,10 +1,8 @@
 ﻿using Evant.Contracts.DataTransferObjects;
-using Evant.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Helpers
 {
-    [Produces("application/json")]
     public class BaseController : Controller
     {
 

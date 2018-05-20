@@ -18,7 +18,7 @@ using static Evant.Constants.GameConstant;
 
 namespace Evant.Controllers
 {
-    [Authorize]
+    [Produces("application/json")]
     [Route("api/events")]
     public class EventsController : BaseController
     {
@@ -43,6 +43,7 @@ namespace Evant.Controllers
         }
 
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Timeline()
         {
@@ -96,8 +97,8 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("{eventId}/details")]
+        [Authorize]
+        [HttpGet("{eventId}/details")]
         public async Task<IActionResult> EventDetail(Guid eventId)
         {
             try
@@ -152,8 +153,8 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpGet()]
-        [Route("{userId}")]
+        [Authorize]
+        [HttpGet("{userId}")]
         public async Task<IActionResult> UserEvents([FromRoute] Guid userId)
         {
             try
@@ -185,8 +186,8 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpGet()]
-        [Route("{eventId}/similar")]
+        [Authorize]
+        [HttpGet("{eventId}/similar")]
         public async Task<IActionResult> SimilarEvents([FromRoute] Guid eventId)
         {
             try
@@ -222,8 +223,8 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("categoryevents/{categoryId}")]
+        [Authorize]
+        [HttpGet("categoryevents/{categoryId}")]
         public async Task<IActionResult> EventsByCategory([FromRoute] Guid categoryId)
         {
             try
@@ -259,6 +260,7 @@ namespace Evant.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("search/{query}")]
         public async Task<IActionResult> SearchEvents(string query)
@@ -312,6 +314,7 @@ namespace Evant.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddEvent([FromBody] EventDTO model)
         {
@@ -387,6 +390,7 @@ namespace Evant.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> UpdateEvent([FromBody] EventDTO model)
         {
@@ -434,8 +438,8 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpDelete()]
-        [Route("{eventId}")]
+        [Authorize]
+        [HttpDelete("{eventId}")]
         public async Task<IActionResult> DeleteEvent([FromRoute] Guid eventId)
         {
             try

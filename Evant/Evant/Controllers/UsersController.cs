@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
 {
-    [Authorize]
+    [Produces("application/json")]
     [Route("api/users")]
     public class UsersController : BaseController
     {
@@ -48,8 +48,8 @@ namespace Evant.Controllers
         }
 
 
-        [HttpGet()]
-        [Route("{userId}")]
+        [Authorize]
+        [HttpGet("{userId}")]
         public async Task<IActionResult> GetUser([FromRoute] Guid userId)
         {
             try
@@ -76,8 +76,8 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpGet()]
-        [Route("timeline/{userId}")]
+        [Authorize]
+        [HttpGet("timeline/{userId}")]
         public async Task<IActionResult> UserTimeline([FromRoute] Guid userId)
         {
             try
@@ -195,8 +195,8 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("search/{query}")]
+        [Authorize]
+        [HttpGet("search/{query}")]
         public async Task<IActionResult> SearchUsers(string query)
         {
             try

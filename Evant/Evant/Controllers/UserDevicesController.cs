@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
 {
-    [Authorize]
+    [Produces("application/json")]
     [Route("api/devices")]
     public class UserDevicesController : BaseController
     {
@@ -31,6 +31,7 @@ namespace Evant.Controllers
         }
 
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Devices()
         {
@@ -110,8 +111,8 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("{deviceId}/logout")]
+        [Authorize]
+        [HttpGet("{deviceId}/logout")]
         public async Task<IActionResult> Logout([FromRoute] string deviceId)
         {
             try

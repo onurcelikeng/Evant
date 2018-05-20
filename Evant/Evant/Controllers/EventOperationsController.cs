@@ -12,7 +12,7 @@ using static Evant.Constants.GameConstant;
 
 namespace Evant.Controllers
 {
-    [Authorize]
+    [Produces("application/json")]
     [Route("api/eventoperations")]
     public class EventOperationsController : BaseController
     {
@@ -37,8 +37,8 @@ namespace Evant.Controllers
         }
 
 
-        [HttpGet()]
-        [Route("{eventId}")]
+        [Authorize]
+        [HttpGet("{eventId}")]
         public async Task<IActionResult> GetEventUsers([FromRoute] Guid eventId)
         {
             try
@@ -63,8 +63,8 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpGet()]
-        [Route("{eventId}/status")]
+        [Authorize]
+        [HttpGet("{eventId}/status")]
         public async Task<IActionResult> IsJoin([FromRoute] Guid eventId)
         {
             try
@@ -84,8 +84,8 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpPost()]
-        [Route("{eventId}")]
+        [Authorize]
+        [HttpPost("{eventId}")]
         public async Task<IActionResult> JoinEvent([FromRoute] Guid eventId)
         {
             try
@@ -134,8 +134,8 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpDelete()]
-        [Route("{eventId}")]
+        [Authorize]
+        [HttpDelete("{eventId}")]
         public async Task<IActionResult> LeaveEvent([FromRoute] Guid eventId)
         {
             try

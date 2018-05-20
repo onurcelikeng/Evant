@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
 {
-    [Authorize]
+    [Produces("application/json")]
     [Route("api/settings")]
     public class UserSettingsController : BaseController
     {
@@ -26,6 +26,7 @@ namespace Evant.Controllers
         }
 
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetUserSettings()
         {
@@ -57,6 +58,7 @@ namespace Evant.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> ChangeUserSetting([FromBody] UserSettingDTO model)
         {

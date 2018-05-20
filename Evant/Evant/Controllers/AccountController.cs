@@ -20,6 +20,7 @@ using Evant.Contracts.DataTransferObjects.Business;
 
 namespace Evant.Controllers
 {
+    [Produces("application/json")]
     [Route("api/account")]
     public class AccountController : BaseController
     {
@@ -139,8 +140,7 @@ namespace Evant.Controllers
         }
 
         [Authorize]
-        [HttpGet]
-        [Route("me")]
+        [HttpGet("me")]
         public async Task<IActionResult> Me()
         {
             try
@@ -419,8 +419,7 @@ namespace Evant.Controllers
         }
 
         [Authorize]
-        [HttpGet]
-        [Route("deactive")]
+        [HttpGet("deactive")]
         public async Task<IActionResult> DeActiveAccount()
         {
             try

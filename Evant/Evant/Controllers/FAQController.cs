@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
 {
+    [Produces("application/json")]
     [Route("api/faqs")]
     public class FAQController : BaseController
     {
@@ -25,8 +26,7 @@ namespace Evant.Controllers
         }
 
 
-        [HttpGet]
-        [Route("{eventId}")]
+        [HttpGet("{eventId}")]
         public async Task<IActionResult> FAQs([FromRoute] Guid eventId)
         {
             try
@@ -79,8 +79,7 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpDelete]
-        [Route("{faqId}")]
+        [HttpDelete("{faqId}")]
         public async Task<IActionResult> DeleteFAQ([FromRoute] Guid faqId)
         {
             try

@@ -16,6 +16,7 @@ using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models;
 
 namespace Evant.Controllers
 {
+    [Produces("application/json")]
     [Route("api/dashboard")]
     public class DashboardController : BaseController
     {
@@ -43,8 +44,7 @@ namespace Evant.Controllers
         }
 
 
-        [HttpGet]
-        [Route("{eventId}/users")]
+        [HttpGet("{eventId}/users")]
         public async Task<IActionResult> GetUsersAnalyses([FromRoute] Guid eventId)
         {
             try
@@ -105,8 +105,7 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("announcement")]
+        [HttpPost("announcement")]
         public async Task<IActionResult> SendAnnouncement([FromBody] AnnouncementDTO model)
         {
             try
@@ -133,8 +132,7 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("{eventId}/comments")]
+        [HttpGet("{eventId}/comments")]
         public async Task<IActionResult> GetCommentsAnalyse([FromRoute] Guid eventId)
         {
             var model = new List<CommentAnalyticsDTO>();
@@ -218,8 +216,7 @@ namespace Evant.Controllers
             return Ok(model);
         }
 
-        [HttpGet]
-        [Route("{eventId}/date")]
+        [HttpGet("{eventId}/date")]
         public async Task<IActionResult> GetDayAnalyse([FromRoute] Guid eventId)
         {
             try

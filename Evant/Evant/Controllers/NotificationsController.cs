@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
 {
-    [Authorize]
+    [Produces("application/json")]
     [Route("api/notifications")]
     public class NotificationsController : BaseController
     {
@@ -28,6 +28,7 @@ namespace Evant.Controllers
         }
 
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Notifications()
         {
@@ -65,6 +66,7 @@ namespace Evant.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> ReadAllNotifications()
         {
@@ -91,6 +93,7 @@ namespace Evant.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{notificationId}")]
         public async Task<IActionResult> DeleteNotification([FromRoute] Guid notificationId)
         {

@@ -13,7 +13,7 @@ using static Evant.Constants.BusinessConstant;
 
 namespace Evant.Controllers
 {
-    [Authorize]
+    [Produces("application/json")]
     [Route("api/business")]
     public class BusinessController : BaseController
     {
@@ -31,7 +31,7 @@ namespace Evant.Controllers
             _logHelper = logHelper;
         }
 
-
+        [Authorize]
         [HttpDelete]
         public async Task<IActionResult> SwitchtoNormal()
         {
@@ -63,6 +63,7 @@ namespace Evant.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> SwitchToBusiness([FromBody]BusinessDTO model)
         {
@@ -149,6 +150,7 @@ namespace Evant.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> IsExistBusinessAccount()
         {

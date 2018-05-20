@@ -13,7 +13,7 @@ using static Evant.Constants.GameConstant;
 
 namespace Evant.Controllers
 {
-    [Authorize]
+    [Produces("application/json")]
     [Route("api/comments")]
     public class CommentsController : BaseController
     {
@@ -37,9 +37,8 @@ namespace Evant.Controllers
             _logHelper = logHelper;
         }
 
-
-        [HttpGet()]
-        [Route("{eventId}")]
+        [Authorize]
+        [HttpGet("{eventId}")]
         public async Task<IActionResult> GetComments([FromRoute] Guid eventId)
         {
             try
@@ -70,6 +69,7 @@ namespace Evant.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddComment([FromBody] CommentDTO model)
         {
@@ -115,8 +115,8 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpDelete()]
-        [Route("{commentId}")]
+        [Authorize]
+        [HttpDelete("{commentId}")]
         public async Task<IActionResult> DeleteComment([FromRoute] Guid commentId)
         {
             try
