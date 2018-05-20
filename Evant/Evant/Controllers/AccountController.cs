@@ -20,7 +20,6 @@ using Evant.Contracts.DataTransferObjects.Business;
 
 namespace Evant.Controllers
 {
-    [Produces("application/json")]
     [Route("api/account")]
     public class AccountController : BaseController
     {
@@ -61,9 +60,7 @@ namespace Evant.Controllers
             try
             {
                 if (!ModelState.IsValid)
-                {
                     return BadRequest("Eksik bilgi girdiniz.");
-                }
 
                 var selectedUser = await _userRepo.First(u => u.Email == user.Email);
                 if (selectedUser != null)
@@ -72,23 +69,14 @@ namespace Evant.Controllers
                 }
                 else
                 {
-                    var entity = new User
+                    var response = await _userRepo.Add(new User
                     {
                         Id = new Guid(),
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         Email = user.Email,
-                        Password = user.Password,
-                        Role = "User",
-                        IsActive = true,
-                        IsFacebook = false,
-                        Photo = "https://evantstorage.blob.core.windows.net/users/default.jpeg",
-                        FacebookId = null,
-                        Setting = new UserSetting(),
-                        Business = new Business()
-                    };
-
-                    var response = await _userRepo.Add(entity);
+                        Password = user.Password
+                    });
                     if (response)
                     {
                         return Ok("Kullanıcı eklendi.");
@@ -113,9 +101,7 @@ namespace Evant.Controllers
             try
             {
                 if (!ModelState.IsValid)
-                {
                     return BadRequest("Eksik bilgi girdiniz.");
-                }
 
                 var selectedUser = await _userRepo.Login(user.Email, user.Password);
                 if (selectedUser != null)
@@ -159,44 +145,38 @@ namespace Evant.Controllers
         {
             try
             {
-                Guid userId = User.GetUserId();
-
-                var user = await _userRepo.GetUser(userId);
+                var user = await _userRepo.GetUser(User.GetUserId());
                 if (user == null)
-                {
                     return BadRequest("Kayıt bulunamadı.");
-                }
-                else
-                {
-                    var model = new UserDetailDTO()
-                    {
-                        UserId = user.Id,
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                        Email = user.Email,
-                        PhotoUrl = user.Photo,
-                        IsBusiness = user.IsBusinessAccount,
-                        FollowersCount = user.Followers.Count,
-                        FollowingsCount = user.Followings.Count,
-                        Settings = new UserSettingInfoDTO()
-                        {
-                            Language = user.Setting.Language,
-                            Theme = user.Setting.Theme
-                        },
-                        Business = new BusinessInfoDTO()
-                        {
-                            Type = user.Business.BusinessType,
-                            ExpireAt = user.Business.ExpireDate,
-                            IsAgeAnalysis = user.Business.IsAgeAnalysis,
-                            IsAttendedUserAnalysis = user.Business.IsAttendedUserAnalysis,
-                            IsChatBotSupport = user.Business.IsChatBotSupport,
-                            IsCommentAnalysis = user.Business.IsCommentAnalysis,
-                            IsSendNotificationUsers = user.Business.IsSendNotificationUsers
-                        }               
-                    };
 
-                    return Ok(model);
-                }
+                var model = new UserDetailDTO()
+                {
+                    UserId = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    PhotoUrl = user.Photo,
+                    IsBusiness = user.IsBusinessAccount,
+                    FollowersCount = user.Followers.Count,
+                    FollowingsCount = user.Followings.Count,
+                    Settings = new UserSettingInfoDTO()
+                    {
+                        Language = user.Setting.Language,
+                        Theme = user.Setting.Theme
+                    },
+                    Business = new BusinessInfoDTO()
+                    {
+                        Type = user.Business.BusinessType,
+                        ExpireAt = user.Business.ExpireDate,
+                        IsAgeAnalysis = user.Business.IsAgeAnalysis,
+                        IsAttendedUserAnalysis = user.Business.IsAttendedUserAnalysis,
+                        IsChatBotSupport = user.Business.IsChatBotSupport,
+                        IsCommentAnalysis = user.Business.IsCommentAnalysis,
+                        IsSendNotificationUsers = user.Business.IsSendNotificationUsers
+                    }
+                };
+
+                return Ok(model);
             }
             catch (Exception ex)
             {
@@ -295,13 +275,9 @@ namespace Evant.Controllers
                 }
 
                 if (timeline.IsNullOrEmpty())
-                {
                     return NotFound("Kayıt bulunamadı.");
-                }
-                else
-                {
-                    return Ok(timeline.OrderByDescending(t => t.CreateAt));
-                }
+
+                return Ok(timeline.OrderByDescending(t => t.CreateAt));
             }
             catch (Exception ex)
             {
@@ -362,41 +338,35 @@ namespace Evant.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest("Eksik bilgi girdiniz.");
 
-                Guid userId = User.GetUserId();
-
-                var selectedUser = await _userRepo.First(u => u.Id == userId);
+                var selectedUser = await _userRepo.First(u => u.Id == User.GetUserId());
                 if (selectedUser == null)
-                {
                     return NotFound("Kayıt bulunamadı.");
-                }
-                else
+
+                if (selectedUser.Email != user.Email)
                 {
-                    if (selectedUser.Email != user.Email)
+                    bool emailExist = await _userRepo.EmailCheck(user.Email);
+                    if (emailExist)
                     {
-                        bool emailExist = await _userRepo.EmailCheck(user.Email);
-                        if (emailExist)
-                        {
-                            return BadRequest("Eposta adresi başka bir kullanıcı tarafından kullanılıyor.");
-                        }
-                        else
-                        {
-                            selectedUser.Email = user.Email;
-                        }
-                    }
-
-                    selectedUser.FirstName = user.FirstName;
-                    selectedUser.LastName = user.LastName;
-                    selectedUser.UpdateAt = DateTime.Now;
-
-                    var response = await _userRepo.Update(selectedUser);
-                    if (response)
-                    {
-                        return Ok("Kullanıcı bilgileri güncellendi.");
+                        return BadRequest("Eposta adresi başka bir kullanıcı tarafından kullanılıyor.");
                     }
                     else
                     {
-                        return BadRequest("Kullanıcı bilgileri güncellenemedi.");
+                        selectedUser.Email = user.Email;
                     }
+                }
+
+                selectedUser.FirstName = user.FirstName;
+                selectedUser.LastName = user.LastName;
+                selectedUser.UpdateAt = DateTime.Now;
+
+                var response = await _userRepo.Update(selectedUser);
+                if (response)
+                {
+                    return Ok("Kullanıcı bilgileri güncellendi.");
+                }
+                else
+                {
+                    return BadRequest("Kullanıcı bilgileri güncellenemedi.");
                 }
             }
             catch (Exception ex)
@@ -419,8 +389,7 @@ namespace Evant.Controllers
                 if (password.NewPassword != password.ReNewPassword)
                     return BadRequest("Şifreler aynı değil.");
 
-                Guid userId = User.GetUserId();
-                var user = await _userRepo.First(u => u.Id == userId);
+                var user = await _userRepo.First(u => u.Id == User.GetUserId());
                 if (user != null)
                 {
                     if (user.Password == password.OldPassword)
@@ -456,9 +425,7 @@ namespace Evant.Controllers
         {
             try
             {
-                Guid userId = User.GetUserId();
-
-                var user = await _userRepo.GetUser(userId);
+                var user = await _userRepo.GetUser(User.GetUserId());
                 if (user != null)
                 {
                     if (user.IsActive)

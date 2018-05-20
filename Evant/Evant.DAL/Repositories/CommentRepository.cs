@@ -32,7 +32,7 @@ namespace Evant.DAL.Repositories
             return await Table
                 .Include(t => t.Event)
                 .Include(t => t.User)
-                .Where(t => t.UserId == userId && !t.Event.IsDeleted)
+                .Where(t => t.UserId == userId && !t.Event.IsDeleted && t.User.IsActive)
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
         }

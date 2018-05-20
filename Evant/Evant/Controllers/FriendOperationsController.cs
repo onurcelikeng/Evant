@@ -12,7 +12,7 @@ using static Evant.Constants.GameConstant;
 
 namespace Evant.Controllers
 {
-    [Produces("application/json")]
+    [Authorize]
     [Route("api/friendoperations")]
     public class FriendOperationsController : BaseController
     {
@@ -34,10 +34,9 @@ namespace Evant.Controllers
         }
 
 
-        [Authorize]
         [HttpGet]
         [Route("{userId}/followers")]
-        public async Task<IActionResult> GetFollowers([FromRoute] Guid userId)
+        public async Task<IActionResult> Followers([FromRoute] Guid userId)
         {
             try
             {
@@ -61,10 +60,9 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("{userId}/followings")]
-        public async Task<IActionResult> GetFollowings([FromRoute] Guid userId)
+        public async Task<IActionResult> Followings([FromRoute] Guid userId)
         {
             try
             {
@@ -88,8 +86,8 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
-        [HttpGet("{friendId}")]
+        [HttpGet()]
+        [Route("{friendId}")]
         public async Task<IActionResult> IsFollow([FromRoute] Guid friendId)
         {
             try
@@ -111,8 +109,8 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
-        [HttpPost("{friendId}")]
+        [HttpPost()]
+        [Route("{friendId}")]
         public async Task<IActionResult> Follow([FromRoute] Guid friendId)
         {
             try
@@ -156,8 +154,8 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
-        [HttpDelete("{friendId}")]
+        [HttpDelete()]
+        [Route("{friendId}")]
         public async Task<IActionResult> UnFollow([FromRoute] Guid friendId)
         {
             try

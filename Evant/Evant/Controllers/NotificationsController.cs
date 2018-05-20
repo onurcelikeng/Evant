@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
 {
-    [Produces("application/json")]
+    [Authorize]
     [Route("api/notifications")]
     public class NotificationsController : BaseController
     {
@@ -28,14 +28,12 @@ namespace Evant.Controllers
         }
 
 
-        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetNotifications()
+        public async Task<IActionResult> Notifications()
         {
             try
             {
-                Guid userId = User.GetUserId();
-                var notifications = (await _notificationRepo.Notifications(userId)).Select(n => new NotificationDTO()
+                var notifications = (await _notificationRepo.Notifications(User.GetUserId())).Select(n => new NotificationDTO()
                 {
                     NotificationId = n.Id,
                     Content = n.Content,
@@ -62,24 +60,20 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("NotificationsController", 500, "GetNotifications", ex.Message);
+                _logHelper.Log("NotificationsController", 500, "Notifications", ex.Message);
                 return null;
             }
         }
 
-        [Authorize]
-        [HttpGet]
-        [Route("read")]
+        [HttpPut]
         public async Task<IActionResult> ReadAllNotifications()
         {
             try
             {
-                Guid userId = User.GetUserId();
-
-                var unreadNotifications = (await _notificationRepo.Where(n => n.ReceiverUserId == userId && !n.IsRead));
-                if (!unreadNotifications.IsNullOrEmpty())
+                var unreads = (await _notificationRepo.Where(n => !n.IsRead && n.ReceiverUserId == User.GetUserId()));
+                if (!unreads.IsNullOrEmpty())
                 {
-                    foreach (var notification in unreadNotifications)
+                    foreach (var notification in unreads)
                     {
                         notification.IsRead = true;
                         notification.UpdateAt = DateTime.Now;
@@ -97,7 +91,6 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
         [HttpDelete("{notificationId}")]
         public async Task<IActionResult> DeleteNotification([FromRoute] Guid notificationId)
         {

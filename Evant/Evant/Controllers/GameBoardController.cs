@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
 {
-    [Produces("application/json")]
     [Route("api/gameboard")]
     public class GameBoardController : BaseController
     {

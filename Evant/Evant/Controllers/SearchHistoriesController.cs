@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
 {
-    [Produces("application/json")]
+    [Authorize]
     [Route("api/histories")]
     public class SearchHistoriesController : BaseController
     {
@@ -27,15 +27,12 @@ namespace Evant.Controllers
         }
 
 
-        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetHistories()
+        public async Task<IActionResult> Histories()
         {
             try
             {
-                Guid userId = User.GetUserId();
-
-                var histories = (await _searchHistoryRepo.Where(s => s.UserId == userId))
+                var histories = (await _searchHistoryRepo.Where(s => s.UserId == User.GetUserId()))
                     .OrderByDescending(s => s.CreatedAt)
                     .Select(h => new SearchHistoryDTO()
                     {
@@ -49,12 +46,11 @@ namespace Evant.Controllers
             }
             catch (Exception ex)
             {
-                _logHelper.Log("SearchHistoriesController", 500, "GetHistories", ex.Message);
+                _logHelper.Log("SearchHistoriesController", 500, "Histories", ex.Message);
                 return null;
             }
         }
 
-        [Authorize]
         [HttpPost]
         [Route("{keyword}")]
         public async Task<IActionResult> AddHistory(string keyword)
@@ -94,7 +90,6 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
         [HttpDelete("{historyId}")]
         public async Task<IActionResult> DeleteHistory(Guid historyId)
         {
@@ -119,7 +114,6 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
         [HttpDelete]
         public async Task<IActionResult> DeleteHistories()
         {

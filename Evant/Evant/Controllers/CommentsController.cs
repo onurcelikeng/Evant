@@ -13,7 +13,7 @@ using static Evant.Constants.GameConstant;
 
 namespace Evant.Controllers
 {
-    [Produces("application/json")]
+    [Authorize]
     [Route("api/comments")]
     public class CommentsController : BaseController
     {
@@ -38,8 +38,8 @@ namespace Evant.Controllers
         }
 
 
-        [Authorize]
-        [HttpGet("{eventId}")]
+        [HttpGet()]
+        [Route("{eventId}")]
         public async Task<IActionResult> GetComments([FromRoute] Guid eventId)
         {
             try
@@ -70,7 +70,6 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddComment([FromBody] CommentDTO model)
         {
@@ -116,15 +115,13 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
-        [HttpDelete("{commentId}")]
+        [HttpDelete()]
+        [Route("{commentId}")]
         public async Task<IActionResult> DeleteComment([FromRoute] Guid commentId)
         {
             try
             {
-                Guid userId = User.GetUserId();
-
-                var comment = await _commentRepo.First(c => c.Id == commentId && c.UserId == userId);
+                var comment = await _commentRepo.First(c => c.Id == commentId && c.UserId == User.GetUserId());
                 if (comment == null)
                     return NotFound("Kayıt bulunamadı.");
 

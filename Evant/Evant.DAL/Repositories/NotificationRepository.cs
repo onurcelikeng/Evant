@@ -16,7 +16,7 @@ namespace Evant.DAL.Repositories
 
         }
 
-        
+
         public async Task<List<Notification>> Notifications(Guid userId)
         {
             return await Table

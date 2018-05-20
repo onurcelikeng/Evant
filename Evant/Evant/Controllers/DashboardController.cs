@@ -16,7 +16,6 @@ using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models;
 
 namespace Evant.Controllers
 {
-    [Produces("application/json")]
     [Route("api/dashboard")]
     public class DashboardController : BaseController
     {

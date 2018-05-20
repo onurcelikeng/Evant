@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
 {
-    [Produces("application/json")]
+    [Authorize]
     [Route("api/devices")]
     public class UserDevicesController : BaseController
     {
@@ -30,16 +30,13 @@ namespace Evant.Controllers
         }
 
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> SaveDevice([FromBody] UserDeviceDTO device)
         {
             try
             {
                 if (!ModelState.IsValid)
-                {
                     return BadRequest("Eksik bilgi girdiniz.");
-                }
 
                 var selectedDevice = await _userDevicesRepo.First(d => d.DeviceId == device.DeviceId);
                 if (selectedDevice != null)
@@ -59,19 +56,16 @@ namespace Evant.Controllers
                 }
                 else
                 {
-                    Guid userId = User.GetUserId();
-                    var entity = new UserDevice()
+                    var response = await _userDevicesRepo.Add(new UserDevice()
                     {
                         Id = new Guid(),
-                        UserId = userId,
+                        UserId = User.GetUserId(),
                         DeviceId = device.DeviceId,
                         Brand = device.Brand,
                         Model = device.Model,
                         OS = device.OS,
                         IsLoggedin = true,
-                    };
-
-                    var response = await _userDevicesRepo.Add(entity);
+                    });
                     if (response)
                     {
                         return Ok("Cihazınız eklendi.");
@@ -89,7 +83,6 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("{deviceId}/logout")]
         public async Task<IActionResult> Logout([FromRoute] string deviceId)
@@ -98,23 +91,18 @@ namespace Evant.Controllers
             {
                 var selectedDevice = await _userDevicesRepo.First(d => d.DeviceId == deviceId);
                 if (selectedDevice == null)
-                {
                     return BadRequest("Kayıt bulunamadı.");
+
+                selectedDevice.IsLoggedin = false;
+                selectedDevice.UpdateAt = DateTime.Now;
+                var response = await _userDevicesRepo.Update(selectedDevice);
+                if (response)
+                {
+                    return Ok("Cihazınızda oturum kapatıldı.");
                 }
                 else
                 {
-                    selectedDevice.IsLoggedin = false;
-                    selectedDevice.UpdateAt = DateTime.Now;
-
-                    var response = await _userDevicesRepo.Update(selectedDevice);
-                    if (response)
-                    {
-                        return Ok("Cihazınızda oturum kapatıldı.");
-                    }
-                    else
-                    {
-                        return BadRequest("Cihazınızda oturum kapatılamadı.");
-                    }
+                    return BadRequest("Cihazınızda oturum kapatılamadı.");
                 }
             }
             catch (Exception ex)

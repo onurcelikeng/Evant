@@ -18,7 +18,7 @@ using static Evant.Constants.GameConstant;
 
 namespace Evant.Controllers
 {
-    [Produces("application/json")]
+    [Authorize]
     [Route("api/events")]
     public class EventsController : BaseController
     {
@@ -43,7 +43,6 @@ namespace Evant.Controllers
         }
 
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Timeline()
         {
@@ -97,10 +96,9 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("{eventId}/details")]
-        public async Task<IActionResult> GetEventDetail(Guid eventId)
+        public async Task<IActionResult> EventDetail(Guid eventId)
         {
             try
             {
@@ -153,9 +151,9 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
-        [HttpGet("{userId}")]
-        public async Task<IActionResult> GetUserEvents([FromRoute] Guid userId)
+        [HttpGet()]
+        [Route("{userId}")]
+        public async Task<IActionResult> UserEvents([FromRoute] Guid userId)
         {
             try
             {
@@ -186,9 +184,9 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
-        [HttpGet("{eventId}/similar")]
-        public async Task<IActionResult> GetSimilarEvents([FromRoute] Guid eventId)
+        [HttpGet()]
+        [Route("{eventId}/similar")]
+        public async Task<IActionResult> SimilarEvents([FromRoute] Guid eventId)
         {
             try
             {
@@ -223,10 +221,9 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("categoryevents/{categoryId}")]
-        public async Task<IActionResult> GetEventsByCategory([FromRoute] Guid categoryId)
+        public async Task<IActionResult> EventsByCategory([FromRoute] Guid categoryId)
         {
             try
             {
@@ -261,7 +258,6 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("search/{query}")]
         public async Task<IActionResult> SearchEvents(string query)
@@ -315,7 +311,6 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddEvent([FromBody] EventDTO model)
         {
@@ -360,7 +355,6 @@ namespace Evant.Controllers
             }
         }
 
-        [HttpPost]
         [Route("photo")]
         public async Task<IActionResult> UploadPhoto([FromForm] FileInputModel inputModel)
         {
@@ -372,7 +366,7 @@ namespace Evant.Controllers
                 if (inputModel.File == null || inputModel.File.Length == 0)
                     return BadRequest("file not selected");
 
-                var blobName = Guid.NewGuid().ToString();
+                var blobName = Guid.NewGuid().ToString() + ".jpg";
                 var fileStream = await inputModel.File.GetFileStream();
 
                 var isUploaded = await _blobStorage.UploadAsync("event", blobName, fileStream);
@@ -392,7 +386,6 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
         [HttpPut]
         public async Task<IActionResult> UpdateEvent([FromBody] EventDTO model)
         {
@@ -440,8 +433,8 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
-        [HttpDelete("{eventId}")]
+        [HttpDelete()]
+        [Route("{eventId}")]
         public async Task<IActionResult> DeleteEvent([FromRoute] Guid eventId)
         {
             try

@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
 {
-    [Produces("application/json")]
     [Route("api/categories")]
     public class CategoriesController : BaseController
     {
@@ -27,7 +26,7 @@ namespace Evant.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetCategories()
+        public async Task<IActionResult> Categories()
         {
             try
             {

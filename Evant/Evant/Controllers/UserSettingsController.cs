@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
 {
-    [Produces("application/json")]
+    [Authorize]
     [Route("api/settings")]
     public class UserSettingsController : BaseController
     {
@@ -26,19 +26,16 @@ namespace Evant.Controllers
         }
 
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetUserSettings()
         {
             try
             {
-                Guid userId = User.GetUserId();
-
-                var settings = await _userSettingRepo.First(s => s.UserId == userId);
+                var settings = await _userSettingRepo.First(s => s.UserId == User.GetUserId());
                 if (settings == null)
                     return NotFound("Kayıt bulunamadı.");
 
-                var model = new UserSettingDTO()
+                return Ok(new UserSettingDTO()
                 {
                     UserSettingId = settings.Id,
                     Theme = settings.Theme,
@@ -51,8 +48,7 @@ namespace Evant.Controllers
                     IsJoinEventVisibleTimeline = settings.IsJoinEventVisibleTimeline,
                     IsFollowerVisibleTimeline = settings.IsFollowerVisibleTimeline,
                     IsFollowingVisibleTimeline = settings.IsFollowingVisibleTimeline
-                };
-                return Ok(model);
+                });
             }
             catch (Exception ex)
             {
@@ -61,7 +57,6 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
         [HttpPut]
         public async Task<IActionResult> ChangeUserSetting([FromBody] UserSettingDTO model)
         {
@@ -70,9 +65,7 @@ namespace Evant.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest("Eksik bilgi girdiniz.");
 
-                Guid userId = User.GetUserId();
-
-                var selectedUserSetting = await _userSettingRepo.First(us => us.UserId == userId);
+                var selectedUserSetting = await _userSettingRepo.First(us => us.UserId == User.GetUserId());
                 if (selectedUserSetting == null)
                     return NotFound("Kayıt bulunamadı.");
 

@@ -22,7 +22,7 @@ namespace Evant.DAL.EF.Tables
         }
 
 
-        public string FacebookId { get; set; }
+        public string FacebookId { get; set; } = null;
 
         [Required]
         public string FirstName { get; set; }
@@ -41,24 +41,24 @@ namespace Evant.DAL.EF.Tables
 
         public string Phone { get; set; }
 
-        public string Photo { get; set; }
+        public string Photo { get; set; } = "https://evantstorage.blob.core.windows.net/users/default.jpeg";
 
         [Required]
-        public string Role { get; set; }
+        public string Role { get; set; } = "User";
 
         [Required]
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         [Required]
-        public bool IsFacebook { get; set; }
+        public bool IsFacebook { get; set; } = false;
 
         [Required]
         public bool IsBusinessAccount { get; set; } = false;
 
 
-        public virtual UserSetting Setting { get; set; }
+        public virtual UserSetting Setting { get; set; } = new UserSetting();
 
-        public virtual Business Business { get; set; }
+        public virtual Business Business { get; set; } = new Business();
 
         public virtual ICollection<GameBoard> GameBoard { get; set; }
 

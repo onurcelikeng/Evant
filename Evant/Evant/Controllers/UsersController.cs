@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Controllers
 {
-    [Produces("application/json")]
+    [Authorize]
     [Route("api/users")]
     public class UsersController : BaseController
     {
@@ -48,8 +48,8 @@ namespace Evant.Controllers
         }
 
 
-        [Authorize]
-        [HttpGet("{userId}")]
+        [HttpGet()]
+        [Route("{userId}")]
         public async Task<IActionResult> GetUser([FromRoute] Guid userId)
         {
             try
@@ -58,7 +58,7 @@ namespace Evant.Controllers
                 if (user == null)
                     return BadRequest("Kayıt bulunamadı.");
 
-                var model = new BaseUserDetailDTO()
+                return Ok(new BaseUserDetailDTO()
                 {
                     UserId = user.Id,
                     FirstName = user.FirstName,
@@ -67,8 +67,7 @@ namespace Evant.Controllers
                     PhotoUrl = user.Photo,
                     FollowersCount = user.Followers.Count,
                     FollowingsCount = user.Followings.Count
-                };
-                return Ok(model);
+                });
             }
             catch (Exception ex)
             {
@@ -77,19 +76,17 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
-        [HttpGet("timeline/{userId}")]
+        [HttpGet()]
+        [Route("timeline/{userId}")]
         public async Task<IActionResult> UserTimeline([FromRoute] Guid userId)
         {
             try
             {
-                List<TimelineDTO> timeline = new List<TimelineDTO>();
+                var timeline = new List<TimelineDTO>();
 
                 var userSetting = await _userSettingRepo.First(us => us.UserId == userId);
                 if (userSetting == null)
-                {
                     return NotFound("Kullanıcı ayarı bulunamadı.");
-                }
 
                 //User Events
                 if (userSetting.IsCreateEventVisibleTimeline)
@@ -187,13 +184,9 @@ namespace Evant.Controllers
                 }
 
                 if (timeline.IsNullOrEmpty())
-                {
                     return NotFound("Kayıt bulunamadı.");
-                }
-                else
-                {
-                    return Ok(timeline.OrderByDescending(t => t.CreateAt));
-                }
+
+                return Ok(timeline.OrderByDescending(t => t.CreateAt));
             }
             catch (Exception ex)
             {
@@ -202,7 +195,6 @@ namespace Evant.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("search/{query}")]
         public async Task<IActionResult> SearchUsers(string query)

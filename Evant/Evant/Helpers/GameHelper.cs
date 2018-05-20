@@ -27,15 +27,13 @@ namespace Evant.Helpers
         {
             try
             {
-                var point = new GameBoard()
+                var response = await _gameBoardRepo.Add(new GameBoard()
                 {
                     Id = new Guid(),
                     OperationType = type.ToString(),
                     Point = (int)type,
                     UserId = userId
-                };
-
-                var response = await _gameBoardRepo.Add(point);
+                });
             }
             catch (Exception ex)
             {

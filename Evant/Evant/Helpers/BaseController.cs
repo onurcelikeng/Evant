@@ -1,10 +1,13 @@
 ﻿using Evant.Contracts.DataTransferObjects;
+using Evant.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Evant.Helpers
 {
+    [Produces("application/json")]
     public class BaseController : Controller
     {
+
         public override OkObjectResult Ok(object data)
         {
             var response = new ResultDTO<object>();
