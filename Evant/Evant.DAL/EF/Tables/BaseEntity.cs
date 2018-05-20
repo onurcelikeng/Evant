@@ -9,7 +9,7 @@ namespace Evant.DAL.EF.Tables
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime UpdateAt { get; set; }
 

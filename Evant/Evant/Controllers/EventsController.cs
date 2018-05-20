@@ -366,7 +366,7 @@ namespace Evant.Controllers
                 if (inputModel.File == null || inputModel.File.Length == 0)
                     return BadRequest("file not selected");
 
-                var blobName = Guid.NewGuid().ToString() + ".jpg";
+                var blobName = Guid.NewGuid().ToString();
                 var fileStream = await inputModel.File.GetFileStream();
 
                 var isUploaded = await _blobStorage.UploadAsync("event", blobName, fileStream);
