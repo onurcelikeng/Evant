@@ -353,6 +353,7 @@ namespace Evant.Controllers
 
                 selectedUser.FirstName = user.FirstName;
                 selectedUser.LastName = user.LastName;
+                selectedUser.Birthdate = user.Birthdate;
                 selectedUser.UpdateAt = DateTime.UtcNow;
 
                 var response = await _userRepo.Update(selectedUser);

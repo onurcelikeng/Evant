@@ -91,7 +91,11 @@ namespace Evant.Controllers
                 var response = await _commentRepo.Add(entity);
                 if (response)
                 {
-                    await _gameHelper.Point(userId, GameType.CommentEvent);
+                    try
+                    {
+                        await _gameHelper.Point(userId, GameType.CommentEvent);
+                    }
+                    catch { }
 
                     var @event = await _eventRepo.First(e => e.Id == model.EventId);
                     if (@event != null)

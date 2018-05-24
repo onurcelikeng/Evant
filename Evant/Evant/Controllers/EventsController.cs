@@ -341,7 +341,12 @@ namespace Evant.Controllers
                 var response = await _eventRepo.Add(entity);
                 if (response)
                 {
-                    await _gameHelper.Point(userId, GameType.CreateEvent);
+                    try
+                    {
+                        await _gameHelper.Point(userId, GameType.CreateEvent);
+                    }
+                    catch { }
+
                     return Ok("Etkinlik oluşturuldu.");
                 }
                 else

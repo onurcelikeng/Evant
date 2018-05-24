@@ -90,10 +90,10 @@ namespace Evant.Controllers
                         else if (model.Old.Min < age && age < model.Old.Max) model.Old.Value += 1;
                     }
 
-                    model.Teenager.Ratio = (model.Teenager.Value * users.Count) / 100;
-                    model.Young.Ratio = (model.Young.Value * users.Count) / 100;
-                    model.Middle.Ratio = (model.Middle.Value * users.Count) / 100;
-                    model.Old.Ratio = (model.Old.Value * users.Count) / 100;
+                    model.Teenager.Ratio = (model.Teenager.Value / users.Count) * 100;
+                    model.Young.Ratio = (model.Young.Value / users.Count) * 100;
+                    model.Middle.Ratio = (model.Middle.Value / users.Count) * 100;
+                    model.Old.Ratio = (model.Old.Value / users.Count) * 100;
                 }
 
                 return Ok(model);

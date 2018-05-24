@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace Evant.Contracts.DataTransferObjects.User
 {
     public sealed class UserUpdateDTO
@@ -8,5 +10,7 @@ namespace Evant.Contracts.DataTransferObjects.User
         public string LastName { get; set; }
 
         public string Email { get; set; }
+
+        public DateTime Birthdate { get; set; }
     }
 }

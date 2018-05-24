@@ -136,9 +136,14 @@ namespace Evant.Controllers
                     var response = await _friendOperationRepo.Add(entity);
                     if (response)
                     {
-                        await _notificationHelper.SendFollowNotification(userId, friendId);
-                        await _gameHelper.Point(userId, GameType.Follow);
-                        await _gameHelper.Point(friendId, GameType.Following);
+                        try
+                        {
+                            await _notificationHelper.SendFollowNotification(userId, friendId);
+                            await _gameHelper.Point(userId, GameType.Follow);
+                            await _gameHelper.Point(friendId, GameType.Following);
+                        }
+                        catch { }
+
                         return Ok("Takip etmeye başladın.");
                     }
                     else

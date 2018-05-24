@@ -109,7 +109,11 @@ namespace Evant.Controllers
                     var response = await _eventOperationRepo.Add(entity);
                     if (response)
                     {
-                        await _gameHelper.Point(userId, GameType.AttendEvent);
+                        try
+                        {
+                            await _gameHelper.Point(userId, GameType.AttendEvent);
+                        }
+                        catch { }
 
                         var @event = await _eventRepo.First(e => e.Id == eventId);
                         if (@event != null)
