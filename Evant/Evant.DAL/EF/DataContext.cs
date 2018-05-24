@@ -18,6 +18,8 @@ namespace Evant.DAL.EF
         public DbSet<UserSetting> UserSettings { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<FAQ> FAQs { get; set; }
+        public DbSet<Weather> Weathers { get; set; }
+
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
