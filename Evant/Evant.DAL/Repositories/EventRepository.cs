@@ -93,5 +93,25 @@ namespace Evant.DAL.Repositories
             return false;
         }
 
+        public async Task<List<Event>> CityEvents(string city)
+        {
+            return await Table
+                .Include(t => t.Category)
+                .Include(t => t.User)
+                .Where(t => t.City.ToLower() == city.ToLower() && !t.IsDeleted && t.User.IsActive)
+                .OrderByDescending(t => t.CreatedAt)
+                .ToListAsync();
+        }
+
+        public async Task<List<Event>> TownEvents(string town)
+        {
+            return await Table
+                .Include(t => t.Category)
+                .Include(t => t.User)
+                .Where(t => t.Town.ToLower() == town.ToLower() && !t.IsDeleted && t.User.IsActive)
+                .OrderByDescending(t => t.CreatedAt)
+                .ToListAsync();
+        }
+
     }
 }

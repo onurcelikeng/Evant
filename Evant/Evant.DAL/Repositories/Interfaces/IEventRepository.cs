@@ -15,5 +15,7 @@ namespace Evant.DAL.Repositories.Interfaces
         Task<List<Event>> EventsByCategory(Guid categoryId);
         Task<List<Event>> Search(string query);
         Task<bool> SoftDelete(Guid eventId);
+        Task<List<Event>> CityEvents(string city);
+        Task<List<Event>> TownEvents(string town);
     }
 }
