@@ -11,14 +11,14 @@ using System;
 namespace Evant.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20180518125058_Notification Entity Edit")]
-    partial class NotificationEntityEdit
+    [Migration("20180524112312_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
+                .HasAnnotation("ProductVersion", "2.0.3-rtm-10026")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Evant.DAL.EF.Tables.Business", b =>
@@ -181,6 +181,28 @@ namespace Evant.DAL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("EventOperations");
+                });
+
+            modelBuilder.Entity("Evant.DAL.EF.Tables.FAQ", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Answer");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<Guid>("EventId");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("Question");
+
+                    b.Property<DateTime>("UpdateAt");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FAQs");
                 });
 
             modelBuilder.Entity("Evant.DAL.EF.Tables.FriendOperation", b =>

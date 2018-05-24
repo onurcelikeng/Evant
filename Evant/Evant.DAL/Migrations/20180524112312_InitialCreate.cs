@@ -25,6 +25,23 @@ namespace Evant.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FAQs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Answer = table.Column<string>(nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    EventId = table.Column<Guid>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    Question = table.Column<string>(nullable: true),
+                    UpdateAt = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FAQs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Logs",
                 columns: table => new
                 {
@@ -333,7 +350,7 @@ namespace Evant.DAL.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CommentId = table.Column<Guid>(nullable: true),
-                    Content = table.Column<string>(maxLength: 120, nullable: false),
+                    Content = table.Column<string>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     EventId = table.Column<Guid>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
@@ -456,6 +473,9 @@ namespace Evant.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "EventOperations");
+
+            migrationBuilder.DropTable(
+                name: "FAQs");
 
             migrationBuilder.DropTable(
                 name: "FriendOperations");
