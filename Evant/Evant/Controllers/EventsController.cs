@@ -509,7 +509,7 @@ namespace Evant.Controllers
                     return Ok(events);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -520,7 +520,7 @@ namespace Evant.Controllers
         {
             try
             {
-                var events = (await _eventRepo.TownEvents("bornova")).Select(e => new EventDetailDTO()
+                var events = (await _eventRepo.TownEvents("buca")).Select(e => new EventDetailDTO()
                 {
                     EventId = e.Id,
                     Title = e.Title,
@@ -560,7 +560,7 @@ namespace Evant.Controllers
                     return Ok(events);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
