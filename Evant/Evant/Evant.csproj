@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <ApplicationInsightsResourceId>/subscriptions/cddf65b3-0381-49f0-a8d7-68fd30fd3b6b/resourcegroups/EvantResourceGroup/providers/microsoft.insights/components/evantapp</ApplicationInsightsResourceId>
+    <ApplicationInsightsResourceId>/subscriptions/f5cc58bf-b7d0-4fa0-ac46-2aba739e6257/resourcegroups/EvantResourceGroup/providers/microsoft.insights/components/evantapp</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/cddf65b3-0381-49f0-a8d7-68fd30fd3b6b/resourcegroups/EvantResourceGroup/providers/microsoft.insights/components/evantapp</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
